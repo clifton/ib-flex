@@ -25,9 +25,18 @@ chrono = { version = "0.4", features = ["serde"] }
 # Error handling
 thiserror = "1.0"
 
+# HTTP client for FLEX Web Service API (optional)
+reqwest = { version = "0.12", features = ["blocking"], optional = true }
+
 [dev-dependencies]
 anyhow = "1.0"
 criterion = "0.5"
+proptest = "1.4"
+rand = "0.8"
+
+[features]
+default = []
+api-client = ["reqwest"]
 
 [[bench]]
 name = "parsing_benchmarks"
