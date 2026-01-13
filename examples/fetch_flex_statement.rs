@@ -30,7 +30,8 @@
 //! ```
 
 #[cfg(feature = "api-client")]
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     use ib_flex::api::FlexApiClient;
     use std::time::Duration;
 
@@ -55,12 +56,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Step 1: Send request
     println!("Step 1: Sending FLEX query request...");
-    let reference_code = client.send_request(&query_id)?;
+    let reference_code = client.send_request(&query_id).await?;
     println!("✓ Reference code received: {}\n", reference_code);
 
     // Step 2: Get statement with automatic retry
     println!("Step 2: Retrieving statement (will retry if not ready)...");
-    let xml = client.get_statement_with_retry(&reference_code, 10, Duration::from_secs(2))?;
+    let xml = client.get_statement_with_retry(&reference_code, 10, Duration::from_secs(2)).await?;
     println!("✓ Statement received ({} bytes)\n", xml.len());
 
     // Step 3: Parse the statement

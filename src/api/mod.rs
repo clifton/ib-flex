@@ -20,7 +20,8 @@
 //!
 //! ```rust,no_run
 //! # #[cfg(feature = "api-client")]
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use ib_flex::api::FlexApiClient;
 //! use std::time::Duration;
 //!
@@ -28,14 +29,14 @@
 //! let client = FlexApiClient::new("YOUR_TOKEN_HERE");
 //!
 //! // Step 1: Send request with your query ID
-//! let reference_code = client.send_request("123456")?;
+//! let reference_code = client.send_request("123456").await?;
 //! println!("Reference code: {}", reference_code);
 //!
 //! // Step 2: Wait a moment for IB to generate the report
-//! std::thread::sleep(Duration::from_secs(5));
+//! tokio::time::sleep(Duration::from_secs(5)).await;
 //!
 //! // Step 3: Get the statement XML
-//! let xml = client.get_statement(&reference_code)?;
+//! let xml = client.get_statement(&reference_code).await?;
 //!
 //! // Step 4: Parse the XML
 //! let statement = ib_flex::parse_activity_flex(&xml)?;

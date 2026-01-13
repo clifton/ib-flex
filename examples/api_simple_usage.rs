@@ -11,7 +11,8 @@
 //! ```
 
 #[cfg(feature = "api-client")]
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     use ib_flex::api::FlexApiClient;
     use std::time::Duration;
 
@@ -23,14 +24,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = FlexApiClient::new(token);
 
     // Send request and get reference code
-    let reference_code = client.send_request(&query_id)?;
+    let reference_code = client.send_request(&query_id).await?;
     println!("Reference code: {}", reference_code);
 
     // Wait for statement generation
-    std::thread::sleep(Duration::from_secs(5));
+    tokio::time::sleep(Duration::from_secs(5)).await;
 
     // Get statement
-    let xml = client.get_statement(&reference_code)?;
+    let xml = client.get_statement(&reference_code).await?;
 
     // Parse statement
     let statement = ib_flex::parse_activity_flex(&xml)?;

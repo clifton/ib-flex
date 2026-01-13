@@ -1,6 +1,6 @@
 //! FLEX Web Service API client implementation
 
-use reqwest::blocking::Client;
+use reqwest::Client;
 use std::time::Duration;
 use thiserror::Error;
 
@@ -36,7 +36,7 @@ pub type Result<T> = std::result::Result<T, FlexApiError>;
 
 /// FLEX Web Service API client
 ///
-/// Provides programmatic access to Interactive Brokers FLEX statements
+/// Provides async programmatic access to Interactive Brokers FLEX statements
 /// using the FLEX Web Service API.
 ///
 /// # Authentication
@@ -52,17 +52,18 @@ pub type Result<T> = std::result::Result<T, FlexApiError>;
 /// use ib_flex::api::FlexApiClient;
 /// use std::time::Duration;
 ///
-/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// let client = FlexApiClient::new("YOUR_TOKEN");
 ///
 /// // Send request
-/// let ref_code = client.send_request("QUERY_ID")?;
+/// let ref_code = client.send_request("QUERY_ID").await?;
 ///
 /// // Wait for report generation
-/// std::thread::sleep(Duration::from_secs(5));
+/// tokio::time::sleep(Duration::from_secs(5)).await;
 ///
 /// // Get statement
-/// let xml = client.get_statement(&ref_code)?;
+/// let xml = client.get_statement(&ref_code).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -136,21 +137,22 @@ impl FlexApiClient {
     ///
     /// ```rust,no_run
     /// # use ib_flex::api::FlexApiClient;
-    /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = FlexApiClient::new("YOUR_TOKEN");
-    /// let reference_code = client.send_request("123456")?;
+    /// let reference_code = client.send_request("123456").await?;
     /// println!("Reference code: {}", reference_code);
     /// # Ok(())
     /// # }
     /// ```
-    pub fn send_request(&self, query_id: &str) -> Result<String> {
+    pub async fn send_request(&self, query_id: &str) -> Result<String> {
         let url = format!(
             "{}/FlexStatementService.SendRequest?t={}&q={}&v=3",
             self.base_url, self.token, query_id
         );
 
-        let response = self.client.get(&url).send()?;
-        let body = response.text()?;
+        let response = self.client.get(&url).send().await?;
+        let body = response.text().await?;
 
         // Parse XML response
         self.parse_send_request_response(&body)
@@ -176,25 +178,26 @@ impl FlexApiClient {
     /// ```rust,no_run
     /// # use ib_flex::api::FlexApiClient;
     /// # use std::time::Duration;
-    /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = FlexApiClient::new("YOUR_TOKEN");
-    /// let ref_code = client.send_request("123456")?;
+    /// let ref_code = client.send_request("123456").await?;
     ///
     /// // Wait for statement generation
-    /// std::thread::sleep(Duration::from_secs(5));
+    /// tokio::time::sleep(Duration::from_secs(5)).await;
     ///
-    /// let xml = client.get_statement(&ref_code)?;
+    /// let xml = client.get_statement(&ref_code).await?;
     /// # Ok(())
     /// # }
     /// ```
-    pub fn get_statement(&self, reference_code: &str) -> Result<String> {
+    pub async fn get_statement(&self, reference_code: &str) -> Result<String> {
         let url = format!(
             "{}/FlexStatementService.GetStatement?t={}&q={}&v=3",
             self.base_url, self.token, reference_code
         );
 
-        let response = self.client.get(&url).send()?;
-        let body = response.text()?;
+        let response = self.client.get(&url).send().await?;
+        let body = response.text().await?;
 
         // Check if this is an error response
         if body.contains("<Status>") {
@@ -225,27 +228,28 @@ impl FlexApiClient {
     /// ```rust,no_run
     /// # use ib_flex::api::FlexApiClient;
     /// # use std::time::Duration;
-    /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = FlexApiClient::new("YOUR_TOKEN");
-    /// let ref_code = client.send_request("123456")?;
+    /// let ref_code = client.send_request("123456").await?;
     ///
     /// // Automatically retry up to 10 times with 2-second delays
-    /// let xml = client.get_statement_with_retry(&ref_code, 10, Duration::from_secs(2))?;
+    /// let xml = client.get_statement_with_retry(&ref_code, 10, Duration::from_secs(2)).await?;
     /// # Ok(())
     /// # }
     /// ```
-    pub fn get_statement_with_retry(
+    pub async fn get_statement_with_retry(
         &self,
         reference_code: &str,
         max_retries: usize,
         retry_delay: Duration,
     ) -> Result<String> {
         for attempt in 0..max_retries {
-            match self.get_statement(reference_code) {
+            match self.get_statement(reference_code).await {
                 Ok(xml) => return Ok(xml),
                 Err(FlexApiError::StatementNotReady) => {
                     if attempt < max_retries - 1 {
-                        std::thread::sleep(retry_delay);
+                        tokio::time::sleep(retry_delay).await;
                         continue;
                     } else {
                         return Err(FlexApiError::StatementNotReady);
