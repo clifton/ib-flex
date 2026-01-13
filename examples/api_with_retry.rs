@@ -32,7 +32,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Get statement with automatic retry
     // Will retry up to 10 times with 2-second delays if not ready
     println!("Fetching statement (with automatic retry)...");
-    let xml = client.get_statement_with_retry(&reference_code, 10, Duration::from_secs(2)).await?;
+    let xml = client
+        .get_statement_with_retry(&reference_code, 10, Duration::from_secs(2))
+        .await?;
 
     println!("Received statement ({} bytes)", xml.len());
 

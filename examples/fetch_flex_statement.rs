@@ -61,7 +61,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Step 2: Get statement with automatic retry
     println!("Step 2: Retrieving statement (will retry if not ready)...");
-    let xml = client.get_statement_with_retry(&reference_code, 10, Duration::from_secs(2)).await?;
+    let xml = client
+        .get_statement_with_retry(&reference_code, 10, Duration::from_secs(2))
+        .await?;
     println!("✓ Statement received ({} bytes)\n", xml.len());
 
     // Step 3: Parse the statement
@@ -86,7 +88,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "  Corporate Actions: {}",
         statement.corporate_actions.items.len()
     );
-    println!("  Securities Info: {}", statement.securities_info.items.len());
+    println!(
+        "  Securities Info: {}",
+        statement.securities_info.items.len()
+    );
     println!(
         "  Conversion Rates: {}",
         statement.conversion_rates.items.len()
