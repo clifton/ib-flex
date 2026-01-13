@@ -244,11 +244,12 @@ impl FlexApiClient {
         max_retries: usize,
         retry_delay: Duration,
     ) -> Result<String> {
-        for attempt in 0..max_retries {
+        // Always make at least one attempt (0..=max_retries ensures this)
+        for attempt in 0..=max_retries {
             match self.get_statement(reference_code).await {
                 Ok(xml) => return Ok(xml),
                 Err(FlexApiError::StatementNotReady) => {
-                    if attempt < max_retries - 1 {
+                    if attempt < max_retries {
                         tokio::time::sleep(retry_delay).await;
                         continue;
                     } else {
@@ -259,7 +260,7 @@ impl FlexApiClient {
             }
         }
 
-        Err(FlexApiError::StatementNotReady)
+        unreachable!("Loop should always return within the iteration")
     }
 
     /// Parse SendRequest XML response
