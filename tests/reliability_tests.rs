@@ -263,7 +263,7 @@ fn test_parse_mixed_large_sections() {
         cash.push_str(
             r#"<CashTransaction accountId="U1234567" reportDate="2025-01-15"
                                type="Deposits/Withdrawals" amount="1000.00"
-                               currency="USD" />"#
+                               currency="USD" />"#,
         );
     }
     cash.push_str("</CashTransactions>");
