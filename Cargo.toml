@@ -28,6 +28,8 @@ thiserror = "1.0"
 [dev-dependencies]
 anyhow = "1.0"
 criterion = "0.5"
+proptest = "1.4"
+rand = "0.8"
 
 [[bench]]
 name = "parsing_benchmarks"

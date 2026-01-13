@@ -180,14 +180,24 @@ cargo clippy -- -D warnings
 
 ## Testing
 
-The library has comprehensive test coverage:
+The library has comprehensive test coverage including stress tests and property-based testing:
 
-- **73 tests total** (100% passing)
+- **96 tests total** (100% passing)
 - **47 integration tests** covering all asset classes and edge cases
+- **15 reliability tests** including stress tests and property-based testing
 - **11 error tests** for malformed XML and invalid data
 - **11 unit tests** for custom deserializers
-- **4 doc tests** in inline documentation
+- **12 doc tests** in inline documentation
 - **14 XML fixtures** including warrants, T-Bills, CFDs, fractional shares, cancelled trades
+
+### Reliability Testing
+
+The library includes comprehensive reliability tests using:
+- **Property-based testing** with proptest for random inputs
+- **Stress tests** for large XML files (1000+ trades, 500+ positions)
+- **Concurrency tests** for thread safety
+- **Memory efficiency tests** for repeated parsing
+- **Edge case fuzzing** for malformed inputs
 
 Run tests with:
 ```bash
