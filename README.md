@@ -6,9 +6,9 @@
 
 Pure Rust parser for Interactive Brokers FLEX XML statements with comprehensive type safety and edge case coverage.
 
-**Status**: v0.1.0 Complete
+**Status**: v0.2.0 - Extended FLEX Support
 
-Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML statements. Built with zero external dependencies beyond XML/serde, featuring 100+ enum variants, comprehensive edge case handling, and excellent performance (~6.5µs for minimal parsing).
+Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML statements. Built with zero external dependencies beyond XML/serde, featuring 100+ enum variants, 10+ extended FLEX sections, comprehensive edge case handling, and excellent performance (~6.5µs for minimal parsing).
 
 ## Features
 
@@ -18,7 +18,7 @@ Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML stateme
 - ✅ **Type-safe** with 15 enums covering 100+ variants
 - 🔧 **Zero dependencies** beyond XML/serde ecosystem
 - 📦 **Comprehensive coverage** of Activity FLEX statements
-- 🛡️ **Well-tested** with 73 tests (100% passing), zero warnings
+- 🛡️ **Well-tested** with 94 tests (100% passing), zero warnings
 - 🎯 **Edge case handling** for warrants, T-Bills, CFDs, fractional shares, cancelled trades
 
 ## Installation
@@ -86,13 +86,25 @@ Interactive Brokers FLEX queries must be configured in the IB Client Portal:
 
 ## Supported FLEX Sections
 
-### Activity FLEX (v0.1.0)
+### Activity FLEX (v0.1.0 - Core Types)
 - ✅ **Trades** - Executions with 40+ fields including P&L, commissions, dates, security details
 - ✅ **Open Positions** - Current holdings with 30+ fields
 - ✅ **Cash Transactions** - Deposits, withdrawals, interest, fees, dividends
 - ✅ **Corporate Actions** - Splits, mergers, spinoffs, dividends (36 action types)
 - ✅ **Securities Info** - Reference data for all traded instruments
 - ✅ **FX Conversion Rates** - Currency conversion rates for multi-currency accounts
+
+### Extended FLEX Sections (v0.2.0+)
+- ✅ **Account Information** - Account metadata and configuration
+- ✅ **Change in NAV** - Net asset value changes with transfers and P&L breakdown
+- ✅ **Equity Summary** - Asset allocation by category (cash, stocks, options, bonds)
+- ✅ **Cash Report** - Detailed cash flow by currency
+- ✅ **Trade Confirmations** - Real-time trade execution confirmations
+- ✅ **Option EAE** - Option exercises, assignments, and expirations
+- ✅ **FX Transactions** - Foreign exchange conversions
+- ✅ **Dividend Accruals** - Accrued and open dividend tracking
+- ✅ **Interest Accruals** - Interest accrual tracking by currency
+- ✅ **Transfers** - Security transfers (ACATS, ATON, FOP, etc.)
 
 ### Asset Classes Supported
 - ✅ **Stocks (STK)** - Including fractional shares
@@ -182,12 +194,13 @@ cargo clippy -- -D warnings
 
 The library has comprehensive test coverage:
 
-- **73 tests total** (100% passing)
+- **94 tests total** (100% passing)
 - **47 integration tests** covering all asset classes and edge cases
+- **13 extended types tests** for v0.2.0+ FLEX sections
 - **11 error tests** for malformed XML and invalid data
 - **11 unit tests** for custom deserializers
-- **4 doc tests** in inline documentation
-- **14 XML fixtures** including warrants, T-Bills, CFDs, fractional shares, cancelled trades
+- **12 doc tests** in inline documentation
+- **15 XML fixtures** including extended types, warrants, T-Bills, CFDs, fractional shares, cancelled trades
 
 Run tests with:
 ```bash
@@ -243,6 +256,6 @@ at your option.
 
 ---
 
-**Status**: v0.1.0 Complete (73/73 tests passing, zero warnings)
+**Status**: v0.2.0 - Extended FLEX Support (94/94 tests passing, zero warnings)
 
 See [PLAN.md](PLAN.md) for detailed implementation statistics and [EDGE_CASES_SUMMARY.md](EDGE_CASES_SUMMARY.md) for edge case coverage.

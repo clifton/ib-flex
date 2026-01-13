@@ -1,8 +1,8 @@
 # ib-flex Implementation Plan
 
 **Project**: Interactive Brokers FLEX XML Parser
-**Version**: 0.1.0
-**Status**: ✅ v0.1.0 Complete
+**Version**: 0.2.0
+**Status**: ✅ v0.2.0 Complete - Extended FLEX Support
 
 ---
 
@@ -434,22 +434,23 @@ This implementation was informed by:
 
 | Metric | Value |
 |--------|-------|
-| **Total Tests** | 73 (100% passing) |
+| **Total Tests** | 94 (100% passing) |
 | **Integration Tests** | 47 |
+| **Extended Types Tests** | 13 (NEW!) |
 | **Error Tests** | 11 |
 | **Unit Tests** | 11 |
-| **Doc Tests** | 4 |
-| **XML Fixtures** | 14 |
+| **Doc Tests** | 12 |
+| **XML Fixtures** | 15 |
 | **Example Programs** | 3 |
 | **Benchmarks** | 8 |
 | **Enum Variants** | 100+ |
 | **Core Types** | 8 (v0.1.0) |
-| **Extended Types** | 13 (v0.2.0+) |
+| **Extended Types** | 13 (v0.2.0 - INTEGRATED!) |
 | **Clippy Warnings** | 0 |
-| **Lines of Code** | ~3,000+ |
+| **Lines of Code** | ~4,000+ |
 
 ---
 
-*Status: v0.1.0 Complete*
+*Status: v0.2.0 Complete - Extended FLEX Support*
 *Last Updated: 2026-01-12*
 *All phases successfully completed with comprehensive edge case coverage*

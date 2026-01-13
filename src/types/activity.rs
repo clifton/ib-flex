@@ -155,6 +155,51 @@ pub struct ActivityFlexStatement {
     /// Currency conversion rates
     #[serde(rename = "ConversionRates", default)]
     pub conversion_rates: ConversionRatesWrapper,
+
+    // Extended v0.2.0+ sections
+    /// Account information
+    #[serde(rename = "AccountInformation", default)]
+    pub account_information: Option<super::extended::AccountInformation>,
+
+    /// Change in NAV
+    #[serde(rename = "ChangeInNAV", default)]
+    pub change_in_nav: ChangeInNAVWrapper,
+
+    /// Equity summary by report date in base currency
+    #[serde(rename = "EquitySummaryByReportDateInBase", default)]
+    pub equity_summary: EquitySummaryWrapper,
+
+    /// Cash report by currency
+    #[serde(rename = "CashReport", default)]
+    pub cash_report: CashReportWrapper,
+
+    /// Trade confirmations
+    #[serde(rename = "TradeConfirms", default)]
+    pub trade_confirms: TradeConfirmsWrapper,
+
+    /// Option exercises, assignments, and expirations
+    #[serde(rename = "OptionEAE", default)]
+    pub option_eae: OptionEAEWrapper,
+
+    /// Foreign exchange transactions
+    #[serde(rename = "FxTransactions", default)]
+    pub fx_transactions: FxTransactionsWrapper,
+
+    /// Change in dividend accruals
+    #[serde(rename = "ChangeInDividendAccruals", default)]
+    pub change_in_dividend_accruals: ChangeInDividendAccrualsWrapper,
+
+    /// Open dividend accruals
+    #[serde(rename = "OpenDividendAccruals", default)]
+    pub open_dividend_accruals: OpenDividendAccrualsWrapper,
+
+    /// Interest accruals by currency
+    #[serde(rename = "InterestAccruals", default)]
+    pub interest_accruals: InterestAccrualsWrapper,
+
+    /// Security transfers
+    #[serde(rename = "Transfers", default)]
+    pub transfers: TransfersWrapper,
 }
 
 /// Wrapper for trades section
@@ -1011,4 +1056,85 @@ pub struct ConversionRatesWrapper {
     /// List of conversion rates
     #[serde(rename = "ConversionRate", default)]
     pub items: Vec<ConversionRate>,
+}
+
+// Extended v0.2.0+ wrappers
+/// Wrapper for change in NAV section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct ChangeInNAVWrapper {
+    /// List of NAV changes
+    #[serde(rename = "ChangeInNAV", default)]
+    pub items: Vec<super::extended::ChangeInNAV>,
+}
+
+/// Wrapper for equity summary section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct EquitySummaryWrapper {
+    /// List of equity summaries
+    #[serde(rename = "EquitySummaryByReportDateInBase", default)]
+    pub items: Vec<super::extended::EquitySummaryByReportDateInBase>,
+}
+
+/// Wrapper for cash report section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct CashReportWrapper {
+    /// List of cash reports
+    #[serde(rename = "CashReportCurrency", default)]
+    pub items: Vec<super::extended::CashReportCurrency>,
+}
+
+/// Wrapper for trade confirmations section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct TradeConfirmsWrapper {
+    /// List of trade confirmations
+    #[serde(rename = "TradeConfirm", default)]
+    pub items: Vec<super::extended::TradeConfirm>,
+}
+
+/// Wrapper for option EAE section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct OptionEAEWrapper {
+    /// List of option exercises/assignments/expirations
+    #[serde(rename = "OptionEAE", default)]
+    pub items: Vec<super::extended::OptionEAE>,
+}
+
+/// Wrapper for FX transactions section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct FxTransactionsWrapper {
+    /// List of FX transactions
+    #[serde(rename = "FxTransaction", default)]
+    pub items: Vec<super::extended::FxTransaction>,
+}
+
+/// Wrapper for change in dividend accruals section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct ChangeInDividendAccrualsWrapper {
+    /// List of dividend accrual changes
+    #[serde(rename = "ChangeInDividendAccrual", default)]
+    pub items: Vec<super::extended::ChangeInDividendAccrual>,
+}
+
+/// Wrapper for open dividend accruals section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct OpenDividendAccrualsWrapper {
+    /// List of open dividend accruals
+    #[serde(rename = "OpenDividendAccrual", default)]
+    pub items: Vec<super::extended::OpenDividendAccrual>,
+}
+
+/// Wrapper for interest accruals section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct InterestAccrualsWrapper {
+    /// List of interest accruals
+    #[serde(rename = "InterestAccrualsCurrency", default)]
+    pub items: Vec<super::extended::InterestAccrualsCurrency>,
+}
+
+/// Wrapper for transfers section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct TransfersWrapper {
+    /// List of transfers
+    #[serde(rename = "Transfer", default)]
+    pub items: Vec<super::extended::Transfer>,
 }

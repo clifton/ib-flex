@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Extended Activity Test" type="AF">
+    <FlexStatements count="1">
+        <FlexStatement accountId="U1234567" fromDate="2025-01-01" toDate="2025-01-31"
+                       whenGenerated="2025-01-31;150000" period="LastMonth">
+            <!-- Core sections (minimal) -->
+            <Trades>
+                <Trade accountId="U1234567" conid="265598" symbol="AAPL" assetCategory="STK"
+                       tradeDate="2025-01-15" settleDateTarget="2025-01-17" quantity="100"
+                       tradePrice="150.00" proceeds="-15000.00" ibCommission="-1.00"
+                       netCash="-15001.00" currency="USD" buySell="BUY" />
+            </Trades>
+            <OpenPositions />
+            <CashTransactions />
+            <CorporateActions />
+            <SecuritiesInfo />
+            <ConversionRates />
+
+            <!-- Extended v0.2.0+ sections -->
+            <AccountInformation accountId="U1234567" accountType="INDIVIDUAL"
+                               acctAlias="Main" currency="USD" name="John Doe"
+                               masterName="MASTER" />
+
+            <ChangeInNAV>
+                <ChangeInNAV accountId="U1234567" fromDate="2025-01-01" toDate="2025-01-31"
+                            startingValue="100000.00" transfers="5000.00"
+                            mtmPlusRealizedPnl="2500.00" realizedPnl="1500.00"
+                            unrealizedPnl="1000.00" endingValue="107500.00" />
+            </ChangeInNAV>
+
+            <EquitySummaryByReportDateInBase>
+                <EquitySummaryByReportDateInBase accountId="U1234567"
+                                                reportDate="2025-01-31"
+                                                cash="50000.00" stock="40000.00"
+                                                options="15000.00" bonds="2500.00"
+                                                total="107500.00" />
+            </EquitySummaryByReportDateInBase>
+
+            <CashReport>
+                <CashReportCurrency accountId="U1234567" currency="USD"
+                                   fromDate="2025-01-01" toDate="2025-01-31"
+                                   startingCash="45000.00" commissions="-50.00"
+                                   deposits="5000.00" withdrawals="0.00"
+                                   dividends="100.00" endingCash="50050.00" />
+            </CashReport>
+
+            <TradeConfirms>
+                <TradeConfirm accountId="U1234567" execID="00012345.001"
+                             orderID="12345" tradeDate="2025-01-15"
+                             tradeTime="09:30:00" symbol="AAPL" assetCategory="STK"
+                             quantity="100" price="150.00" />
+            </TradeConfirms>
+
+            <OptionEAE>
+                <OptionEAE accountId="U1234567" transactionID="1001" type="Expiration"
+                          date="2025-01-20" symbol="AAPL  250120P00145000"
+                          quantity="1" strike="145.00" underlyingSymbol="AAPL" />
+            </OptionEAE>
+
+            <FxTransactions>
+                <FxTransaction accountId="U1234567" transactionID="2001"
+                              dateTime="2025-01-10;093000" fromCurrency="USD"
+                              toCurrency="EUR" quantity="1000.00" proceeds="-920.50"
+                              fxRateToBase="1.087" />
+            </FxTransactions>
+
+            <ChangeInDividendAccruals>
+                <ChangeInDividendAccrual accountId="U1234567" symbol="MSFT"
+                                        exDate="2025-01-15" payDate="2025-02-15"
+                                        grossRate="0.75" netAmount="75.00" />
+            </ChangeInDividendAccruals>
+
+            <OpenDividendAccruals>
+                <OpenDividendAccrual accountId="U1234567" symbol="GOOGL"
+                                    exDate="2025-01-25" payDate="2025-02-25"
+                                    quantity="50" grossRate="0.50" />
+            </OpenDividendAccruals>
+
+            <InterestAccruals>
+                <InterestAccrualsCurrency accountId="U1234567" currency="USD"
+                                         fromDate="2025-01-01" toDate="2025-01-31"
+                                         startingBalance="50000.00"
+                                         accruedInterest="12.50"
+                                         endingBalance="50012.50" />
+            </InterestAccruals>
+
+            <Transfers>
+                <Transfer accountId="U1234567" type="ACATS" symbol="TSLA"
+                         quantity="25" direction="IN" date="2025-01-05" />
+            </Transfers>
+        </FlexStatement>
+    </FlexStatements>
+</FlexQueryResponse>
