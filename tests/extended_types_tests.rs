@@ -47,10 +47,7 @@ fn test_change_in_nav() {
     assert_eq!(nav.from_date.to_string(), "2025-01-01");
     assert_eq!(nav.to_date.to_string(), "2025-01-31");
     assert_eq!(nav.starting_value, Decimal::from_str("100000.00").unwrap());
-    assert_eq!(
-        nav.transfers,
-        Some(Decimal::from_str("5000.00").unwrap())
-    );
+    assert_eq!(nav.transfers, Some(Decimal::from_str("5000.00").unwrap()));
     assert_eq!(
         nav.mtm_plus_realized_pnl,
         Some(Decimal::from_str("2500.00").unwrap())
@@ -98,18 +95,12 @@ fn test_cash_report() {
     assert_eq!(report.currency, "USD");
     assert_eq!(report.from_date.to_string(), "2025-01-01");
     assert_eq!(report.to_date.to_string(), "2025-01-31");
-    assert_eq!(
-        report.starting_cash,
-        Decimal::from_str("45000.00").unwrap()
-    );
+    assert_eq!(report.starting_cash, Decimal::from_str("45000.00").unwrap());
     assert_eq!(
         report.commissions,
         Some(Decimal::from_str("-50.00").unwrap())
     );
-    assert_eq!(
-        report.deposits,
-        Some(Decimal::from_str("5000.00").unwrap())
-    );
+    assert_eq!(report.deposits, Some(Decimal::from_str("5000.00").unwrap()));
     assert_eq!(report.withdrawals, Some(Decimal::from_str("0.00").unwrap()));
     assert_eq!(report.dividends, Some(Decimal::from_str("100.00").unwrap()));
     assert_eq!(report.ending_cash, Decimal::from_str("50050.00").unwrap());
