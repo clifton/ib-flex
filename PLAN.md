@@ -413,8 +413,8 @@ benches/                # 8 performance benchmarks
 
 ### v1.0.0 (Future)
 - [ ] Stable API guarantee
-- [ ] Complete FLEX v3 support
-- [ ] Extended reliability testing
+- [x] Complete FLEX v3 support
+- [x] Extended reliability testing
 - [ ] FLEX Web Service API client
 
 ---
