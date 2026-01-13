@@ -28,13 +28,13 @@
                             unrealizedPnl="1000.00" endingValue="107500.00" />
             </ChangeInNAV>
 
-            <EquitySummaryByReportDateInBase>
+            <EquitySummaryInBase>
                 <EquitySummaryByReportDateInBase accountId="U1234567"
                                                 reportDate="2025-01-31"
                                                 cash="50000.00" stock="40000.00"
                                                 options="15000.00" bonds="2500.00"
                                                 total="107500.00" />
-            </EquitySummaryByReportDateInBase>
+            </EquitySummaryInBase>
 
             <CashReport>
                 <CashReportCurrency accountId="U1234567" currency="USD"
@@ -79,9 +79,9 @@
             <InterestAccruals>
                 <InterestAccrualsCurrency accountId="U1234567" currency="USD"
                                          fromDate="2025-01-01" toDate="2025-01-31"
-                                         startingBalance="50000.00"
-                                         accruedInterest="12.50"
-                                         endingBalance="50012.50" />
+                                         startingAccrualBalance="50000.00"
+                                         interestAccrued="12.50"
+                                         endingAccrualBalance="50012.50" />
             </InterestAccruals>
 
             <Transfers>

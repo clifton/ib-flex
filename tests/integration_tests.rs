@@ -81,7 +81,10 @@ fn test_trade_proceeds() {
 
     let trade = &statement.trades.items[0];
     assert_eq!(trade.proceeds.to_string(), "-18550.00");
-    assert_eq!(trade.net_cash.to_string(), "-18551.00");
+    assert_eq!(
+        trade.net_cash.map(|d| d.to_string()),
+        Some("-18551.00".to_string())
+    );
 }
 
 #[test]

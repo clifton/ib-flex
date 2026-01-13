@@ -557,6 +557,30 @@ fn test_parse_real_statement() {
 }
 ```
 
+### Real Account XML Files
+When fetching real FLEX data for testing or fixture generation, save files to `tmp/` (gitignored):
+
+```
+tmp/
+├── fund_daily_2025-01-15.xml      # Daily activity statement
+├── fund_monthly_2025-01.xml       # Monthly statement
+├── personal_activity_2025-01.xml  # Personal account data
+└── trade_confirms_2025-01-15.xml  # Trade confirmations
+```
+
+**Naming convention**: `{account_type}_{report_type}_{date}.xml`
+- Account types: `fund`, `personal`, `ira`, etc.
+- Report types: `daily`, `monthly`, `ytd`, `activity`, `trade_confirms`
+- Date: `YYYY-MM-DD` for daily, `YYYY-MM` for monthly
+
+**Usage**: These files help identify edge cases, missing fields, and real-world XML variations that synthetic fixtures may miss. When you encounter parsing errors with real data:
+1. Save the problematic XML to `tmp/`
+2. Identify the issue (new field, different format, etc.)
+3. Update the parser to handle the case
+4. Create a minimal test fixture in `tests/fixtures/` that reproduces the issue
+
+**Security**: Never commit real account data. The `tmp/` directory is gitignored.
+
 ### Benchmarks
 Located in `benches/`:
 

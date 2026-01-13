@@ -9,7 +9,9 @@ use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 use super::common::{AssetCategory, OptionAction, TransferType};
-use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
+use crate::parsers::xml_utils::{
+    deserialize_flex_date, deserialize_optional_date, deserialize_optional_decimal,
+};
 
 /// Account information and metadata
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -47,11 +49,11 @@ pub struct ChangeInNAV {
     pub account_id: String,
 
     /// From date
-    #[serde(rename = "@fromDate")]
+    #[serde(rename = "@fromDate", deserialize_with = "deserialize_flex_date")]
     pub from_date: NaiveDate,
 
     /// To date
-    #[serde(rename = "@toDate")]
+    #[serde(rename = "@toDate", deserialize_with = "deserialize_flex_date")]
     pub to_date: NaiveDate,
 
     /// Starting value
@@ -103,7 +105,7 @@ pub struct EquitySummaryByReportDateInBase {
     pub account_id: String,
 
     /// Report date
-    #[serde(rename = "@reportDate")]
+    #[serde(rename = "@reportDate", deserialize_with = "deserialize_flex_date")]
     pub report_date: NaiveDate,
 
     /// Cash
@@ -155,11 +157,11 @@ pub struct CashReportCurrency {
     pub currency: String,
 
     /// From date
-    #[serde(rename = "@fromDate")]
+    #[serde(rename = "@fromDate", deserialize_with = "deserialize_flex_date")]
     pub from_date: NaiveDate,
 
     /// To date
-    #[serde(rename = "@toDate")]
+    #[serde(rename = "@toDate", deserialize_with = "deserialize_flex_date")]
     pub to_date: NaiveDate,
 
     /// Starting cash
@@ -219,7 +221,7 @@ pub struct TradeConfirm {
     pub order_id: Option<String>,
 
     /// Trade date
-    #[serde(rename = "@tradeDate")]
+    #[serde(rename = "@tradeDate", deserialize_with = "deserialize_flex_date")]
     pub trade_date: NaiveDate,
 
     /// Trade time
@@ -259,7 +261,7 @@ pub struct OptionEAE {
     pub action_type: OptionAction,
 
     /// Date
-    #[serde(rename = "@date")]
+    #[serde(rename = "@date", deserialize_with = "deserialize_flex_date")]
     pub date: NaiveDate,
 
     /// Symbol
@@ -315,8 +317,12 @@ pub struct FxTransaction {
     pub proceeds: Decimal,
 
     /// FX rate
-    #[serde(rename = "@fxRateToBase")]
-    pub fx_rate_to_base: Decimal,
+    #[serde(
+        rename = "@fxRateToBase",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fx_rate_to_base: Option<Decimal>,
 }
 
 /// Change in dividend accruals
@@ -331,7 +337,7 @@ pub struct ChangeInDividendAccrual {
     pub symbol: String,
 
     /// Ex date
-    #[serde(rename = "@exDate")]
+    #[serde(rename = "@exDate", deserialize_with = "deserialize_flex_date")]
     pub ex_date: NaiveDate,
 
     /// Pay date
@@ -363,7 +369,7 @@ pub struct OpenDividendAccrual {
     pub symbol: String,
 
     /// Ex date
-    #[serde(rename = "@exDate")]
+    #[serde(rename = "@exDate", deserialize_with = "deserialize_flex_date")]
     pub ex_date: NaiveDate,
 
     /// Pay date
@@ -395,23 +401,23 @@ pub struct InterestAccrualsCurrency {
     pub currency: String,
 
     /// From date
-    #[serde(rename = "@fromDate")]
+    #[serde(rename = "@fromDate", deserialize_with = "deserialize_flex_date")]
     pub from_date: NaiveDate,
 
     /// To date
-    #[serde(rename = "@toDate")]
+    #[serde(rename = "@toDate", deserialize_with = "deserialize_flex_date")]
     pub to_date: NaiveDate,
 
-    /// Starting balance
-    #[serde(rename = "@startingBalance")]
+    /// Starting accrual balance
+    #[serde(rename = "@startingAccrualBalance")]
     pub starting_balance: Decimal,
 
-    /// Accrued interest
-    #[serde(rename = "@accruedInterest")]
-    pub accrued_interest: Decimal,
+    /// Interest accrued
+    #[serde(rename = "@interestAccrued")]
+    pub interest_accrued: Decimal,
 
-    /// Ending balance
-    #[serde(rename = "@endingBalance")]
+    /// Ending accrual balance
+    #[serde(rename = "@endingAccrualBalance")]
     pub ending_balance: Decimal,
 }
 
@@ -439,6 +445,6 @@ pub struct Transfer {
     pub direction: Option<String>,
 
     /// Date
-    #[serde(rename = "@date")]
+    #[serde(rename = "@date", deserialize_with = "deserialize_flex_date")]
     pub date: NaiveDate,
 }

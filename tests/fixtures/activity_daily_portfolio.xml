@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Comprehensive daily portfolio fixture based on real IB FLEX format -->
+<!-- Tests compact date format (YYYYMMDD), multi-currency, various asset types -->
+<FlexQueryResponse queryName="Daily Portfolio Feed" type="AF">
+<FlexStatements count="1">
+<FlexStatement accountId="U1234567" fromDate="20250115" toDate="20250115" period="LastBusinessDay" whenGenerated="20250116;093000">
+<AccountInformation accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" name="Test Fund LP" accountType="Advisor Client" customerType="Partnership" accountCapabilities="Portfolio Margin" tradingPermissions="Stocks,Options,Futures,Futures Options" accountRepName="" accountRepPhone="" dateOpened="20240101" dateFunded="20240115" dateClosed="" lastTradedDate="20250115" street="123 Test Street" street2="" city="New York" state="NY" country="United States" postalCode="10001" streetResidentialAddress="123 Test Street" street2ResidentialAddress="" cityResidentialAddress="New York" stateResidentialAddress="NY" countryResidentialAddress="United States" postalCodeResidentialAddress="10001" masterName="Test Management LLC" ibEntity="IBLLC-US" primaryEmail="test@example.com" />
+
+<EquitySummaryInBase>
+<EquitySummaryByReportDateInBase accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" reportDate="20250115" cash="150000.50" cashLong="180000.75" cashShort="-30000.25" brokerCashComponent="150000.50" brokerCashComponentLong="180000.75" brokerCashComponentShort="-30000.25" fdicInsuredBankSweepAccountCashComponent="0" fdicInsuredBankSweepAccountCashComponentLong="0" fdicInsuredBankSweepAccountCashComponentShort="0" insuredBankDepositRedemptionCashComponent="0" insuredBankDepositRedemptionCashComponentLong="0" insuredBankDepositRedemptionCashComponentShort="0" slbCashCollateral="0" slbCashCollateralLong="0" slbCashCollateralShort="0" stock="250000.00" stockLong="350000.00" stockShort="-100000.00" ipoSubscription="0" ipoSubscriptionLong="0" ipoSubscriptionShort="0" slbDirectSecuritiesBorrowed="0" slbDirectSecuritiesBorrowedLong="0" slbDirectSecuritiesBorrowedShort="0" slbDirectSecuritiesLent="0" slbDirectSecuritiesLentLong="0" slbDirectSecuritiesLentShort="0" options="25000.00" optionsLong="25000.00" optionsShort="0" bonds="0" bondsLong="0" bondsShort="0" commodities="0" commoditiesLong="0" commoditiesShort="0" notes="0" notesLong="0" notesShort="0" funds="0" fundsLong="0" fundsShort="0" dividendAccruals="500.00" dividendAccrualsLong="750.00" dividendAccrualsShort="-250.00" interestAccruals="25.50" interestAccrualsLong="50.25" interestAccrualsShort="-24.75" total="425526.00" totalLong="555801.00" totalShort="-130275.00" />
+</EquitySummaryInBase>
+
+<ChangeInNAV>
+<ChangeInNAV accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fromDate="20250115" toDate="20250115" startingValue="420000.00" mtm="5500.00" mtmAtPaxos="0" realized="250.00" changeInUnrealized="100.00" costAdjustments="0" transferredPnlAdjustments="0" depositsWithdrawals="0" carbonCredits="0" donations="0" internalCashTransfers="0" paxosTransfers="0" excessFundSweep="0" assetTransfers="0" debitCardActivity="0" billPay="0" grantActivity="0" dividends="75.00" withholdingTax="-11.25" withholding871m="0" withholdingTaxCollected="0" changeInDividendAccruals="50.00" interest="12.50" changeInInterestAccruals="5.25" brokerFees="0" changeInBrokerFeeAccruals="0" advisorFees="-25.00" clientFees="0" otherFees="-5.50" otherIncome="0" feesReceivables="0" commissions="-25.00" commissionsAtPaxos="0" referralFee="0" commissionCreditsRedemption="0" commissionReceivables="0" forexCommissions="0" transactionTax="0" taxReceivables="0" salesTax="0" billableSalesTax="0" softDollars="0" netFxTrading="0" fxTranslation="100.00" linkingAdjustments="0" other="0" endingValue="425526.00" twr="1.315238095" corporateActionProceeds="0" />
+</ChangeInNAV>
+
+<OpenPositions>
+<!-- Long stock position -->
+<OpenPosition accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="STK" subCategory="COMMON" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" figi="BBG000B9XRY4" listingExchange="NASDAQ" underlyingConid="" underlyingSymbol="AAPL" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="US" multiplier="1" strike="" expiry="" putCall="" principalAdjustFactor="" reportDate="20250115" position="500" markPrice="185.50" positionValue="92750.00" openPrice="180.00" costBasisPrice="180.00" costBasisMoney="90000.00" percentOfNAV="21.79" fifoPnlUnrealized="2750.00" side="Long" levelOfDetail="SUMMARY" openDateTime="" holdingPeriodDateTime="" vestingDate="" code="" originatingOrderID="" originatingTransactionID="" accruedInt="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+
+<!-- Short stock position -->
+<OpenPosition accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="STK" subCategory="COMMON" symbol="TSLA" description="TESLA INC" conid="76792991" securityID="US88160R1014" securityIDType="ISIN" cusip="88160R101" isin="US88160R1014" figi="BBG000N9MNX3" listingExchange="NASDAQ" underlyingConid="" underlyingSymbol="TSLA" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="US" multiplier="1" strike="" expiry="" putCall="" principalAdjustFactor="" reportDate="20250115" position="-200" markPrice="250.25" positionValue="-50050.00" openPrice="260.00" costBasisPrice="260.00" costBasisMoney="-52000.00" percentOfNAV="-11.76" fifoPnlUnrealized="1950.00" side="Short" levelOfDetail="SUMMARY" openDateTime="" holdingPeriodDateTime="" vestingDate="" code="" originatingOrderID="" originatingTransactionID="" accruedInt="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+
+<!-- Canadian stock with FX rate -->
+<OpenPosition accountId="U1234567" acctAlias="TestFund" model="Independent" currency="CAD" fxRateToBase="0.72" assetCategory="STK" subCategory="COMMON" symbol="RY" description="ROYAL BANK OF CANADA" conid="33419672" securityID="CA7800871021" securityIDType="ISIN" cusip="" isin="CA7800871021" figi="BBG000BCJHM1" listingExchange="TSE" underlyingConid="" underlyingSymbol="RY" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="CA" multiplier="1" strike="" expiry="" putCall="" principalAdjustFactor="" reportDate="20250115" position="1000" markPrice="145.50" positionValue="145500.00" openPrice="140.00" costBasisPrice="140.00" costBasisMoney="140000.00" percentOfNAV="24.61" fifoPnlUnrealized="5500.00" side="Long" levelOfDetail="SUMMARY" openDateTime="" holdingPeriodDateTime="" vestingDate="" code="" originatingOrderID="" originatingTransactionID="" accruedInt="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+
+<!-- Call option position -->
+<OpenPosition accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="OPT" subCategory="C" symbol="AAPL  250221C00190000" description="AAPL 21FEB25 190 C" conid="700123456" securityID="" securityIDType="" cusip="" isin="" figi="BBG01TEST123" listingExchange="CBOE" underlyingConid="265598" underlyingSymbol="AAPL" underlyingSecurityID="US0378331005" underlyingListingExchange="NASDAQ" issuer="" issuerCountryCode="" multiplier="100" strike="190" expiry="20250221" putCall="C" principalAdjustFactor="" reportDate="20250115" position="50" markPrice="3.25" positionValue="16250.00" openPrice="2.50" costBasisPrice="2.50" costBasisMoney="12500.00" percentOfNAV="3.82" fifoPnlUnrealized="3750.00" side="Long" levelOfDetail="SUMMARY" openDateTime="" holdingPeriodDateTime="" vestingDate="" code="" originatingOrderID="" originatingTransactionID="" accruedInt="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+
+<!-- Futures position -->
+<OpenPosition accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="FUT" subCategory="" symbol="ESH5" description="E-MINI S&amp;P 500 MAR25" conid="600987654" securityID="" securityIDType="" cusip="" isin="" figi="BBG01FUT456" listingExchange="CME" underlyingConid="500000001" underlyingSymbol="ES" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="" multiplier="50" strike="" expiry="20250321" putCall="" principalAdjustFactor="" reportDate="20250115" position="10" markPrice="5950.25" positionValue="2975125.00" openPrice="5900.00" costBasisPrice="5900.00" costBasisMoney="2950000.00" percentOfNAV="" fifoPnlUnrealized="25125.00" side="Long" levelOfDetail="SUMMARY" openDateTime="" holdingPeriodDateTime="" vestingDate="" code="" originatingOrderID="" originatingTransactionID="" accruedInt="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+</OpenPositions>
+
+<Trades>
+<!-- Stock buy -->
+<Trade accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="STK" subCategory="COMMON" symbol="GOOGL" description="ALPHABET INC-CL A" conid="208813720" securityID="US02079K3059" securityIDType="ISIN" cusip="02079K305" isin="US02079K3059" figi="BBG009S39JX6" listingExchange="NASDAQ" underlyingConid="" underlyingSymbol="GOOGL" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="US" tradeID="1234567890" multiplier="1" relatedTradeID="" strike="" reportDate="20250115" expiry="" dateTime="20250115;103000" putCall="" tradeDate="20250115" principalAdjustFactor="" settleDateTarget="20250117" transactionType="ExchTrade" exchange="NASDAQ" quantity="100" price="175.50" tradeMoney="17550.00" proceeds="-17550.00" taxes="0" ibCommission="-1.25" ibCommissionCurrency="USD" netCash="-17551.25" closePrice="176.00" openCloseIndicator="O" notes="" cost="17551.25" fifoPnlRealized="0" mtmPnl="50.00" origTradePrice="0" origTradeDate="" origTradeID="" origOrderID="0" origTransactionID="0" buySell="BUY" clearingFirmID="" ibOrderID="1001" transactionID="20001" ibExecID="0001test.001" relatedTransactionID="" rtn="" brokerageOrderID="brok001" orderReference="" volatilityOrderLink="" exchOrderId="N/A" extExecID="ext001" orderTime="20250115;102955" openDateTime="" holdingPeriodDateTime="" whenRealized="" whenReopened="" levelOfDetail="EXECUTION" changeInPrice="0" changeInQuantity="0" orderType="LMT" traderID="" isAPIOrder="N" accruedInt="0" initialInvestment="" positionActionID="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+
+<!-- Stock sell with realized PnL -->
+<Trade accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="STK" subCategory="COMMON" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" figi="BBG000BPH459" listingExchange="NASDAQ" underlyingConid="" underlyingSymbol="MSFT" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="US" tradeID="1234567891" multiplier="1" relatedTradeID="" strike="" reportDate="20250115" expiry="" dateTime="20250115;140000" putCall="" tradeDate="20250115" principalAdjustFactor="" settleDateTarget="20250117" transactionType="ExchTrade" exchange="NASDAQ" quantity="-50" price="420.25" tradeMoney="-21012.50" proceeds="21012.50" taxes="0" ibCommission="-0.75" ibCommissionCurrency="USD" netCash="21011.75" closePrice="419.50" openCloseIndicator="C" notes="P" cost="-20500.00" fifoPnlRealized="511.75" mtmPnl="37.50" origTradePrice="410.00" origTradeDate="20250101" origTradeID="1234560001" origOrderID="900" origTransactionID="19000" buySell="SELL" clearingFirmID="" ibOrderID="1002" transactionID="20002" ibExecID="0001test.002" relatedTransactionID="" rtn="" brokerageOrderID="brok002" orderReference="" volatilityOrderLink="" exchOrderId="N/A" extExecID="ext002" orderTime="20250115;135955" openDateTime="20250101;100000" holdingPeriodDateTime="20250101;100000" whenRealized="20250115;140000" whenReopened="" levelOfDetail="EXECUTION" changeInPrice="0" changeInQuantity="0" orderType="MKT" traderID="" isAPIOrder="N" accruedInt="0" initialInvestment="" positionActionID="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+
+<!-- Option trade -->
+<Trade accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fxRateToBase="1" assetCategory="OPT" subCategory="C" symbol="SPY   250221C00600000" description="SPY 21FEB25 600 C" conid="700222333" securityID="" securityIDType="" cusip="" isin="" figi="" listingExchange="CBOE" underlyingConid="756733" underlyingSymbol="SPY" underlyingSecurityID="US78462F1030" underlyingListingExchange="ARCA" issuer="" issuerCountryCode="" tradeID="1234567892" multiplier="100" relatedTradeID="" strike="600" reportDate="20250115" expiry="20250221" dateTime="20250115;110000" putCall="C" tradeDate="20250115" principalAdjustFactor="" settleDateTarget="20250116" transactionType="ExchTrade" exchange="CBOE" quantity="10" price="2.50" tradeMoney="2500.00" proceeds="-2500.00" taxes="0" ibCommission="-6.50" ibCommissionCurrency="USD" netCash="-2506.50" closePrice="2.65" openCloseIndicator="O" notes="" cost="2506.50" fifoPnlRealized="0" mtmPnl="150.00" origTradePrice="0" origTradeDate="" origTradeID="" origOrderID="0" origTransactionID="0" buySell="BUY" clearingFirmID="" ibOrderID="1003" transactionID="20003" ibExecID="0001test.003" relatedTransactionID="" rtn="" brokerageOrderID="brok003" orderReference="" volatilityOrderLink="" exchOrderId="N/A" extExecID="ext003" orderTime="20250115;105955" openDateTime="" holdingPeriodDateTime="" whenRealized="" whenReopened="" levelOfDetail="EXECUTION" changeInPrice="0" changeInQuantity="0" orderType="LMT" traderID="" isAPIOrder="Y" accruedInt="0" initialInvestment="" positionActionID="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+</Trades>
+
+<CashTransactions>
+<CashTransaction accountId="U1234567" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="AAPL(US0378331005) CASH DIVIDEND USD 0.25 PER SHARE (Ordinary Dividend)" conid="265598" date="20250115" dateTime="20250115;020000" reportDate="20250115" amount="125.00" type="Dividends" transactionID="30001" />
+<CashTransaction accountId="U1234567" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="AAPL(US0378331005) CASH DIVIDEND USD 0.25 PER SHARE - US TAX" conid="265598" date="20250115" dateTime="20250115;020000" reportDate="20250115" amount="-18.75" type="Withholding Tax" transactionID="30002" />
+<CashTransaction accountId="U1234567" currency="USD" fxRateToBase="1" assetCategory="" symbol="" description="USD DEBIT INT FOR JAN-2025" conid="" date="20250115" dateTime="" reportDate="20250115" amount="-12.50" type="Broker Interest Paid" transactionID="30003" />
+</CashTransactions>
+
+<CorporateActions>
+<CorporateAction accountId="U1234567" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="XYZ" description="XYZ(US1234567890) SPLIT 2 FOR 1" conid="999888777" date="" dateTime="20250115;000000" reportDate="20250115" transactionID="40001" actionID="CA001" type="FS" quantity="100" amount="0" proceeds="0" value="0" fifoPnlRealized="0" />
+</CorporateActions>
+
+<SecuritiesInfo>
+<SecurityInfo currency="USD" assetCategory="STK" subCategory="COMMON" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" figi="BBG000B9XRY4" listingExchange="NASDAQ" underlyingConid="" underlyingSymbol="AAPL" underlyingSecurityID="" underlyingListingExchange="" issuer="" issuerCountryCode="US" multiplier="1" strike="" expiry="" putCall="" principalAdjustFactor="" maturity="" issueDate="" underlyingCategory="" settlementPolicyMethod="" code="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+<SecurityInfo currency="USD" assetCategory="OPT" subCategory="C" symbol="AAPL  250221C00190000" description="AAPL 21FEB25 190 C" conid="700123456" securityID="" securityIDType="" cusip="" isin="" figi="BBG01TEST123" listingExchange="CBOE" underlyingConid="265598" underlyingSymbol="AAPL" underlyingSecurityID="US0378331005" underlyingListingExchange="NASDAQ" issuer="" issuerCountryCode="" multiplier="100" strike="190" expiry="20250221" putCall="C" principalAdjustFactor="" maturity="" issueDate="" underlyingCategory="" settlementPolicyMethod="" code="" serialNumber="" deliveryType="" commodityType="" fineness="0.0" weight="0.0" />
+</SecuritiesInfo>
+
+<ConversionRates>
+<ConversionRate reportDate="20250115" fromCurrency="CAD" toCurrency="USD" rate="0.72" />
+<ConversionRate reportDate="20250115" fromCurrency="EUR" toCurrency="USD" rate="1.085" />
+<ConversionRate reportDate="20250115" fromCurrency="GBP" toCurrency="USD" rate="1.27" />
+</ConversionRates>
+
+<OpenDividendAccruals>
+<OpenDividendAccrual accountId="U1234567" currency="USD" assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" exDate="20250120" payDate="20250210" quantity="100" grossRate="0.75" grossAmount="75.00" netAmount="63.75" />
+</OpenDividendAccruals>
+
+<ChangeInDividendAccruals>
+<ChangeInDividendAccrual accountId="U1234567" currency="USD" assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" exDate="20250110" payDate="20250115" grossRate="0.25" netAmount="106.25" />
+</ChangeInDividendAccruals>
+
+<InterestAccruals>
+<InterestAccrualsCurrency accountId="U1234567" acctAlias="TestFund" model="Independent" currency="BASE_SUMMARY" fromDate="20250115" toDate="20250115" startingAccrualBalance="20.25" interestAccrued="5.25" accrualReversal="0" fxTranslation="0" endingAccrualBalance="25.50" />
+<InterestAccrualsCurrency accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fromDate="20250115" toDate="20250115" startingAccrualBalance="20.25" interestAccrued="5.25" accrualReversal="0" fxTranslation="0" endingAccrualBalance="25.50" />
+</InterestAccruals>
+
+<FxTransactions>
+<FxTransaction accountId="U1234567" transactionID="50001" dateTime="20250115;100000" fromCurrency="CAD" toCurrency="USD" quantity="10000" proceeds="-7200.00" fxRateToBase="1" />
+</FxTransactions>
+
+<Transfers />
+
+<CashReport>
+<CashReportCurrency accountId="U1234567" acctAlias="TestFund" model="Independent" currency="BASE_SUMMARY" fromDate="20250115" toDate="20250115" startingCash="145000.00" commissions="-8.50" deposits="0" withdrawals="0" dividends="125.00" endingCash="150000.50" />
+<CashReportCurrency accountId="U1234567" acctAlias="TestFund" model="Independent" currency="USD" fromDate="20250115" toDate="20250115" startingCash="145000.00" commissions="-8.50" deposits="0" withdrawals="0" dividends="125.00" endingCash="150000.50" />
+</CashReport>
+
+<OptionEAE />
+<TradeConfirms />
+
+</FlexStatement>
+</FlexStatements>
+</FlexQueryResponse>

@@ -121,11 +121,17 @@ pub struct ActivityFlexStatement {
     pub account_id: String,
 
     /// Statement date range - start date
-    #[serde(rename = "@fromDate")]
+    #[serde(
+        rename = "@fromDate",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub from_date: NaiveDate,
 
     /// Statement date range - end date
-    #[serde(rename = "@toDate")]
+    #[serde(
+        rename = "@toDate",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub to_date: NaiveDate,
 
     /// When the report was generated
@@ -166,7 +172,7 @@ pub struct ActivityFlexStatement {
     pub change_in_nav: ChangeInNAVWrapper,
 
     /// Equity summary by report date in base currency
-    #[serde(rename = "EquitySummaryByReportDateInBase", default)]
+    #[serde(rename = "EquitySummaryInBase", default)]
     pub equity_summary: EquitySummaryWrapper,
 
     /// Cash report by currency
@@ -358,7 +364,10 @@ pub struct Trade {
 
     // Trade details
     /// Trade date
-    #[serde(rename = "@tradeDate")]
+    #[serde(
+        rename = "@tradeDate",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub trade_date: NaiveDate,
 
     /// Trade time (date + time) - parsed from dateTime field
@@ -366,7 +375,10 @@ pub struct Trade {
     pub trade_time: Option<String>, // Will parse manually
 
     /// Settlement date
-    #[serde(rename = "@settleDateTarget")]
+    #[serde(
+        rename = "@settleDateTarget",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub settle_date: NaiveDate,
 
     /// Buy or Sell
@@ -427,8 +439,12 @@ pub struct Trade {
     pub taxes: Option<Decimal>,
 
     /// Net cash (proceeds + commission + taxes)
-    #[serde(rename = "@netCash")]
-    pub net_cash: Decimal,
+    #[serde(
+        rename = "@netCash",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub net_cash: Option<Decimal>,
 
     /// Cost
     #[serde(
@@ -582,23 +598,43 @@ pub struct Position {
     pub position_value: Decimal,
 
     /// Open price
-    #[serde(rename = "@openPrice", default)]
+    #[serde(
+        rename = "@openPrice",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub open_price: Option<Decimal>,
 
     /// Cost basis price per share/contract
-    #[serde(rename = "@costBasisPrice", default)]
+    #[serde(
+        rename = "@costBasisPrice",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub cost_basis_price: Option<Decimal>,
 
     /// Total cost basis
-    #[serde(rename = "@costBasisMoney", default)]
+    #[serde(
+        rename = "@costBasisMoney",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub cost_basis_money: Option<Decimal>,
 
     /// FIFO unrealized P&L
-    #[serde(rename = "@fifoPnlUnrealized", default)]
+    #[serde(
+        rename = "@fifoPnlUnrealized",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub fifo_pnl_unrealized: Option<Decimal>,
 
     /// Percent of NAV
-    #[serde(rename = "@percentOfNAV", default)]
+    #[serde(
+        rename = "@percentOfNAV",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub percent_of_nav: Option<Decimal>,
 
     /// Side (Long/Short)
@@ -618,7 +654,10 @@ pub struct Position {
     pub fx_rate_to_base: Option<Decimal>,
 
     /// Date of this position snapshot
-    #[serde(rename = "@reportDate")]
+    #[serde(
+        rename = "@reportDate",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub report_date: NaiveDate,
 }
 
@@ -682,7 +721,11 @@ pub struct CashTransaction {
     pub transaction_type: String,
 
     /// Transaction date
-    #[serde(rename = "@date", default)]
+    #[serde(
+        rename = "@date",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
     pub date: Option<NaiveDate>,
 
     /// Transaction datetime
@@ -690,7 +733,11 @@ pub struct CashTransaction {
     pub date_time: Option<String>,
 
     /// Report date
-    #[serde(rename = "@reportDate", default)]
+    #[serde(
+        rename = "@reportDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
     pub report_date: Option<NaiveDate>,
 
     /// Amount (positive for credits, negative for debits)
@@ -787,7 +834,11 @@ pub struct CorporateAction {
     pub action_type: String,
 
     /// Action date
-    #[serde(rename = "@date", default)]
+    #[serde(
+        rename = "@date",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
     pub action_date: Option<NaiveDate>,
 
     /// Action datetime
@@ -795,7 +846,10 @@ pub struct CorporateAction {
     pub date_time: Option<String>,
 
     /// Report date
-    #[serde(rename = "@reportDate")]
+    #[serde(
+        rename = "@reportDate",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub report_date: NaiveDate,
 
     /// IB contract ID
@@ -819,23 +873,43 @@ pub struct CorporateAction {
     pub currency: Option<String>,
 
     /// FX rate to base
-    #[serde(rename = "@fxRateToBase", default)]
+    #[serde(
+        rename = "@fxRateToBase",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub fx_rate_to_base: Option<Decimal>,
 
     /// Quantity affected
-    #[serde(rename = "@quantity", default)]
+    #[serde(
+        rename = "@quantity",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub quantity: Option<Decimal>,
 
     /// Amount
-    #[serde(rename = "@amount", default)]
+    #[serde(
+        rename = "@amount",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub amount: Option<Decimal>,
 
     /// Proceeds (if any)
-    #[serde(rename = "@proceeds", default)]
+    #[serde(
+        rename = "@proceeds",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub proceeds: Option<Decimal>,
 
     /// Value (if any)
-    #[serde(rename = "@value", default)]
+    #[serde(
+        rename = "@value",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
     pub value: Option<Decimal>,
 
     /// FIFO P&L realized
@@ -1026,7 +1100,10 @@ pub struct SecurityInfo {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ConversionRate {
     /// Report date
-    #[serde(rename = "@reportDate")]
+    #[serde(
+        rename = "@reportDate",
+        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+    )]
     pub report_date: NaiveDate,
 
     /// From currency (source)

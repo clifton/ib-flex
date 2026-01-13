@@ -155,7 +155,10 @@ fn test_fx_transactions() {
     assert_eq!(fx.to_currency, "EUR");
     assert_eq!(fx.quantity, Decimal::from_str("1000.00").unwrap());
     assert_eq!(fx.proceeds, Decimal::from_str("-920.50").unwrap());
-    assert_eq!(fx.fx_rate_to_base, Decimal::from_str("1.087").unwrap());
+    assert_eq!(
+        fx.fx_rate_to_base,
+        Some(Decimal::from_str("1.087").unwrap())
+    );
 }
 
 #[test]
@@ -213,7 +216,7 @@ fn test_interest_accruals() {
         Decimal::from_str("50000.00").unwrap()
     );
     assert_eq!(
-        interest.accrued_interest,
+        interest.interest_accrued,
         Decimal::from_str("12.50").unwrap()
     );
     assert_eq!(

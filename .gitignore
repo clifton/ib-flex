@@ -23,4 +23,9 @@ Cargo.lock
 # Test outputs
 *.log
 
+# Real account XML files (for testing/fixture generation)
+/tmp/
+
 .claude/*.local.md
+
+.env
