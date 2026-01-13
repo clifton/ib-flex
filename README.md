@@ -6,9 +6,7 @@
 
 Pure Rust parser for Interactive Brokers FLEX XML statements with comprehensive type safety and edge case coverage.
 
-**Status**: v0.2.0 - Extended FLEX Support
-
-Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML statements. Built with zero external dependencies beyond XML/serde, featuring 100+ enum variants, 10+ extended FLEX sections, comprehensive edge case handling, and excellent performance (~6.5µs for minimal parsing).
+Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML statements. Built with zero external dependencies beyond XML/serde, featuring 100+ enum variants, extended FLEX sections, comprehensive edge case handling, and excellent performance.
 
 ## Features
 
@@ -130,7 +128,7 @@ cargo run --example api_with_retry --features api-client
 
 ## Supported FLEX Sections
 
-### Activity FLEX (v0.1.0 - Core Types)
+### Activity FLEX - Core Types
 - ✅ **Trades** - Executions with 40+ fields including P&L, commissions, dates, security details
 - ✅ **Open Positions** - Current holdings with 30+ fields
 - ✅ **Cash Transactions** - Deposits, withdrawals, interest, fees, dividends
@@ -138,7 +136,7 @@ cargo run --example api_with_retry --features api-client
 - ✅ **Securities Info** - Reference data for all traded instruments
 - ✅ **FX Conversion Rates** - Currency conversion rates for multi-currency accounts
 
-### Extended FLEX Sections (v0.2.0+)
+### Extended FLEX Sections
 - ✅ **Account Information** - Account metadata and configuration
 - ✅ **Change in NAV** - Net asset value changes with transfers and P&L breakdown
 - ✅ **Equity Summary** - Asset allocation by category (cash, stocks, options, bonds)
@@ -253,21 +251,20 @@ cargo clippy -- -D warnings
 
 ## Testing
 
-The library has comprehensive test coverage including stress tests and property-based testing:
+The library has comprehensive test coverage including:
 
-- **94 tests total** (100% passing)
-- **47 integration tests** covering all asset classes and edge cases
-- **13 extended types tests** for v0.2.0+ FLEX sections
-- **11 error tests** for malformed XML and invalid data
-- **11 unit tests** for custom deserializers
-- **12 doc tests** in inline documentation
-- **15 XML fixtures** including extended types, warrants, T-Bills, CFDs, fractional shares, cancelled trades
-- 
+- **Integration tests** covering all asset classes and edge cases
+- **Extended types tests** for FLEX sections
+- **Error tests** for malformed XML and invalid data
+- **Unit tests** for custom deserializers
+- **Doc tests** in inline documentation
+- **XML fixtures** including extended types, warrants, T-Bills, CFDs, fractional shares, cancelled trades
+
 ### Reliability Testing
 
 The library includes comprehensive reliability tests using:
 - **Property-based testing** with proptest for random inputs
-- **Stress tests** for large XML files (1000+ trades, 500+ positions)
+- **Stress tests** for large XML files
 - **Concurrency tests** for thread safety
 - **Memory efficiency tests** for repeated parsing
 - **Edge case fuzzing** for malformed inputs
@@ -325,7 +322,5 @@ at your option.
 - [chrono](https://github.com/chronotope/chrono) - Date/time handling
 
 ---
-
-**Status**: v0.2.0 - Extended FLEX Support (94/94 tests passing, zero warnings)
 
 See [PLAN.md](PLAN.md) for detailed implementation statistics and [EDGE_CASES_SUMMARY.md](EDGE_CASES_SUMMARY.md) for edge case coverage.
