@@ -25,6 +25,10 @@ pub enum FlexSchemaVersion {
 ///
 /// * `Ok(FlexSchemaVersion)` - Detected schema version (or Unknown if undetectable)
 ///
+/// # Errors
+///
+/// Returns `ParseError` if the XML cannot be parsed or is malformed.
+///
 /// # Example
 ///
 /// ```rust
