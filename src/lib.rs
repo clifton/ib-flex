@@ -58,6 +58,9 @@ pub mod parsers;
 pub mod types;
 pub mod version;
 
+#[cfg(feature = "api-client")]
+pub mod api;
+
 // Re-export commonly used types
 pub use error::{ParseError, Result};
 pub use types::{
