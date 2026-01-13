@@ -396,14 +396,14 @@ fn test_parse_warrants() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.trades.items.len(), 2);
-    
+
     // Buy warrant
     let buy = &statement.trades.items[0];
     assert_eq!(buy.asset_category, AssetCategory::Warrant);
     assert_eq!(buy.symbol, "ABC WS");
     assert_eq!(buy.buy_sell, Some(BuySell::Buy));
     assert_eq!(buy.quantity.unwrap().to_string(), "100");
-    
+
     // Sell warrant
     let sell = &statement.trades.items[1];
     assert_eq!(sell.asset_category, AssetCategory::Warrant);
@@ -417,7 +417,7 @@ fn test_parse_warrant_position() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.positions.items.len(), 1);
-    
+
     let position = &statement.positions.items[0];
     assert_eq!(position.asset_category, AssetCategory::Warrant);
     assert_eq!(position.symbol, "ABC WS");
@@ -432,7 +432,7 @@ fn test_parse_tbills() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.trades.items.len(), 1);
-    
+
     let trade = &statement.trades.items[0];
     assert_eq!(trade.asset_category, AssetCategory::Bill);
     assert_eq!(trade.symbol, "912796ZX9");
@@ -446,7 +446,7 @@ fn test_parse_tbill_position() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.positions.items.len(), 1);
-    
+
     let position = &statement.positions.items[0];
     assert_eq!(position.asset_category, AssetCategory::Bill);
     assert_eq!(position.quantity.to_string(), "10000");
@@ -458,7 +458,7 @@ fn test_parse_tbill_maturity() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.corporate_actions.items.len(), 1);
-    
+
     let action = &statement.corporate_actions.items[0];
     assert_eq!(action.asset_category, Some(AssetCategory::Bill));
     assert_eq!(action.action_type, "TC");
@@ -472,13 +472,13 @@ fn test_parse_cfds() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.trades.items.len(), 2);
-    
+
     // Buy CFD
     let buy = &statement.trades.items[0];
     assert_eq!(buy.asset_category, AssetCategory::Cfd);
     assert_eq!(buy.symbol, "AAPL");
     assert_eq!(buy.buy_sell, Some(BuySell::Buy));
-    
+
     // Sell CFD (close)
     let sell = &statement.trades.items[1];
     assert_eq!(sell.asset_category, AssetCategory::Cfd);
@@ -492,7 +492,7 @@ fn test_parse_cfd_financing() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.cash_transactions.items.len(), 1);
-    
+
     let financing = &statement.cash_transactions.items[0];
     assert_eq!(financing.asset_category, Some(AssetCategory::Cfd));
     assert_eq!(financing.transaction_type, "Other Fees");
@@ -506,22 +506,22 @@ fn test_parse_cancelled_trades() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.trades.items.len(), 4);
-    
+
     // Normal buy
     let buy = &statement.trades.items[0];
     assert_eq!(buy.buy_sell, Some(BuySell::Buy));
     assert_eq!(buy.symbol, "MSFT");
-    
+
     // Cancelled buy
     let cancel_buy = &statement.trades.items[1];
     assert_eq!(cancel_buy.buy_sell, Some(BuySell::CancelBuy));
     assert_eq!(cancel_buy.symbol, "MSFT");
-    
+
     // Normal sell
     let sell = &statement.trades.items[2];
     assert_eq!(sell.buy_sell, Some(BuySell::Sell));
     assert_eq!(sell.symbol, "GOOGL");
-    
+
     // Cancelled sell
     let cancel_sell = &statement.trades.items[3];
     assert_eq!(cancel_sell.buy_sell, Some(BuySell::CancelSell));
@@ -536,12 +536,12 @@ fn test_parse_fractional_shares() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.trades.items.len(), 4);
-    
+
     // Buy fractional shares
     let buy = &statement.trades.items[0];
     assert_eq!(buy.symbol, "AMZN");
     assert_eq!(buy.quantity.unwrap().to_string(), "2.5");
-    
+
     // Sell fractional shares
     let sell = &statement.trades.items[1];
     assert_eq!(sell.quantity.unwrap().to_string(), "-1.25");
@@ -563,7 +563,7 @@ fn test_parse_fractional_position() {
     let statement = parse_activity_flex(xml).unwrap();
 
     assert_eq!(statement.positions.items.len(), 1);
-    
+
     let position = &statement.positions.items[0];
     assert_eq!(position.symbol, "AMZN");
     assert_eq!(position.quantity.to_string(), "1.25");
@@ -587,7 +587,7 @@ fn test_parse_choice_dividend() {
     // Choice dividend announcement
     let choice = &statement.corporate_actions.items[0];
     assert_eq!(choice.action_type, "CD");
-    
+
     // Choice dividend delivery
     let _delivery = &statement.corporate_actions.items[1];
 }
@@ -601,7 +601,7 @@ fn test_parse_tender_offer() {
     let tender = &statement.corporate_actions.items[2];
     assert_eq!(tender.action_type, "TO");
     assert_eq!(tender.quantity.unwrap().to_string(), "-50");
-    
+
     // Tender issue (proceeds)
     let issue = &statement.corporate_actions.items[3];
     assert_eq!(issue.proceeds.unwrap().to_string(), "3500.00");
@@ -616,7 +616,7 @@ fn test_parse_bond_conversion() {
     let conversion = &statement.corporate_actions.items[4];
     assert_eq!(conversion.action_type, "BC");
     assert_eq!(conversion.asset_category, Some(AssetCategory::Bond));
-    
+
     // Convertible issue (receive stock)
     let issue = &statement.corporate_actions.items[5];
     assert_eq!(issue.asset_category, Some(AssetCategory::Stock));
@@ -652,7 +652,7 @@ fn test_parse_rights_issue() {
     // Rights issue
     let rights = &statement.corporate_actions.items[8];
     assert_eq!(rights.action_type, "RI");
-    
+
     // Subscribe rights
     let subscribe = &statement.corporate_actions.items[9];
     assert_eq!(subscribe.action_type, "SR");
