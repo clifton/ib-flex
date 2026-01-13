@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+
+      <!-- Options Trades -->
+      <Trades>
+        <!-- Long Call Buy to Open -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="OPT" symbol="AAPL  250221C00180000" description="AAPL 21FEB25 180 C"
+               conid="12345678" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="265598" underlyingSymbol="AAPL"
+               issuer="" multiplier="100" strike="180" expiry="2025-02-21" putCall="C"
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="CBOE"
+               quantity="1" tradePrice="5.50" tradeMoney="550" proceeds="-550.00"
+               taxes="0" ibCommission="-0.65" ibCommissionCurrency="USD"
+               netCash="-550.65" closePrice="5.75" openCloseIndicator="O"
+               notes="" cost="550.65" fifoPnlRealized="0" mtmPnl="25" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- Short Put Sell to Open -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="OPT" symbol="TSLA  250221P00200000" description="TSLA 21FEB25 200 P"
+               conid="87654321" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="76792991" underlyingSymbol="TSLA"
+               issuer="" multiplier="100" strike="200" expiry="2025-02-21" putCall="P"
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="CBOE"
+               quantity="-2" tradePrice="3.25" tradeMoney="-650" proceeds="650.00"
+               taxes="0" ibCommission="-1.30" ibCommissionCurrency="USD"
+               netCash="648.70" closePrice="3.10" openCloseIndicator="O"
+               notes="" cost="-648.70" fifoPnlRealized="0" mtmPnl="30" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- Option Assignment/Exercise -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="OPT" symbol="MSFT  250115C00400000" description="MSFT 15JAN25 400 C"
+               conid="11111111" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="272093" underlyingSymbol="MSFT"
+               issuer="" multiplier="100" strike="400" expiry="2025-01-15" putCall="C"
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="Assignment" exchange=""
+               quantity="-1" tradePrice="0" tradeMoney="0" proceeds="0"
+               taxes="0" ibCommission="0" ibCommissionCurrency="USD"
+               netCash="0" closePrice="10.50" openCloseIndicator="C"
+               notes="A" cost="1050" fifoPnlRealized="1050" mtmPnl="0" capitalGainsPnl="1050"
+               fxPnl="0" orderType="" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- Buy to Close -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="OPT" symbol="SPY   250118P00580000" description="SPY 18JAN25 580 P"
+               conid="22222222" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="756733" underlyingSymbol="SPY"
+               issuer="" multiplier="100" strike="580" expiry="2025-01-18" putCall="P"
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="CBOE"
+               quantity="5" tradePrice="1.25" tradeMoney="625" proceeds="-625.00"
+               taxes="0" ibCommission="-3.25" ibCommissionCurrency="USD"
+               netCash="-628.25" closePrice="1.30" openCloseIndicator="C"
+               notes="" cost="628.25" fifoPnlRealized="871.75" mtmPnl="25" capitalGainsPnl="871.75"
+               fxPnl="0" orderType="MKT" traderID="" isAPIOrder="Y"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+      </Trades>
+
+      <!-- Open Option Positions -->
+      <OpenPositions>
+        <!-- Long Call Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="OPT" symbol="AAPL  250221C00180000" description="AAPL 21FEB25 180 C"
+                      conid="12345678" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="265598" underlyingSymbol="AAPL"
+                      issuer="" multiplier="100" strike="180" expiry="2025-02-21" putCall="C"
+                      principalAdjustFactor="" reportDate="2025-01-15" position="1"
+                      markPrice="5.75" positionValue="575" openPrice="5.50"
+                      costBasisPrice="5.506" costBasisMoney="550.65"
+                      percentOfNAV="0.55" fifoPnlUnrealized="24.35"
+                      side="Long" levelOfDetail="LOT" openDateTime="2025-01-15;100000"
+                      holdingPeriodDateTime="2025-01-15;100000"
+                      vestingDate="" code="" originatingOrderID="123456789"
+                      originatingTransactionID="987654321" accruedInt="" />
+
+        <!-- Short Put Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="OPT" symbol="TSLA  250221P00200000" description="TSLA 21FEB25 200 P"
+                      conid="87654321" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="76792991" underlyingSymbol="TSLA"
+                      issuer="" multiplier="100" strike="200" expiry="2025-02-21" putCall="P"
+                      principalAdjustFactor="" reportDate="2025-01-15" position="-2"
+                      markPrice="3.10" positionValue="-620" openPrice="3.25"
+                      costBasisPrice="3.24" costBasisMoney="-648.70"
+                      percentOfNAV="-0.62" fifoPnlUnrealized="28.70"
+                      side="Short" levelOfDetail="LOT" openDateTime="2025-01-15;110000"
+                      holdingPeriodDateTime="2025-01-15;110000"
+                      vestingDate="" code="" originatingOrderID="123456790"
+                      originatingTransactionID="987654322" accruedInt="" />
+      </OpenPositions>
+
+      <!-- Cash Transactions for Options -->
+      <CashTransactions>
+        <!-- Option Premium Received -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="OPT" symbol="TSLA  250221P00200000"
+                         description="TSLA 21FEB25 200 P" conid="87654321" securityID=""
+                         securityIDType="" cusip="" isin="" underlyingConid="76792991"
+                         underlyingSymbol="TSLA" issuer="" multiplier="100" strike="200"
+                         expiry="2025-02-21" putCall="P" principalAdjustFactor=""
+                         dateTime="2025-01-15;110000" amount="650.00" type="Broker Interest Paid"
+                         tradeID="" code="" transactionID="111111" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Option Commission -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="OPT" symbol="" description="Options Commission"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;150000" amount="-5.20" type="Other Fees"
+                         tradeID="" code="" transactionID="111112" reportDate="2025-01-15"
+                         clientReference="" />
+      </CashTransactions>
+
+      <!-- Corporate Actions - none for options -->
+      <CorporateActions />
+
+      <!-- Securities Info for Options -->
+      <SecuritiesInfo>
+        <SecurityInfo assetCategory="OPT" symbol="AAPL  250221C00180000" description="AAPL 21FEB25 180 C"
+                      conid="12345678" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="265598" underlyingSymbol="AAPL" underlyingSecurityID=""
+                      issuer="OCC" multiplier="100" strike="180" expiry="2025-02-21"
+                      putCall="C" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="STK" subCategory="EQO" code="" />
+
+        <SecurityInfo assetCategory="OPT" symbol="TSLA  250221P00200000" description="TSLA 21FEB25 200 P"
+                      conid="87654321" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="76792991" underlyingSymbol="TSLA" underlyingSecurityID=""
+                      issuer="OCC" multiplier="100" strike="200" expiry="2025-02-21"
+                      putCall="P" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="STK" subCategory="EQO" code="" />
+
+        <SecurityInfo assetCategory="OPT" symbol="MSFT  250115C00400000" description="MSFT 15JAN25 400 C"
+                      conid="11111111" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="272093" underlyingSymbol="MSFT" underlyingSecurityID=""
+                      issuer="OCC" multiplier="100" strike="400" expiry="2025-01-15"
+                      putCall="C" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="STK" subCategory="EQO" code="" />
+
+        <SecurityInfo assetCategory="OPT" symbol="SPY   250118P00580000" description="SPY 18JAN25 580 P"
+                      conid="22222222" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="756733" underlyingSymbol="SPY" underlyingSecurityID=""
+                      issuer="OCC" multiplier="100" strike="580" expiry="2025-01-18"
+                      putCall="P" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="STK" subCategory="EQO" code="" />
+      </SecuritiesInfo>
+
+      <ConversionRates>
+        <ConversionRate reportDate="2025-01-15" fromCurrency="USD" toCurrency="USD" rate="1" />
+      </ConversionRates>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

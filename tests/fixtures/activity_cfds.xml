@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+      <!-- CFD trades -->
+      <Trades>
+        <!-- Buy CFD -->
+        <Trade accountId="U1234567"
+               conid="678901234"
+               symbol="AAPL"
+               description="APPLE INC CFD"
+               assetCategory="CFD"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-15"
+               buySell="BUY"
+               quantity="10"
+               price="182.50"
+               proceeds="-1825.00"
+               ibCommission="-2.00"
+               netCash="-1827.00"
+               cost="-1827.00"
+               currency="USD"
+               fxRateToBase="1.0" />
+
+        <!-- Sell CFD (close position) -->
+        <Trade accountId="U1234567"
+               conid="678901234"
+               symbol="AAPL"
+               description="APPLE INC CFD"
+               assetCategory="CFD"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-15"
+               buySell="SELL"
+               quantity="-10"
+               price="183.25"
+               proceeds="1832.50"
+               ibCommission="-2.00"
+               netCash="1830.50"
+               cost="-1827.00"
+               fifoPnlRealized="3.50"
+               currency="USD"
+               fxRateToBase="1.0" />
+      </Trades>
+
+      <OpenPositions />
+
+      <!-- CFD financing charges -->
+      <CashTransactions>
+        <CashTransaction accountId="U1234567"
+                        conid="678901234"
+                        symbol="AAPL"
+                        description="APPLE INC CFD"
+                        assetCategory="CFD"
+                        currency="USD"
+                        fxRateToBase="1.0"
+                        dateTime="2025-01-15"
+                        amount="-0.15"
+                        type="Other Fees"
+                        transactionID="987654321"
+                        reportDate="2025-01-15" />
+      </CashTransactions>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

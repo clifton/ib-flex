@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+      <!-- Warrant trades -->
+      <Trades>
+        <!-- Buy warrant -->
+        <Trade accountId="U1234567"
+               conid="456789012"
+               symbol="ABC WS"
+               description="ABC WARRANT"
+               assetCategory="WAR"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="BUY"
+               quantity="100"
+               price="2.50"
+               proceeds="-250.00"
+               ibCommission="-1.00"
+               netCash="-251.00"
+               cost="-251.00"
+               currency="USD"
+               fxRateToBase="1.0" reportDate="2025-01-15" />
+
+        <!-- Sell warrant -->
+        <Trade accountId="U1234567"
+               conid="456789012"
+               symbol="ABC WS"
+               description="ABC WARRANT"
+               assetCategory="WAR"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="SELL"
+               quantity="-50"
+               price="3.00"
+               proceeds="150.00"
+               ibCommission="-1.00"
+               netCash="149.00"
+               cost="-125.50"
+               fifoPnlRealized="23.50"
+               currency="USD"
+               fxRateToBase="1.0" reportDate="2025-01-15" />
+      </Trades>
+
+      <!-- Warrant positions -->
+      <OpenPositions>
+        <OpenPosition accountId="U1234567"
+                      conid="456789012"
+                      symbol="ABC WS"
+                      description="ABC WARRANT"
+                      assetCategory="WAR"
+                      position="50"
+                      markPrice="3.10"
+                      positionValue="155.00"
+                      costBasisPrice="2.51"
+                      costBasisMoney="125.50"
+                      percentOfNAV="0.5"
+                      fifoPnlUnrealized="29.50"
+                      currency="USD"
+                      fxRateToBase="1.0" reportDate="2025-01-15" />
+      </OpenPositions>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

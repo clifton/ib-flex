@@ -8,14 +8,23 @@
 
 ## Executive Summary
 
-Build a production-ready, open-source Rust library for parsing Interactive Brokers FLEX XML statements. The library will support Activity FLEX and Trade Confirmation FLEX queries with type-safe parsing, comprehensive documentation, and excellent performance.
+Build a production-ready, open-source Rust library for parsing Interactive Brokers FLEX XML statements. The library will support **ALL** FLEX sections with complete feature parity with the mature Python [ibflex library](https://github.com/csingley/ibflex).
+
+**Comprehensive Scope**: Based on analysis of ibflex, we need to support **41 distinct data types** across Activity FLEX statements (see TYPES_ANALYSIS.md for full breakdown).
 
 **Key Goals**:
-1. Parse all major FLEX sections (trades, positions, cash flows, corporate actions)
+1. Parse **all** FLEX sections - 41 types including trades, positions, cash flows, corporate actions, fees, accruals, transfers, and more
 2. Type-safe with rust_decimal for financial precision
 3. Well-documented with examples for all use cases
 4. High performance (< 15ms for 10K trades)
 5. Zero external dependencies beyond XML/serde
+6. Feature parity with Python ibflex library
+
+**Phased Approach**: Given the scope (41 types vs. originally planned 6), we'll release incrementally:
+- **v0.1.0**: Core trading types (7 types) - MVP for basic trade/position analysis
+- **v0.2.0**: Comprehensive support (17 types) - Full Activity FLEX coverage
+- **v0.3.0**: Advanced features (31 types) - Fees, performance summaries, lending
+- **v0.4.0**: Complete coverage (41 types) - All edge cases and niche features
 
 ---
 
@@ -44,52 +53,90 @@ Build a production-ready, open-source Rust library for parsing Interactive Broke
 
 ---
 
-### Phase 1: Core Type System
+### Phase 1: Core Type System (v0.1.0)
 
-**Goal**: Define all Rust types for FLEX data structures
+**Goal**: Define all Rust types for MVP - Core trading functionality
+
+**Target**: 7 critical types + 15 enums for v0.1.0 release
 
 **Tasks**:
 
-#### 1.1 Shared Enums (`src/types/common.rs`)
-- [ ] AssetCategory (Stock, Option, Future, FOP, Cash, Bond)
-- [ ] BuySell (Buy, Sell)
-- [ ] OpenClose (Open, Close, CloseOpen)
-- [ ] OrderType (Market, Limit, Stop, etc.)
-- [ ] PutCall (Put, Call)
-- [ ] Add serde derives and custom deserializers where needed
-- [ ] Add comprehensive doc comments
+#### 1.1 Shared Enums (`src/types/enums.rs`) - **15 enums total**
+Based on ibflex/enums.py analysis:
+- [ ] AssetClass (STK, OPT, FUT, FOP, CASH, BOND, CMDTY, CFD, etc.)
+- [ ] BuySell (BUY, SELL, BUY_CANCEL, SELL_CANCEL)
+- [ ] OpenClose (Open, Close, CloseOpen, Unknown)
+- [ ] PutCall (P, C)
+- [ ] LongShort (Long, Short)
+- [ ] TradeType (ExchTrade, BookTrade, FracShare, Adjustment, etc.)
+- [ ] OrderType (LMT, MKT, STP, TRAIL, MOC, etc.)
+- [ ] CashAction (Deposits, Dividends, Interest, Fees, Taxes, etc.)
+- [ ] Reorg (Merger, Spinoff, Split, StockDividend, etc.)
+- [ ] OptionAction (Assignment, Exercise, Expiration, Buy, Sell)
+- [ ] TransferType (ACATS, ATON, FOP, INTERNAL)
+- [ ] Code (A, C, Ex, P, Ca, D, O, etc. - transaction codes)
+- [ ] ToFrom (To, From)
+- [ ] InOut (IN, OUT)
+- [ ] DeliveredReceived (Delivered, Received)
+- [ ] Add serde derives with proper rename attributes
+- [ ] Add comprehensive doc comments with IB field mappings
 
-#### 1.2 Activity FLEX Types (`src/types/activity.rs`)
-- [ ] ActivityFlexStatement (top-level)
-- [ ] Trade (with all 30+ fields)
-- [ ] Position (open positions)
-- [ ] CashTransaction (deposits, withdrawals, dividends)
-- [ ] CorporateAction (splits, mergers, spinoffs)
-- [ ] FxRate (currency conversion rates)
-- [ ] SecurityInfo (security master data)
+#### 1.2 Core Activity FLEX Types (`src/types/activity.rs`) - **v0.1.0 types**
+**Critical types for MVP (7 types)**:
+- [ ] FlexQueryResponse (top-level container)
+- [ ] FlexStatement (statement wrapper)
+- [ ] Trade (93 fields!) - symbol, conid, buySell, quantity, price, commission, fifoPnl, etc.
+- [ ] OpenPosition (58 fields) - position, markPrice, costBasis, unrealizedPnl, etc.
+- [ ] CashTransaction (48 fields) - type, amount, description, dateTime, etc.
+- [ ] CorporateAction (46 fields) - actionID, type, quantity, proceeds, etc.
+- [ ] SecurityInfo (42 fields) - conid, symbol, cusip, isin, multiplier, strike, expiry
+- [ ] ConversionRate (4 fields) - reportDate, fromCurrency, toCurrency, rate
 - [ ] Ensure all fields use correct types (Decimal for money, NaiveDate for dates)
+- [ ] Add Option<T> for all optional fields
+- [ ] Follow ibflex field naming exactly
 
-#### 1.3 Trade Confirmation Types (`src/types/trade_confirmation.rs`)
-- [ ] TradeConfirmationStatement
-- [ ] TradeExecution (similar to Trade but real-time focused)
-- [ ] CommissionBreakdown (detailed commission components)
+#### 1.3 Extended Types for v0.2.0+ (`src/types/extended.rs`) - **Future**
+Document but don't implement yet (for v0.2.0):
+- [ ] AccountInformation (account metadata)
+- [ ] ChangeInNAV (portfolio value changes)
+- [ ] EquitySummaryByReportDateInBase (asset breakdown)
+- [ ] CashReportCurrency (cash flow by currency)
+- [ ] TradeConfirm (trade confirmations)
+- [ ] OptionEAE (exercise/assignment/expiration)
+- [ ] FxTransaction (currency conversions)
+- [ ] ChangeInDividendAccrual / OpenDividendAccrual
+- [ ] InterestAccrualsCurrency
+- [ ] Plus 20+ more types for v0.3.0 and v0.4.0
 
 #### 1.4 Type Module Organization (`src/types/mod.rs`)
 - [ ] Re-export commonly used types
-- [ ] Organize into logical groups
+- [ ] Organize into v0.1, v0.2, v0.3, v0.4 feature flags
 - [ ] Add module-level documentation
+- [ ] Create type aliases for convenience
+
+#### 1.5 Field Validation
+- [ ] Add validation for required fields
+- [ ] Add range checks where appropriate
+- [ ] Add custom deserializers for complex fields
 
 **Deliverables**:
-- Complete type system for FLEX data
-- All types documented
+- Complete type system for v0.1.0 (7 types + 15 enums)
+- All types documented with field descriptions
 - Compiles without warnings
+- Types match ibflex Python library structure
 
-**Estimated Time**: 1 week
+**Estimated Time**: 1-2 weeks (complexity increased due to 93+ fields in Trade)
 
 **Critical Files**:
-- `src/types/common.rs`
-- `src/types/activity.rs`
-- `src/types/trade_confirmation.rs`
+- `src/types/enums.rs` (15 enums)
+- `src/types/activity.rs` (v0.1.0 types)
+- `src/types/extended.rs` (v0.2.0+ types, stubs only)
+- `src/types/mod.rs`
+
+**References**:
+- See TYPES_ANALYSIS.md for complete field lists
+- See ibflex/Types.py for Python implementation
+- See ibflex/enums.py for enum definitions
 
 ---
 

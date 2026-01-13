@@ -21,11 +21,11 @@
 //! let statement = parse_activity_flex(&xml)?;
 //!
 //! println!("Account: {}", statement.account_id);
-//! println!("Total trades: {}", statement.trades.len());
+//! println!("Total trades: {}", statement.trades.items.len());
 //!
 //! // Calculate total commissions
 //! let total_commission: rust_decimal::Decimal =
-//!     statement.trades.iter().map(|t| t.commission).sum();
+//!     statement.trades.items.iter().map(|t| t.commission).sum();
 //! println!("Total commissions: ${}", total_commission);
 //! # Ok(())
 //! # }
@@ -61,9 +61,8 @@ pub mod version;
 // Re-export commonly used types
 pub use error::{ParseError, Result};
 pub use types::{
-    AssetCategory, BuySell, OpenClose, OrderType, PutCall,
-    ActivityFlexStatement, Trade, Position, CashTransaction, CorporateAction,
-    TradeConfirmationStatement,
+    ActivityFlexStatement, AssetCategory, BuySell, CashTransaction, CorporateAction, OpenClose,
+    OrderType, Position, PutCall, Trade, TradeConfirmationStatement,
 };
 
 /// Parse an Activity FLEX XML statement
@@ -97,7 +96,7 @@ pub use types::{
 /// let xml = std::fs::read_to_string("statement.xml")?;
 /// let statement = parse_activity_flex(&xml)?;
 ///
-/// println!("Trades: {}", statement.trades.len());
+/// println!("Trades: {}", statement.trades.items.len());
 /// # Ok(())
 /// # }
 /// ```
@@ -135,7 +134,7 @@ pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement> {
 /// let xml = std::fs::read_to_string("trade_conf.xml")?;
 /// let statement = parse_trade_confirmation(&xml)?;
 ///
-/// println!("Trade executions: {}", statement.trades.len());
+/// println!("Trade executions: {}", statement.trades.items.len());
 /// # Ok(())
 /// # }
 /// ```

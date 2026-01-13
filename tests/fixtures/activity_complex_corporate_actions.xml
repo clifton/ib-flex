@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+      <Trades />
+      <OpenPositions />
+      <CashTransactions />
+
+      <!-- Complex corporate actions -->
+      <CorporateActions>
+        <!-- Choice dividend (stockholder can choose cash or stock) -->
+        <CorporateAction accountId="U1234567"
+                        conid="456789012"
+                        symbol="XYZ"
+                        description="XYZ CORP"
+                        assetCategory="STK"
+                        actionType="CD"
+                        actionDescription="Choice Dividend"
+                        type="CD"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="100"
+                        proceeds="0.00"
+                        value="150.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Choice dividend delivery (actual receipt) -->
+        <CorporateAction accountId="U1234567"
+                        conid="456789012"
+                        symbol="XYZ"
+                        description="XYZ CORP"
+                        assetCategory="STK"
+                        actionType="CD"
+                        actionDescription="Choice Dividend (Delivery)"
+                        type="CD"
+                        dateTime="2025-01-20"
+                        reportDate="2025-01-20"
+                        quantity="5"
+                        proceeds="0.00"
+                        value="150.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Tender offer -->
+        <CorporateAction accountId="U1234567"
+                        conid="567890123"
+                        symbol="ABC"
+                        description="ABC CORP"
+                        assetCategory="STK"
+                        actionType="TO"
+                        actionDescription="Tender"
+                        type="TO"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="-50"
+                        proceeds="3500.00"
+                        value="3500.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Tender (issue) - receive proceeds -->
+        <CorporateAction accountId="U1234567"
+                        conid="567890123"
+                        symbol="ABC"
+                        description="ABC CORP"
+                        assetCategory="STK"
+                        actionType="TO"
+                        actionDescription="Tender (Issue)"
+                        type="TO"
+                        dateTime="2025-01-20"
+                        reportDate="2025-01-20"
+                        quantity="0"
+                        proceeds="3500.00"
+                        value="3500.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Bond conversion -->
+        <CorporateAction accountId="U1234567"
+                        conid="678901234"
+                        symbol="DEF"
+                        description="DEF CORP CONV BOND"
+                        assetCategory="BOND"
+                        actionType="BC"
+                        actionDescription="Bond Conversion"
+                        type="BC"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="-10"
+                        proceeds="0.00"
+                        value="10000.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Bond conversion (receive stock) -->
+        <CorporateAction accountId="U1234567"
+                        conid="678901235"
+                        symbol="DEF"
+                        description="DEF CORP"
+                        assetCategory="STK"
+                        actionType="BC"
+                        actionDescription="Convertible Issue"
+                        type="BC"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="250"
+                        proceeds="0.00"
+                        value="10000.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Bond maturity -->
+        <CorporateAction accountId="U1234567"
+                        conid="789012345"
+                        symbol="GHI 5.5 01/15/25"
+                        description="GHI CORP 5.5% BOND"
+                        assetCategory="BOND"
+                        actionType="BM"
+                        actionDescription="Bond Maturity"
+                        type="BM"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="-5"
+                        proceeds="5000.00"
+                        value="5000.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Coupon payment -->
+        <CorporateAction accountId="U1234567"
+                        conid="789012346"
+                        symbol="JKL 4.0 06/15/30"
+                        description="JKL CORP 4.0% BOND"
+                        assetCategory="BOND"
+                        actionType="CP"
+                        actionDescription="Coupon Payment"
+                        type="CP"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="10"
+                        proceeds="200.00"
+                        value="200.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Rights issue -->
+        <CorporateAction accountId="U1234567"
+                        conid="890123456"
+                        symbol="MNO"
+                        description="MNO CORP RIGHTS"
+                        assetCategory="STK"
+                        actionType="RI"
+                        actionDescription="Rights Issue"
+                        type="RI"
+                        dateTime="2025-01-15"
+                        reportDate="2025-01-15"
+                        quantity="20"
+                        proceeds="0.00"
+                        value="50.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+
+        <!-- Subscribe rights -->
+        <CorporateAction accountId="U1234567"
+                        conid="890123456"
+                        symbol="MNO"
+                        description="MNO CORP"
+                        assetCategory="STK"
+                        actionType="SR"
+                        actionDescription="Subscribe Rights"
+                        type="SR"
+                        dateTime="2025-01-20"
+                        reportDate="2025-01-20"
+                        quantity="10"
+                        proceeds="-250.00"
+                        value="300.00"
+                        currency="USD"
+                        fxRateToBase="1.0" />
+      </CorporateActions>
+
+      <SecuritiesInfo />
+      <ConversionRates />
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

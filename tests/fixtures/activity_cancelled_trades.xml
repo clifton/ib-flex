@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+      <!-- Cancelled trades -->
+      <Trades>
+        <!-- Normal buy -->
+        <Trade accountId="U1234567"
+               conid="123456789"
+               symbol="MSFT"
+               description="MICROSOFT CORP"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="BUY"
+               quantity="100"
+               price="420.50"
+               proceeds="-42050.00"
+               ibCommission="-1.00"
+               netCash="-42051.00"
+               cost="-42051.00"
+               currency="USD"
+               fxRateToBase="1.0" />
+
+        <!-- Cancelled buy (busted trade) -->
+        <Trade accountId="U1234567"
+               conid="123456789"
+               symbol="MSFT"
+               description="MICROSOFT CORP"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="BUY (Ca.)"
+               quantity="-100"
+               price="420.50"
+               proceeds="42050.00"
+               ibCommission="1.00"
+               netCash="42051.00"
+               cost="42051.00"
+               currency="USD"
+               fxRateToBase="1.0" />
+
+        <!-- Normal sell -->
+        <Trade accountId="U1234567"
+               conid="234567890"
+               symbol="GOOGL"
+               description="ALPHABET INC CLASS A"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="SELL"
+               quantity="-50"
+               price="175.25"
+               proceeds="8762.50"
+               ibCommission="-1.00"
+               netCash="8761.50"
+               cost="-8500.00"
+               fifoPnlRealized="261.50"
+               currency="USD"
+               fxRateToBase="1.0" />
+
+        <!-- Cancelled sell (busted trade) -->
+        <Trade accountId="U1234567"
+               conid="234567890"
+               symbol="GOOGL"
+               description="ALPHABET INC CLASS A"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="SELL (Ca.)"
+               quantity="50"
+               price="175.25"
+               proceeds="-8762.50"
+               ibCommission="1.00"
+               netCash="-8761.50"
+               cost="8500.00"
+               fifoPnlRealized="-261.50"
+               currency="USD"
+               fxRateToBase="1.0" />
+      </Trades>
+
+      <OpenPositions />
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

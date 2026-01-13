@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+
+      <!-- Futures Trades -->
+      <Trades>
+        <!-- ES (E-mini S&amp;P 500) Long Entry -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="FUT" symbol="ESH5" description="E-mini S&amp;P 500 Mar 2025"
+               conid="55555555" securityID="ESH5" securityIDType="CONID" cusip="" isin=""
+               underlyingConid="" underlyingSymbol="ES"
+               issuer="CME" multiplier="50" strike="" expiry="2025-03-21" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-15" transactionType="ExchTrade" exchange="CME"
+               quantity="2" tradePrice="5800.00" tradeMoney="0" proceeds="0"
+               taxes="0" ibCommission="-4.20" ibCommissionCurrency="USD"
+               netCash="-4.20" closePrice="5812.50" openCloseIndicator="O"
+               notes="" cost="4.20" fifoPnlRealized="0" mtmPnl="1250" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- NQ (E-mini NASDAQ) Short Entry -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="FUT" symbol="NQH5" description="E-mini NASDAQ-100 Mar 2025"
+               conid="66666666" securityID="NQH5" securityIDType="CONID" cusip="" isin=""
+               underlyingConid="" underlyingSymbol="NQ"
+               issuer="CME" multiplier="20" strike="" expiry="2025-03-21" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-15" transactionType="ExchTrade" exchange="CME"
+               quantity="-1" tradePrice="20500.00" tradeMoney="0" proceeds="0"
+               taxes="0" ibCommission="-2.10" ibCommissionCurrency="USD"
+               netCash="-2.10" closePrice="20485.75" openCloseIndicator="O"
+               notes="" cost="-2.10" fifoPnlRealized="0" mtmPnl="285" capitalGainsPnl="0"
+               fxPnl="0" orderType="MKT" traderID="" isAPIOrder="Y"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- CL (Crude Oil) Close Position -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="FUT" symbol="CLG5" description="Crude Oil Feb 2025"
+               conid="77777777" securityID="CLG5" securityIDType="CONID" cusip="" isin=""
+               underlyingConid="" underlyingSymbol="CL"
+               issuer="NYMEX" multiplier="1000" strike="" expiry="2025-02-20" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-15" transactionType="ExchTrade" exchange="NYMEX"
+               quantity="-3" tradePrice="72.50" tradeMoney="0" proceeds="0"
+               taxes="0" ibCommission="-6.30" ibCommissionCurrency="USD"
+               netCash="-6.30" closePrice="72.50" openCloseIndicator="C"
+               notes="" cost="6.30" fifoPnlRealized="4500" mtmPnl="0" capitalGainsPnl="4500"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="CRUDE" fineness="0"
+               weight="0" />
+
+        <!-- GC (Gold) Long Entry -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="FUT" symbol="GCG5" description="Gold Feb 2025"
+               conid="88888888" securityID="GCG5" securityIDType="CONID" cusip="" isin=""
+               underlyingConid="" underlyingSymbol="GC"
+               issuer="COMEX" multiplier="100" strike="" expiry="2025-02-27" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-15" transactionType="ExchTrade" exchange="COMEX"
+               quantity="1" tradePrice="2050.00" tradeMoney="0" proceeds="0"
+               taxes="0" ibCommission="-2.10" ibCommissionCurrency="USD"
+               netCash="-2.10" closePrice="2055.50" openCloseIndicator="O"
+               notes="" cost="2.10" fifoPnlRealized="0" mtmPnl="550" capitalGainsPnl="0"
+               fxPnl="0" orderType="STP" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="PHYSICAL" commodityType="GOLD" fineness="0.995"
+               weight="100 oz" />
+      </Trades>
+
+      <!-- Open Futures Positions -->
+      <OpenPositions>
+        <!-- ES Long Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="FUT" symbol="ESH5" description="E-mini S&amp;P 500 Mar 2025"
+                      conid="55555555" securityID="ESH5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="ES"
+                      issuer="CME" multiplier="50" strike="" expiry="2025-03-21" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="2"
+                      markPrice="5812.50" positionValue="581250" openPrice="5800.00"
+                      costBasisPrice="0" costBasisMoney="4.20"
+                      percentOfNAV="5.81" fifoPnlUnrealized="1245.80"
+                      side="Long" levelOfDetail="CONTRACT" openDateTime="2025-01-15;093000"
+                      holdingPeriodDateTime="2025-01-15;093000"
+                      vestingDate="" code="" originatingOrderID="234567890"
+                      originatingTransactionID="876543210" accruedInt="" />
+
+        <!-- NQ Short Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="FUT" symbol="NQH5" description="E-mini NASDAQ-100 Mar 2025"
+                      conid="66666666" securityID="NQH5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="NQ"
+                      issuer="CME" multiplier="20" strike="" expiry="2025-03-21" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="-1"
+                      markPrice="20485.75" positionValue="-409715" openPrice="20500.00"
+                      costBasisPrice="0" costBasisMoney="-2.10"
+                      percentOfNAV="-4.10" fifoPnlUnrealized="282.90"
+                      side="Short" levelOfDetail="CONTRACT" openDateTime="2025-01-15;100000"
+                      holdingPeriodDateTime="2025-01-15;100000"
+                      vestingDate="" code="" originatingOrderID="234567891"
+                      originatingTransactionID="876543211" accruedInt="" />
+
+        <!-- GC Long Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="FUT" symbol="GCG5" description="Gold Feb 2025"
+                      conid="88888888" securityID="GCG5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="GC"
+                      issuer="COMEX" multiplier="100" strike="" expiry="2025-02-27" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="1"
+                      markPrice="2055.50" positionValue="205550" openPrice="2050.00"
+                      costBasisPrice="0" costBasisMoney="2.10"
+                      percentOfNAV="2.06" fifoPnlUnrealized="547.90"
+                      side="Long" levelOfDetail="CONTRACT" openDateTime="2025-01-15;140000"
+                      holdingPeriodDateTime="2025-01-15;140000"
+                      vestingDate="" code="" originatingOrderID="234567892"
+                      originatingTransactionID="876543212" accruedInt="" />
+      </OpenPositions>
+
+      <!-- Cash Transactions for Futures -->
+      <CashTransactions>
+        <!-- Futures Commission -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="FUT" symbol="" description="Futures Commissions"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;150000" amount="-14.70" type="Other Fees"
+                         tradeID="" code="" transactionID="222221" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Realized P&amp;L from Crude Oil Close -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="FUT" symbol="CLG5" description="Crude Oil Feb 2025"
+                         conid="77777777" securityID="CLG5" securityIDType="CONID" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="CL" issuer="NYMEX" multiplier="1000"
+                         strike="" expiry="2025-02-20" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;120000" amount="4500.00" type="Realized P/L"
+                         tradeID="11111111" code="P" transactionID="222222" reportDate="2025-01-15"
+                         clientReference="" />
+      </CashTransactions>
+
+      <!-- Corporate Actions - none for futures -->
+      <CorporateActions />
+
+      <!-- Securities Info for Futures -->
+      <SecuritiesInfo>
+        <SecurityInfo assetCategory="FUT" symbol="ESH5" description="E-mini S&amp;P 500 Mar 2025"
+                      conid="55555555" securityID="ESH5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="ES" underlyingSecurityID=""
+                      issuer="CME" multiplier="50" strike="" expiry="2025-03-21"
+                      putCall="" principalAdjustFactor="" maturity="2025-03-21" issueDate=""
+                      underlyingCategory="" subCategory="INDEX" code="" />
+
+        <SecurityInfo assetCategory="FUT" symbol="NQH5" description="E-mini NASDAQ-100 Mar 2025"
+                      conid="66666666" securityID="NQH5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="NQ" underlyingSecurityID=""
+                      issuer="CME" multiplier="20" strike="" expiry="2025-03-21"
+                      putCall="" principalAdjustFactor="" maturity="2025-03-21" issueDate=""
+                      underlyingCategory="" subCategory="INDEX" code="" />
+
+        <SecurityInfo assetCategory="FUT" symbol="CLG5" description="Crude Oil Feb 2025"
+                      conid="77777777" securityID="CLG5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="CL" underlyingSecurityID=""
+                      issuer="NYMEX" multiplier="1000" strike="" expiry="2025-02-20"
+                      putCall="" principalAdjustFactor="" maturity="2025-02-20" issueDate=""
+                      underlyingCategory="" subCategory="ENERGY" code="" />
+
+        <SecurityInfo assetCategory="FUT" symbol="GCG5" description="Gold Feb 2025"
+                      conid="88888888" securityID="GCG5" securityIDType="CONID" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="GC" underlyingSecurityID=""
+                      issuer="COMEX" multiplier="100" strike="" expiry="2025-02-27"
+                      putCall="" principalAdjustFactor="" maturity="2025-02-27" issueDate=""
+                      underlyingCategory="" subCategory="METAL" code="" />
+      </SecuritiesInfo>
+
+      <ConversionRates>
+        <ConversionRate reportDate="2025-01-15" fromCurrency="USD" toCurrency="USD" rate="1" />
+      </ConversionRates>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

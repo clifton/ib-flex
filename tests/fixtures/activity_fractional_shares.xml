@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+      <!-- Fractional share trades -->
+      <Trades>
+        <!-- Buy fractional shares -->
+        <Trade accountId="U1234567"
+               conid="345678901"
+               symbol="AMZN"
+               description="AMAZON.COM INC"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="BUY"
+               quantity="2.5"
+               price="185.40"
+               proceeds="-463.50"
+               ibCommission="-0.00"
+               netCash="-463.50"
+               cost="-463.50"
+               transactionType="FracShare"
+               currency="USD"
+               fxRateToBase="1.0" reportDate="2025-01-15" />
+
+        <!-- Sell fractional shares -->
+        <Trade accountId="U1234567"
+               conid="345678901"
+               symbol="AMZN"
+               description="AMAZON.COM INC"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="SELL"
+               quantity="-1.25"
+               price="186.00"
+               proceeds="232.50"
+               ibCommission="-0.00"
+               netCash="232.50"
+               cost="-231.75"
+               fifoPnlRealized="0.75"
+               transactionType="FracShare"
+               currency="USD"
+               fxRateToBase="1.0" reportDate="2025-01-15" />
+
+        <!-- Fractional share cancellation -->
+        <Trade accountId="U1234567"
+               conid="345678901"
+               symbol="AMZN"
+               description="AMAZON.COM INC"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="BUY"
+               quantity="0.5"
+               price="186.50"
+               proceeds="-93.25"
+               ibCommission="-0.00"
+               netCash="-93.25"
+               cost="-93.25"
+               transactionType="FracShare"
+               currency="USD"
+               fxRateToBase="1.0" reportDate="2025-01-15" />
+
+        <Trade accountId="U1234567"
+               conid="345678901"
+               symbol="AMZN"
+               description="AMAZON.COM INC"
+               assetCategory="STK"
+               tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17"
+               buySell="BUY (Ca.)"
+               quantity="-0.5"
+               price="186.50"
+               proceeds="93.25"
+               ibCommission="0.00"
+               netCash="93.25"
+               cost="93.25"
+               transactionType="FracShareCancel"
+               currency="USD"
+               fxRateToBase="1.0" reportDate="2025-01-15" />
+      </Trades>
+
+      <!-- Fractional position -->
+      <OpenPositions>
+        <OpenPosition accountId="U1234567"
+                      conid="345678901"
+                      symbol="AMZN"
+                      description="AMAZON.COM INC"
+                      assetCategory="STK"
+                      position="1.25"
+                      markPrice="186.20"
+                      positionValue="232.75"
+                      costBasisPrice="185.40"
+                      costBasisMoney="231.75"
+                      percentOfNAV="0.8"
+                      fifoPnlUnrealized="1.00"
+                      currency="USD"
+                      fxRateToBase="1.0" reportDate="2025-01-15" />
+      </OpenPositions>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

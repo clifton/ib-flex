@@ -13,5 +13,5 @@ pub struct TradeConfirmationStatement {
 
     /// Trade executions
     #[serde(default)]
-    pub trades: Vec<super::activity::Trade>,
+    pub trades: super::activity::TradesWrapper,
 }

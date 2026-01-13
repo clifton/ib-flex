@@ -192,93 +192,264 @@ pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement>
 
 ## FLEX Query Data Model
 
-### Activity FLEX Statement
+**IMPORTANT**: After comprehensive analysis of the mature Python [ibflex library](https://github.com/csingley/ibflex), we've identified **41 distinct data types** that should be supported for full FLEX functionality. See `TYPES_ANALYSIS.md` for complete breakdown.
+
+### Activity FLEX Statement (Complete)
 Top-level structure returned by Activity FLEX queries:
 
 ```rust
-pub struct ActivityFlexStatement {
+pub struct FlexStatement {
+    // Account & Metadata
     pub account_id: String,
     pub from_date: NaiveDate,
     pub to_date: NaiveDate,
     pub when_generated: NaiveDateTime,
+    pub period: Option<String>,
+
+    // v0.1.0 - Core Trading (MVP)
     pub trades: Vec<Trade>,
-    pub positions: Vec<Position>,
+    pub open_positions: Vec<OpenPosition>,
     pub cash_transactions: Vec<CashTransaction>,
     pub corporate_actions: Vec<CorporateAction>,
-    pub fx_rates: Vec<FxRate>,
-    pub securities: Vec<SecurityInfo>,
+    pub securities_info: Vec<SecurityInfo>,
+    pub conversion_rates: Vec<ConversionRate>,
+
+    // v0.2.0 - Comprehensive Support
+    pub account_information: Option<AccountInformation>,
+    pub change_in_nav: Vec<ChangeInNAV>,
+    pub equity_summary_by_report_date: Vec<EquitySummaryByReportDateInBase>,
+    pub cash_report: Vec<CashReportCurrency>,
+    pub trade_confirms: Vec<TradeConfirm>,
+    pub option_eae: Vec<OptionEAE>,
+    pub fx_transactions: Vec<FxTransaction>,
+    pub change_in_dividend_accruals: Vec<ChangeInDividendAccrual>,
+    pub open_dividend_accruals: Vec<OpenDividendAccrual>,
+    pub interest_accruals: Vec<InterestAccrualsCurrency>,
+
+    // v0.3.0 - Advanced Features
+    pub mtm_performance_summary: Vec<MTMPerformanceSummaryUnderlying>,
+    pub mtd_ytd_performance_summary: Vec<MTDYTDPerformanceSummaryUnderlying>,
+    pub fifo_performance_summary: Vec<FIFOPerformanceSummaryUnderlying>,
+    pub unbundled_commission_details: Vec<UnbundledCommissionDetail>,
+    pub client_fees: Vec<ClientFee>,
+    pub client_fees_detail: Vec<ClientFeesDetail>,
+    pub hard_to_borrow_details: Vec<HardToBorrowDetail>,
+    pub slb_activities: Vec<SLBActivity>,
+    pub slb_fees: Vec<SLBFee>,
+    pub transfers: Vec<Transfer>,
+    pub unsettled_transfers: Vec<UnsettledTransfer>,
+    pub trade_transfers: Vec<TradeTransfer>,
+    pub fx_lots: Vec<FxLot>,
+
+    // v0.4.0 - Complete Coverage
+    pub net_stock_position: Vec<NetStockPosition>,
+    pub prior_period_positions: Vec<PriorPeriodPosition>,
+    pub tier_interest_details: Vec<TierInterestDetail>,
+    pub statement_of_funds_lines: Vec<StatementOfFundsLine>,
+    pub change_in_position_values: Vec<ChangeInPositionValue>,
+    pub debit_card_activities: Vec<DebitCardActivity>,
+    pub sales_tax: Vec<SalesTax>,
+    pub symbol_summary: Vec<SymbolSummary>,
+    pub asset_summary: Vec<AssetSummary>,
+    pub orders: Vec<Order>,
 }
 ```
 
-### Trade Structure
-Core trade execution data:
+### Trade Structure (93 fields!)
+Core trade execution data - **This is the most complex type**:
 
 ```rust
 pub struct Trade {
-    // IB identifiers
-    pub account_id: String,
-    pub transaction_id: i64,
-    pub ib_order_id: Option<i64>,
-    pub exec_id: String,
+    // Classification (5 fields)
+    pub transaction_type: Option<TradeType>,
+    pub open_close_indicator: Option<OpenClose>,
+    pub buy_sell: Option<BuySell>,
+    pub order_type: Option<OrderType>,
+    pub asset_category: Option<AssetClass>,
 
-    // Security
-    pub conid: i64,
-    pub symbol: String,
-    pub asset_category: AssetCategory,
+    // Account (2 fields)
+    pub account_id: Option<String>,
+    pub acct_alias: Option<String>,
+
+    // Security Identifiers (11 fields)
+    pub symbol: Option<String>,
+    pub description: Option<String>,
+    pub conid: Option<String>,  // IB contract ID
+    pub security_id: Option<String>,
+    pub cusip: Option<String>,
+    pub isin: Option<String>,
+    pub figi: Option<String>,
+    pub sedol: Option<String>,
+    pub issuer: Option<String>,
+    pub security_id_type: Option<String>,
+    pub listing_exchange: Option<String>,
+
+    // Derivatives (7 fields)
     pub multiplier: Option<Decimal>,
-
-    // Options/Futures
-    pub underlying_conid: Option<i64>,
     pub strike: Option<Decimal>,
     pub expiry: Option<NaiveDate>,
     pub put_call: Option<PutCall>,
+    pub underlying_conid: Option<String>,
+    pub underlying_symbol: Option<String>,
+    pub underlying_security_id: Option<String>,
 
-    // Trade details
-    pub trade_date: NaiveDate,
-    pub trade_time: NaiveDateTime,
-    pub buy_sell: BuySell,
-    pub quantity: Decimal,
-    pub price: Decimal,
+    // Trade Execution (12 fields)
+    pub trade_id: Option<String>,
+    pub transaction_id: Option<String>,
+    pub ib_order_id: Option<String>,
+    pub ib_exec_id: Option<String>,
+    pub brokerage_order_id: Option<String>,
+    pub order_reference: Option<String>,
+    pub trade_date: Option<NaiveDate>,
+    pub trade_time: Option<NaiveTime>,
+    pub date_time: Option<NaiveDateTime>,
+    pub settle_date_target: Option<NaiveDate>,
+    pub exchange: Option<String>,
+    pub is_api_order: Option<bool>,
 
-    // Money
-    pub proceeds: Decimal,
-    pub commission: Decimal,
-    pub taxes: Decimal,
-    pub net_cash: Decimal,
+    // Quantities & Prices (5 fields)
+    pub quantity: Option<Decimal>,
+    pub trade_price: Option<Decimal>,
+    pub trade_money: Option<Decimal>,
+    pub proceeds: Option<Decimal>,
+    pub close_price: Option<Decimal>,
 
-    // P&L
+    // Costs & Fees (6 fields)
+    pub net_cash: Option<Decimal>,
+    pub net_cash_in_base: Option<Decimal>,
+    pub taxes: Option<Decimal>,
+    pub ib_commission: Option<Decimal>,
+    pub ib_commission_currency: Option<String>,
+    pub cost: Option<Decimal>,
+
+    // P&L (5 fields)
     pub fifo_pnl_realized: Option<Decimal>,
+    pub capital_gains_pnl: Option<Decimal>,
     pub mtm_pnl: Option<Decimal>,
+    pub fx_pnl: Option<Decimal>,
+    pub change_in_price: Option<Decimal>,
 
-    // Currency
-    pub currency: String,
+    // Currency (2 fields)
+    pub currency: Option<String>,
     pub fx_rate_to_base: Option<Decimal>,
+
+    // Position Tracking (8 fields)
+    pub open_date_time: Option<NaiveDateTime>,
+    pub holding_period_date_time: Option<NaiveDateTime>,
+    pub when_realized: Option<NaiveDateTime>,
+    pub when_reopened: Option<NaiveDateTime>,
+    pub orig_trade_price: Option<Decimal>,
+    pub orig_trade_date: Option<NaiveDate>,
+    pub orig_trade_id: Option<String>,
+    pub orig_transaction_id: Option<String>,
+
+    // Commodities (6 fields)
+    pub serial_number: Option<String>,
+    pub delivery_type: Option<String>,
+    pub commodity_type: Option<String>,
+    pub fineness: Option<Decimal>,
+    pub weight: Option<String>,
+    pub accrued_int: Option<Decimal>,
+
+    // Miscellaneous (14 fields)
+    pub notes: Vec<Code>,
+    pub level_of_detail: Option<String>,
+    pub order_time: Option<NaiveDateTime>,
+    pub change_in_quantity: Option<Decimal>,
+    pub clearing_firm_id: Option<String>,
+    pub volatility_order_link: Option<String>,
+    pub exch_order_id: Option<String>,
+    pub ext_exec_id: Option<String>,
+    pub trader_id: Option<String>,
+    pub model: Option<String>,
+    pub principal_adjust_factor: Option<Decimal>,
+    pub related_trade_id: Option<String>,
+    pub related_transaction_id: Option<String>,
+    pub sub_category: Option<String>,
 }
 ```
 
-### Shared Enums
+### Shared Enums (15 total)
+
+Based on ibflex Python library:
 
 ```rust
-pub enum AssetCategory {
-    Stock,      // STK
-    Option,     // OPT
-    Future,     // FUT
-    FutureOption, // FOP
-    Cash,       // CASH/Forex
-    Bond,
-    Unknown,
+pub enum AssetClass {
+    STK,        // Stock
+    OPT,        // Option
+    FUT,        // Future
+    FOP,        // Future Option
+    CASH,       // Forex
+    BOND,       // Bond
+    CMDTY,      // Commodity
+    CFD,        // Contract for Difference
+    // ... plus more variants
 }
 
 pub enum BuySell {
-    Buy,
-    Sell,
+    BUY,
+    SELL,
+    BUY_CANCEL,    // Cancelled buy
+    SELL_CANCEL,   // Cancelled sell
 }
 
 pub enum OpenClose {
     Open,
     Close,
-    CloseOpen, // Same-day round trip
+    CloseOpen,     // Same-day round trip
+    Unknown,
 }
+
+pub enum TradeType {
+    ExchTrade,     // Exchange trade
+    BookTrade,     // Book trade
+    FracShare,     // Fractional share
+    Adjustment,    // Manual adjustment
+    // ... 20+ more variants
+}
+
+pub enum OrderType {
+    LMT,           // Limit
+    MKT,           // Market
+    STP,           // Stop
+    TRAIL,         // Trailing stop
+    MOC,           // Market on close
+    LOC,           // Limit on close
+    // ... 10+ more variants
+}
+
+pub enum CashAction {
+    Deposits,
+    Withdrawals,
+    Dividends,
+    WithholdingTax,
+    BrokerInterest,
+    BondInterest,
+    CashReceipts,
+    OtherFees,
+    // ... 30+ more variants
+}
+
+pub enum Reorg {
+    Merger,
+    Spinoff,
+    Split,
+    StockDividend,
+    Delisted,
+    // ... 10+ more variants
+}
+
+pub enum PutCall {
+    P,  // Put
+    C,  // Call
+}
+
+pub enum LongShort {
+    Long,
+    Short,
+}
+
+// Plus 7 more enums: OptionAction, TransferType, Code, ToFrom, InOut, DeliveredReceived
 ```
 
 ---

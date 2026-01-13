@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+
+      <!-- Trades - empty for this fixture -->
+      <Trades />
+
+      <!-- Positions - empty for this fixture -->
+      <OpenPositions />
+
+      <!-- Cash Transactions -->
+      <CashTransactions>
+        <!-- Deposit -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="Electronic Fund Transfer"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;093000" amount="10000.00" type="Deposits &amp; Withdrawals"
+                         tradeID="" code="" transactionID="666661" reportDate="2025-01-15"
+                         clientReference="DEPOSIT-001" />
+
+        <!-- Withdrawal -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="Withdrawal via ACH"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;100000" amount="-5000.00" type="Deposits &amp; Withdrawals"
+                         tradeID="" code="" transactionID="666662" reportDate="2025-01-15"
+                         clientReference="WITHDRAWAL-001" />
+
+        <!-- Broker Interest Paid (Credit) -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="USD Credit Interest"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="12.50" type="Broker Interest Paid"
+                         tradeID="" code="" transactionID="666663" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Broker Interest Received (Debit for short balance) -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="USD Debit Interest"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="-5.25" type="Broker Interest Received"
+                         tradeID="" code="" transactionID="666664" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Dividend Payment -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC - Dividend"
+                         conid="265598" securityID="" securityIDType="" cusip="037833100" isin="US0378331005"
+                         underlyingConid="" underlyingSymbol="" issuer="APPLE INC" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="150.00" type="Dividends"
+                         tradeID="" code="" transactionID="666665" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Withholding Tax -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC - Withholding Tax"
+                         conid="265598" securityID="" securityIDType="" cusip="037833100" isin="US0378331005"
+                         underlyingConid="" underlyingSymbol="" issuer="APPLE INC" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="-15.00" type="Withholding Tax"
+                         tradeID="" code="" transactionID="666666" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Bond Interest -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="BOND" symbol="T 4.5 11/15/33"
+                         description="US TREASURY BOND 4.5% 11/15/2033 Interest"
+                         conid="99999999" securityID="912810TW4" securityIDType="CUSIP"
+                         cusip="912810TW4" isin="US912810TW46" underlyingConid=""
+                         underlyingSymbol="" issuer="US TREASURY" multiplier="1"
+                         strike="" expiry="2033-11-15" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="225.00" type="Bond Interest"
+                         tradeID="" code="" transactionID="666667" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Commission Fees -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="Commission Fees"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;150000" amount="-25.50" type="Other Fees"
+                         tradeID="" code="" transactionID="666668" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Market Data Fees -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="Market Data Subscription"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="-10.00" type="Other Fees"
+                         tradeID="" code="" transactionID="666669" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Payment in Lieu of Dividend (for short position) -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="TSLA"
+                         description="TESLA INC - Payment in Lieu of Dividend"
+                         conid="76792991" securityID="" securityIDType="" cusip="88160R101"
+                         isin="US88160R1014" underlyingConid="" underlyingSymbol=""
+                         issuer="TESLA INC" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" dateTime="2025-01-15;000000" amount="-50.00"
+                         type="Payment In Lieu Of Dividends" tradeID="" code=""
+                         transactionID="666670" reportDate="2025-01-15" clientReference="" />
+
+        <!-- Trade Commissions -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="" description="Stock Trade Commissions"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;120000" amount="-8.00" type="Other Fees"
+                         tradeID="" code="" transactionID="666671" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Cash Receipt -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="Miscellaneous Cash Receipt"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;110000" amount="100.00" type="Cash Receipts"
+                         tradeID="" code="" transactionID="666672" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- ADR Fees -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="NVO"
+                         description="NOVO NORDISK A/S - ADR Fee"
+                         conid="3976" securityID="" securityIDType="" cusip="670100109"
+                         isin="US6701001099" underlyingConid="" underlyingSymbol=""
+                         issuer="NOVO NORDISK" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" dateTime="2025-01-15;000000" amount="-2.00"
+                         type="Other Fees" tradeID="" code="" transactionID="666673"
+                         reportDate="2025-01-15" clientReference="" />
+
+        <!-- Regulatory Fees -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="" symbol="" description="SEC Fee"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;120000" amount="-0.50" type="Other Fees"
+                         tradeID="" code="" transactionID="666674" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- FX Gains/Losses -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="CASH" symbol="EUR.USD"
+                         description="EUR vs USD FX Translation Gain"
+                         conid="12087792" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier="1"
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="15.75" type="Realized P/L"
+                         tradeID="" code="P" transactionID="666675" reportDate="2025-01-15"
+                         clientReference="" />
+      </CashTransactions>
+
+      <!-- Corporate Actions - empty for this fixture -->
+      <CorporateActions />
+
+      <!-- Securities Info -->
+      <SecuritiesInfo>
+        <SecurityInfo assetCategory="STK" symbol="AAPL" description="APPLE INC"
+                      conid="265598" securityID="" securityIDType="" cusip="037833100"
+                      isin="US0378331005" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="APPLE INC" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="STK" symbol="TSLA" description="TESLA INC"
+                      conid="76792991" securityID="" securityIDType="" cusip="88160R101"
+                      isin="US88160R1014" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="TESLA INC" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="BOND" symbol="T 4.5 11/15/33" description="US TREASURY BOND 4.5% 11/15/2033"
+                      conid="99999999" securityID="912810TW4" securityIDType="CUSIP" cusip="912810TW4"
+                      isin="US912810TW46" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="US TREASURY" multiplier="1" strike="" expiry="2033-11-15"
+                      putCall="" principalAdjustFactor="" maturity="2033-11-15" issueDate="2003-11-15"
+                      underlyingCategory="" subCategory="T-NOTE" code="" />
+      </SecuritiesInfo>
+
+      <ConversionRates>
+        <ConversionRate reportDate="2025-01-15" fromCurrency="USD" toCurrency="USD" rate="1" />
+      </ConversionRates>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

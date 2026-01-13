@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+
+      <!-- Bond Trades -->
+      <Trades>
+        <!-- US Treasury Buy -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="BOND" symbol="T 4.5 11/15/33" description="US TREASURY BOND 4.5% 11/15/2033"
+               conid="99999999" securityID="912810TW4" securityIDType="CUSIP" cusip="912810TW4"
+               isin="US912810TW46" underlyingConid="" underlyingSymbol=""
+               issuer="US TREASURY" multiplier="1" strike="" expiry="2033-11-15" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="VALUE"
+               quantity="10000" tradePrice="98.50" tradeMoney="9850" proceeds="-9850.00"
+               taxes="0" ibCommission="-5.00" ibCommissionCurrency="USD"
+               netCash="-9930.50" closePrice="98.625" openCloseIndicator="O"
+               notes="" cost="9930.50" fifoPnlRealized="0" mtmPnl="12.50" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="75.50" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- Corporate Bond Buy -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="BOND" symbol="AAPL 3.85 08/04/46" description="APPLE INC 3.85% 08/04/2046"
+               conid="88888881" securityID="037833CJ9" securityIDType="CUSIP" cusip="037833CJ9"
+               isin="US037833CJ94" underlyingConid="" underlyingSymbol=""
+               issuer="APPLE INC" multiplier="1" strike="" expiry="2046-08-04" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="VALUE"
+               quantity="5000" tradePrice="95.25" tradeMoney="4762.50" proceeds="-4762.50"
+               taxes="0" ibCommission="-5.00" ibCommissionCurrency="USD"
+               netCash="-4815.00" closePrice="95.50" openCloseIndicator="O"
+               notes="" cost="4815.00" fifoPnlRealized="0" mtmPnl="12.50" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="47.50" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- Municipal Bond Buy -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="BOND" symbol="NYC GO 5.0 08/01/34" description="NEW YORK CITY NY 5.0% 08/01/2034"
+               conid="77777771" securityID="64966QBE7" securityIDType="CUSIP" cusip="64966QBE7"
+               isin="US64966QBE73" underlyingConid="" underlyingSymbol=""
+               issuer="NEW YORK CITY" multiplier="1" strike="" expiry="2034-08-01" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="VALUE"
+               quantity="10000" tradePrice="102.75" tradeMoney="10275" proceeds="-10275.00"
+               taxes="0" ibCommission="-5.00" ibCommissionCurrency="USD"
+               netCash="-10350.00" closePrice="102.875" openCloseIndicator="O"
+               notes="" cost="10350.00" fifoPnlRealized="0" mtmPnl="12.50" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="70.00" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- Bond Sell (with realized gain) -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="BOND" symbol="MSFT 3.5 11/15/42" description="MICROSOFT CORP 3.5% 11/15/2042"
+               conid="66666661" securityID="594918BV9" securityIDType="CUSIP" cusip="594918BV9"
+               isin="US594918BV94" underlyingConid="" underlyingSymbol=""
+               issuer="MICROSOFT CORP" multiplier="1" strike="" expiry="2042-11-15" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-16" transactionType="ExchTrade" exchange="VALUE"
+               quantity="-10000" tradePrice="97.50" tradeMoney="-9750" proceeds="9750.00"
+               taxes="0" ibCommission="-5.00" ibCommissionCurrency="USD"
+               netCash="9665.00" closePrice="97.50" openCloseIndicator="C"
+               notes="" cost="-9665.00" fifoPnlRealized="665.00" mtmPnl="0" capitalGainsPnl="665.00"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="80.00" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+      </Trades>
+
+      <!-- Open Bond Positions -->
+      <OpenPositions>
+        <!-- US Treasury Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="BOND" symbol="T 4.5 11/15/33" description="US TREASURY BOND 4.5% 11/15/2033"
+                      conid="99999999" securityID="912810TW4" securityIDType="CUSIP" cusip="912810TW4"
+                      isin="US912810TW46" underlyingConid="" underlyingSymbol=""
+                      issuer="US TREASURY" multiplier="1" strike="" expiry="2033-11-15" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="10000"
+                      markPrice="98.625" positionValue="9862.50" openPrice="98.50"
+                      costBasisPrice="99.305" costBasisMoney="9930.50"
+                      percentOfNAV="9.86" fifoPnlUnrealized="-68.00"
+                      side="Long" levelOfDetail="LOT" openDateTime="2025-01-15;100000"
+                      holdingPeriodDateTime="2025-01-15;100000"
+                      vestingDate="" code="" originatingOrderID="456789012"
+                      originatingTransactionID="654321098" accruedInt="75.50" />
+
+        <!-- Corporate Bond Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="BOND" symbol="AAPL 3.85 08/04/46" description="APPLE INC 3.85% 08/04/2046"
+                      conid="88888881" securityID="037833CJ9" securityIDType="CUSIP" cusip="037833CJ9"
+                      isin="US037833CJ94" underlyingConid="" underlyingSymbol=""
+                      issuer="APPLE INC" multiplier="1" strike="" expiry="2046-08-04" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="5000"
+                      markPrice="95.50" positionValue="4775.00" openPrice="95.25"
+                      costBasisPrice="96.30" costBasisMoney="4815.00"
+                      percentOfNAV="4.78" fifoPnlUnrealized="-40.00"
+                      side="Long" levelOfDetail="LOT" openDateTime="2025-01-15;110000"
+                      holdingPeriodDateTime="2025-01-15;110000"
+                      vestingDate="" code="" originatingOrderID="456789013"
+                      originatingTransactionID="654321099" accruedInt="47.50" />
+
+        <!-- Municipal Bond Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+                      assetCategory="BOND" symbol="NYC GO 5.0 08/01/34" description="NEW YORK CITY NY 5.0% 08/01/2034"
+                      conid="77777771" securityID="64966QBE7" securityIDType="CUSIP" cusip="64966QBE7"
+                      isin="US64966QBE73" underlyingConid="" underlyingSymbol=""
+                      issuer="NEW YORK CITY" multiplier="1" strike="" expiry="2034-08-01" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="10000"
+                      markPrice="102.875" positionValue="10287.50" openPrice="102.75"
+                      costBasisPrice="103.50" costBasisMoney="10350.00"
+                      percentOfNAV="10.29" fifoPnlUnrealized="-62.50"
+                      side="Long" levelOfDetail="LOT" openDateTime="2025-01-15;130000"
+                      holdingPeriodDateTime="2025-01-15;130000"
+                      vestingDate="" code="" originatingOrderID="456789014"
+                      originatingTransactionID="654321100" accruedInt="70.00" />
+      </OpenPositions>
+
+      <!-- Cash Transactions for Bonds -->
+      <CashTransactions>
+        <!-- Bond Commissions -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="BOND" symbol="" description="Bond Commissions"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;150000" amount="-20.00" type="Other Fees"
+                         tradeID="" code="" transactionID="444441" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Bond Interest Payment -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="BOND" symbol="T 4.5 11/15/33"
+                         description="US TREASURY BOND 4.5% 11/15/2033 Interest"
+                         conid="99999999" securityID="912810TW4" securityIDType="CUSIP"
+                         cusip="912810TW4" isin="US912810TW46" underlyingConid=""
+                         underlyingSymbol="" issuer="US TREASURY" multiplier="1"
+                         strike="" expiry="2033-11-15" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="225.00" type="Bond Interest"
+                         tradeID="" code="" transactionID="444442" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Realized P&amp;L from Bond Sale -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="BOND" symbol="MSFT 3.5 11/15/42"
+                         description="MICROSOFT CORP 3.5% 11/15/2042"
+                         conid="66666661" securityID="594918BV9" securityIDType="CUSIP"
+                         cusip="594918BV9" isin="US594918BV94" underlyingConid=""
+                         underlyingSymbol="" issuer="MICROSOFT CORP" multiplier="1"
+                         strike="" expiry="2042-11-15" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;120000" amount="665.00" type="Realized P/L"
+                         tradeID="33333333" code="P" transactionID="444443" reportDate="2025-01-15"
+                         clientReference="" />
+      </CashTransactions>
+
+      <!-- Corporate Actions - none for bonds -->
+      <CorporateActions />
+
+      <!-- Securities Info for Bonds -->
+      <SecuritiesInfo>
+        <SecurityInfo assetCategory="BOND" symbol="T 4.5 11/15/33" description="US TREASURY BOND 4.5% 11/15/2033"
+                      conid="99999999" securityID="912810TW4" securityIDType="CUSIP" cusip="912810TW4"
+                      isin="US912810TW46" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="US TREASURY" multiplier="1" strike="" expiry="2033-11-15"
+                      putCall="" principalAdjustFactor="" maturity="2033-11-15" issueDate="2003-11-15"
+                      underlyingCategory="" subCategory="T-NOTE" code="" />
+
+        <SecurityInfo assetCategory="BOND" symbol="AAPL 3.85 08/04/46" description="APPLE INC 3.85% 08/04/2046"
+                      conid="88888881" securityID="037833CJ9" securityIDType="CUSIP" cusip="037833CJ9"
+                      isin="US037833CJ94" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="APPLE INC" multiplier="1" strike="" expiry="2046-08-04"
+                      putCall="" principalAdjustFactor="" maturity="2046-08-04" issueDate="2016-08-04"
+                      underlyingCategory="" subCategory="CORP" code="" />
+
+        <SecurityInfo assetCategory="BOND" symbol="NYC GO 5.0 08/01/34" description="NEW YORK CITY NY 5.0% 08/01/2034"
+                      conid="77777771" securityID="64966QBE7" securityIDType="CUSIP" cusip="64966QBE7"
+                      isin="US64966QBE73" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="NEW YORK CITY" multiplier="1" strike="" expiry="2034-08-01"
+                      putCall="" principalAdjustFactor="" maturity="2034-08-01" issueDate="2014-08-01"
+                      underlyingCategory="" subCategory="MUNI" code="" />
+
+        <SecurityInfo assetCategory="BOND" symbol="MSFT 3.5 11/15/42" description="MICROSOFT CORP 3.5% 11/15/2042"
+                      conid="66666661" securityID="594918BV9" securityIDType="CUSIP" cusip="594918BV9"
+                      isin="US594918BV94" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="MICROSOFT CORP" multiplier="1" strike="" expiry="2042-11-15"
+                      putCall="" principalAdjustFactor="" maturity="2042-11-15" issueDate="2012-11-15"
+                      underlyingCategory="" subCategory="CORP" code="" />
+      </SecuritiesInfo>
+
+      <ConversionRates>
+        <ConversionRate reportDate="2025-01-15" fromCurrency="USD" toCurrency="USD" rate="1" />
+      </ConversionRates>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

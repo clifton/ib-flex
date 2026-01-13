@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity Query" type="AF">
+    <FlexStatements count="1">
+        <FlexStatement accountId="U1234567" fromDate="2025-01-01" toDate="2025-01-31"
+                       period="Last30Days" whenGenerated="2025-01-31;235959">
+
+            <!-- Trades Section -->
+            <Trades>
+                <!-- Stock trade -->
+                <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                       fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC"
+                       conid="265598" securityID="" securityIDType="" cusip="" isin="" listingExchange="NASDAQ"
+                       underlyingConid="" underlyingSymbol="" underlyingSecurityID="" underlyingListingExchange=""
+                       issuer="" multiplier="1" strike="" expiry="" putCall="" principalAdjustFactor=""
+                       transactionType="ExchTrade" tradeID="123456789" orderID="987654321" execID="0000e1a2.65b3c4d5.01.01"
+                       brokerageOrderID="" orderReference="" volatilityOrderLink="" exchOrderId="" extExecID=""
+                       orderTime="2025-01-15;093000" dateTime="2025-01-15;093015" tradeDate="2025-01-15"
+                       tradeTime="093015" settleDateTarget="2025-01-17" transactionID="567890123"
+                       buySell="BUY" quantity="100" price="185.50" amount="-18550.00"
+                       proceeds="-18550.00" taxes="0" ibCommission="-1.00" ibCommissionCurrency="USD"
+                       netCash="-18551.00" closePrice="186.25" openCloseIndicator="O" notes=""
+                       cost="18551.00" fifoPnlRealized="0" fxPnl="0" mtmPnl="75.00"
+                       origTradePrice="" origTradeDate="" origTradeID="" origTransactionID=""
+                       openDateTime="" holdingPeriodDateTime="" whenRealized="" whenReopened=""
+                       levelOfDetail="EXECUTION" changeInPrice="0.75" changeInQuantity="0"
+                       orderType="LMT" traderID="" isAPIOrder="N" />
+
+                <!-- Option trade -->
+                <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                       fxRateToBase="1" assetCategory="OPT" symbol="AAPL  250221C00180000" description="AAPL 21FEB25 180.0 C"
+                       conid="622145678" securityID="" securityIDType="" cusip="" isin="" listingExchange="CBOE"
+                       underlyingConid="265598" underlyingSymbol="AAPL" underlyingSecurityID="" underlyingListingExchange="NASDAQ"
+                       issuer="" multiplier="100" strike="180" expiry="2025-02-21" putCall="C" principalAdjustFactor=""
+                       transactionType="ExchTrade" tradeID="123456790" orderID="987654322" execID="0000e1a2.65b3c4d6.01.01"
+                       brokerageOrderID="" orderReference="" volatilityOrderLink="" exchOrderId="" extExecID=""
+                       orderTime="2025-01-16;140000" dateTime="2025-01-16;140030" tradeDate="2025-01-16"
+                       tradeTime="140030" settleDateTarget="2025-01-17" transactionID="567890124"
+                       buySell="SELL" quantity="-1" price="7.50" amount="750.00"
+                       proceeds="750.00" taxes="0" ibCommission="-0.65" ibCommissionCurrency="USD"
+                       netCash="749.35" closePrice="7.25" openCloseIndicator="O" notes=""
+                       cost="-749.35" fifoPnlRealized="0" fxPnl="0" mtmPnl="-25.00"
+                       origTradePrice="" origTradeDate="" origTradeID="" origTransactionID=""
+                       openDateTime="" holdingPeriodDateTime="" whenRealized="" whenReopened=""
+                       levelOfDetail="EXECUTION" changeInPrice="-0.25" changeInQuantity="0"
+                       orderType="LMT" traderID="" isAPIOrder="N" />
+            </Trades>
+
+            <!-- Open Positions Section -->
+            <OpenPositions>
+                <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                              fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC"
+                              conid="265598" securityID="" securityIDType="" cusip="" isin="" listingExchange="NASDAQ"
+                              underlyingConid="" underlyingSymbol="" underlyingSecurityID="" underlyingListingExchange=""
+                              issuer="" multiplier="1" strike="" expiry="" putCall="" principalAdjustFactor=""
+                              reportDate="2025-01-31" position="100" markPrice="186.25" positionValue="18625.00"
+                              openPrice="185.51" costBasisPrice="185.51" costBasisMoney="18551.00"
+                              percentOfNAV="2.5" fifoPnlUnrealized="74.00" side="Long"
+                              levelOfDetail="LOT" openDateTime="" holdingPeriodDateTime=""
+                              code="" originatingOrderID="" originatingTransactionID="" accruedInt="" />
+
+                <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                              fxRateToBase="1" assetCategory="OPT" symbol="AAPL  250221C00180000"
+                              description="AAPL 21FEB25 180.0 C"
+                              conid="622145678" securityID="" securityIDType="" cusip="" isin="" listingExchange="CBOE"
+                              underlyingConid="265598" underlyingSymbol="AAPL" underlyingSecurityID="" underlyingListingExchange="NASDAQ"
+                              issuer="" multiplier="100" strike="180" expiry="2025-02-21" putCall="C" principalAdjustFactor=""
+                              reportDate="2025-01-31" position="-1" markPrice="7.25" positionValue="-725.00"
+                              openPrice="7.50" costBasisPrice="7.50" costBasisMoney="-750.00"
+                              percentOfNAV="-0.1" fifoPnlUnrealized="25.00" side="Short"
+                              levelOfDetail="LOT" openDateTime="" holdingPeriodDateTime=""
+                              code="" originatingOrderID="" originatingTransactionID="" accruedInt="" />
+            </OpenPositions>
+
+            <!-- Cash Transactions Section -->
+            <CashTransactions>
+                <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                                 fxRateToBase="1" assetCategory="" symbol="" description="ELECTRONIC FUND TRANSFER"
+                                 conid="" securityID="" securityIDType="" cusip="" isin="" underlyingConid=""
+                                 underlyingSymbol="" issuer="" multiplier="" strike="" expiry="" putCall=""
+                                 principalAdjustFactor="" date="2025-01-02" dateTime="2025-01-02;120000"
+                                 amount="10000.00" type="Deposits & Withdrawals" tradeID="" code="" transactionID="567890125"
+                                 reportDate="2025-01-02" clientReference="" levelOfDetail="DETAIL" />
+
+                <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                                 fxRateToBase="1" assetCategory="STK" symbol="MSFT" description="MICROSOFT CORPORATION - DIVIDEND"
+                                 conid="272093" securityID="" securityIDType="" cusip="" isin="" underlyingConid=""
+                                 underlyingSymbol="" issuer="" multiplier="1" strike="" expiry="" putCall=""
+                                 principalAdjustFactor="" date="2025-01-10" dateTime="2025-01-10;000000"
+                                 amount="37.50" type="Dividends" tradeID="" code="" transactionID="567890126"
+                                 reportDate="2025-01-10" clientReference="" levelOfDetail="DETAIL" />
+
+                <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                                 fxRateToBase="1" assetCategory="" symbol="" description="USD CREDIT INTEREST FOR JAN-2025"
+                                 conid="" securityID="" securityIDType="" cusip="" isin="" underlyingConid=""
+                                 underlyingSymbol="" issuer="" multiplier="" strike="" expiry="" putCall=""
+                                 principalAdjustFactor="" date="2025-01-31" dateTime="2025-01-31;000000"
+                                 amount="12.45" type="Broker Interest Paid" tradeID="" code="" transactionID="567890127"
+                                 reportDate="2025-01-31" clientReference="" levelOfDetail="DETAIL" />
+            </CashTransactions>
+
+            <!-- Corporate Actions Section -->
+            <CorporateActions>
+                <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                                 fxRateToBase="1" assetCategory="STK" symbol="GOOGL" description="ALPHABET INC-CL A"
+                                 conid="208813719" securityID="" securityIDType="" cusip="" isin="" underlyingConid=""
+                                 underlyingSymbol="" issuer="" multiplier="1" strike="" expiry="" putCall=""
+                                 principalAdjustFactor="" date="2025-01-20" dateTime="2025-01-20;000000"
+                                 amount="0" proceeds="0" value="0" quantity="0" fifoPnlRealized="0"
+                                 type="Stock Split" code="" description="ALPHABET INC-CL A(US02079K3059) Split 2 for 1"
+                                 actionID="123456" transactionID="567890128" reportDate="2025-01-20"
+                                 levelOfDetail="DETAIL" />
+            </CorporateActions>
+
+            <!-- Securities Info Section -->
+            <SecuritiesInfo>
+                <SecurityInfo assetCategory="STK" symbol="AAPL" description="APPLE INC"
+                              conid="265598" securityID="037833100" securityIDType="CUSIP"
+                              cusip="037833100" isin="US0378331005" listingExchange="NASDAQ"
+                              underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                              underlyingListingExchange="" issuer="" multiplier="1" strike="" expiry=""
+                              putCall="" principalAdjustFactor="" currency="USD" />
+
+                <SecurityInfo assetCategory="OPT" symbol="AAPL  250221C00180000" description="AAPL 21FEB25 180.0 C"
+                              conid="622145678" securityID="" securityIDType=""
+                              cusip="" isin="" listingExchange="CBOE"
+                              underlyingConid="265598" underlyingSymbol="AAPL" underlyingSecurityID="037833100"
+                              underlyingListingExchange="NASDAQ" issuer="" multiplier="100" strike="180"
+                              expiry="2025-02-21" putCall="C" principalAdjustFactor="" currency="USD" />
+
+                <SecurityInfo assetCategory="STK" symbol="MSFT" description="MICROSOFT CORPORATION"
+                              conid="272093" securityID="594918104" securityIDType="CUSIP"
+                              cusip="594918104" isin="US5949181045" listingExchange="NASDAQ"
+                              underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                              underlyingListingExchange="" issuer="" multiplier="1" strike="" expiry=""
+                              putCall="" principalAdjustFactor="" currency="USD" />
+            </SecuritiesInfo>
+
+            <!-- Conversion Rates Section -->
+            <ConversionRates>
+                <ConversionRate reportDate="2025-01-31" fromCurrency="USD" toCurrency="USD" rate="1.000000" />
+                <ConversionRate reportDate="2025-01-31" fromCurrency="EUR" toCurrency="USD" rate="1.080500" />
+                <ConversionRate reportDate="2025-01-31" fromCurrency="GBP" toCurrency="USD" rate="1.267800" />
+            </ConversionRates>
+
+        </FlexStatement>
+    </FlexStatements>
+</FlexQueryResponse>

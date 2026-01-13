@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+
+      <!-- Forex Trades -->
+      <Trades>
+        <!-- EUR.USD Buy -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="CASH" symbol="EUR.USD" description="EUR vs USD"
+               conid="12087792" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="" underlyingSymbol=""
+               issuer="" multiplier="1" strike="" expiry="" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17" transactionType="ExchTrade" exchange="IDEALFX"
+               quantity="50000" tradePrice="1.0850" tradeMoney="54250" proceeds="-54250.00"
+               taxes="0" ibCommission="-2.00" ibCommissionCurrency="USD"
+               netCash="-54252.00" closePrice="1.0855" openCloseIndicator="O"
+               notes="" cost="54252.00" fifoPnlRealized="0" mtmPnl="25" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- GBP.USD Sell -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="CASH" symbol="GBP.USD" description="GBP vs USD"
+               conid="12087797" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="" underlyingSymbol=""
+               issuer="" multiplier="1" strike="" expiry="" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17" transactionType="ExchTrade" exchange="IDEALFX"
+               quantity="-30000" tradePrice="1.2750" tradeMoney="-38250" proceeds="38250.00"
+               taxes="0" ibCommission="-2.00" ibCommissionCurrency="USD"
+               netCash="38248.00" closePrice="1.2745" openCloseIndicator="O"
+               notes="" cost="-38248.00" fifoPnlRealized="0" mtmPnl="15" capitalGainsPnl="0"
+               fxPnl="0" orderType="MKT" traderID="" isAPIOrder="Y"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- USD.JPY Buy -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="CASH" symbol="USD.JPY" description="USD vs JPY"
+               conid="15016062" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="" underlyingSymbol=""
+               issuer="" multiplier="1" strike="" expiry="" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17" transactionType="ExchTrade" exchange="IDEALFX"
+               quantity="2000000" tradePrice="148.50" tradeMoney="2000000" proceeds="-13468.01"
+               taxes="0" ibCommission="-2.00" ibCommissionCurrency="USD"
+               netCash="-13470.01" closePrice="148.75" openCloseIndicator="O"
+               notes="" cost="13470.01" fifoPnlRealized="0" mtmPnl="33.67" capitalGainsPnl="0"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+
+        <!-- AUD.USD Close Position -->
+        <Trade accountId="U1234567" acctAlias="Test Account" model="" currency="USD" fxRateToBase="1"
+               assetCategory="CASH" symbol="AUD.USD" description="AUD vs USD"
+               conid="15016058" securityID="" securityIDType="" cusip="" isin=""
+               underlyingConid="" underlyingSymbol=""
+               issuer="" multiplier="1" strike="" expiry="" putCall=""
+               principalAdjustFactor="" date="2025-01-15" tradeDate="2025-01-15"
+               settleDateTarget="2025-01-17" transactionType="ExchTrade" exchange="IDEALFX"
+               quantity="-40000" tradePrice="0.6550" tradeMoney="-26200" proceeds="26200.00"
+               taxes="0" ibCommission="-2.00" ibCommissionCurrency="USD"
+               netCash="26198.00" closePrice="0.6550" openCloseIndicator="C"
+               notes="" cost="-26198.00" fifoPnlRealized="402.00" mtmPnl="0" capitalGainsPnl="402.00"
+               fxPnl="0" orderType="LMT" traderID="" isAPIOrder="N"
+               accruedInt="0" serialNumber="" deliveryType="" commodityType="" fineness="0"
+               weight="0" />
+      </Trades>
+
+      <!-- Open Forex Positions -->
+      <OpenPositions>
+        <!-- EUR Long Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="EUR" fxRateToBase="1.0855"
+                      assetCategory="CASH" symbol="EUR.USD" description="EUR vs USD"
+                      conid="12087792" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol=""
+                      issuer="" multiplier="1" strike="" expiry="" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="50000"
+                      markPrice="1.0855" positionValue="54275" openPrice="1.0850"
+                      costBasisPrice="1.08504" costBasisMoney="54252.00"
+                      percentOfNAV="0.54" fifoPnlUnrealized="23.00"
+                      side="Long" levelOfDetail="LOT" openDateTime="2025-01-15;093000"
+                      holdingPeriodDateTime="2025-01-15;093000"
+                      vestingDate="" code="" originatingOrderID="345678901"
+                      originatingTransactionID="765432109" accruedInt="" />
+
+        <!-- GBP Short Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="GBP" fxRateToBase="1.2745"
+                      assetCategory="CASH" symbol="GBP.USD" description="GBP vs USD"
+                      conid="12087797" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol=""
+                      issuer="" multiplier="1" strike="" expiry="" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="-30000"
+                      markPrice="1.2745" positionValue="-38235" openPrice="1.2750"
+                      costBasisPrice="1.27493" costBasisMoney="-38248.00"
+                      percentOfNAV="-0.38" fifoPnlUnrealized="13.00"
+                      side="Short" levelOfDetail="LOT" openDateTime="2025-01-15;100000"
+                      holdingPeriodDateTime="2025-01-15;100000"
+                      vestingDate="" code="" originatingOrderID="345678902"
+                      originatingTransactionID="765432110" accruedInt="" />
+
+        <!-- JPY Long Position -->
+        <OpenPosition accountId="U1234567" acctAlias="Test Account" model="" currency="JPY" fxRateToBase="0.00672215"
+                      assetCategory="CASH" symbol="USD.JPY" description="USD vs JPY"
+                      conid="15016062" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol=""
+                      issuer="" multiplier="1" strike="" expiry="" putCall=""
+                      principalAdjustFactor="" reportDate="2025-01-15" position="2000000"
+                      markPrice="148.75" positionValue="13444.30" openPrice="148.50"
+                      costBasisPrice="148.50" costBasisMoney="13470.01"
+                      percentOfNAV="0.13" fifoPnlUnrealized="33.67"
+                      side="Long" levelOfDetail="LOT" openDateTime="2025-01-15;110000"
+                      holdingPeriodDateTime="2025-01-15;110000"
+                      vestingDate="" code="" originatingOrderID="345678903"
+                      originatingTransactionID="765432111" accruedInt="" />
+      </OpenPositions>
+
+      <!-- Cash Transactions for Forex -->
+      <CashTransactions>
+        <!-- Forex Commissions -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="CASH" symbol="" description="Forex Commissions"
+                         conid="" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;150000" amount="-8.00" type="Other Fees"
+                         tradeID="" code="" transactionID="333331" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Realized P&amp;L from AUD Close -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="CASH" symbol="AUD.USD" description="AUD vs USD"
+                         conid="15016058" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier="1"
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;140000" amount="402.00" type="Realized P/L"
+                         tradeID="22222222" code="P" transactionID="333332" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Forex Interest Credit -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="CASH" symbol="EUR.USD" description="EUR vs USD Interest"
+                         conid="12087792" securityID="" securityIDType="" cusip="" isin=""
+                         underlyingConid="" underlyingSymbol="" issuer="" multiplier="1"
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="2.50" type="Broker Interest Paid"
+                         tradeID="" code="" transactionID="333333" reportDate="2025-01-15"
+                         clientReference="" />
+      </CashTransactions>
+
+      <!-- Corporate Actions - none for forex -->
+      <CorporateActions />
+
+      <!-- Securities Info for Forex -->
+      <SecuritiesInfo>
+        <SecurityInfo assetCategory="CASH" symbol="EUR.USD" description="EUR vs USD"
+                      conid="12087792" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="" multiplier="1" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="CASH" symbol="GBP.USD" description="GBP vs USD"
+                      conid="12087797" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="" multiplier="1" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="CASH" symbol="USD.JPY" description="USD vs JPY"
+                      conid="15016062" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="" multiplier="1" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="CASH" symbol="AUD.USD" description="AUD vs USD"
+                      conid="15016058" securityID="" securityIDType="" cusip="" isin=""
+                      underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="" multiplier="1" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+      </SecuritiesInfo>
+
+      <ConversionRates>
+        <ConversionRate reportDate="2025-01-15" fromCurrency="USD" toCurrency="USD" rate="1" />
+        <ConversionRate reportDate="2025-01-15" fromCurrency="EUR" toCurrency="USD" rate="1.0855" />
+        <ConversionRate reportDate="2025-01-15" fromCurrency="GBP" toCurrency="USD" rate="1.2745" />
+        <ConversionRate reportDate="2025-01-15" fromCurrency="JPY" toCurrency="USD" rate="0.00672215" />
+        <ConversionRate reportDate="2025-01-15" fromCurrency="AUD" toCurrency="USD" rate="0.6550" />
+      </ConversionRates>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>

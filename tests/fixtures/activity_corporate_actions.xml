@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity" type="AF">
+  <FlexStatements count="1">
+    <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                   period="LastBusinessDay" whenGenerated="2025-01-15;150000">
+
+      <!-- Trades - empty for this fixture -->
+      <Trades />
+
+      <!-- Positions - empty for this fixture -->
+      <OpenPositions />
+
+      <!-- Cash Transactions related to corporate actions -->
+      <CashTransactions>
+        <!-- Dividend Payment -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC - Dividend"
+                         conid="265598" securityID="" securityIDType="" cusip="037833100" isin="US0378331005"
+                         underlyingConid="" underlyingSymbol="" issuer="APPLE INC" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="100.00" type="Dividends"
+                         tradeID="" code="" transactionID="555551" reportDate="2025-01-15"
+                         clientReference="" />
+
+        <!-- Withholding Tax on Dividend -->
+        <CashTransaction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC - Withholding Tax"
+                         conid="265598" securityID="" securityIDType="" cusip="037833100" isin="US0378331005"
+                         underlyingConid="" underlyingSymbol="" issuer="APPLE INC" multiplier=""
+                         strike="" expiry="" putCall="" principalAdjustFactor=""
+                         dateTime="2025-01-15;000000" amount="-10.00" type="Withholding Tax"
+                         tradeID="" code="" transactionID="555552" reportDate="2025-01-15"
+                         clientReference="" />
+      </CashTransactions>
+
+      <!-- Corporate Actions -->
+      <CorporateActions>
+        <!-- Cash Dividend -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC"
+                         conid="265598" securityID="" securityIDType="" cusip="037833100"
+                         isin="US0378331005" underlyingConid="" underlyingSymbol=""
+                         issuer="APPLE INC" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="100.00" proceeds="100.00" value="100" quantity="400"
+                         fifoPnlRealized="0" mtmPnl="0" code="" type="DI" />
+
+        <!-- Stock Split (2-for-1) -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="TSLA" description="TESLA INC - 2:1 Split"
+                         conid="76792991" securityID="" securityIDType="" cusip="88160R101"
+                         isin="US88160R1014" underlyingConid="" underlyingSymbol=""
+                         issuer="TESLA INC" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="2" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="0" proceeds="0" value="0" quantity="100"
+                         fifoPnlRealized="0" mtmPnl="0" code="" type="FS" />
+
+        <!-- Spinoff -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="GOOG" description="ALPHABET INC - Spinoff"
+                         conid="208813719" securityID="" securityIDType="" cusip="02079K305"
+                         isin="US02079K3059" underlyingConid="" underlyingSymbol=""
+                         issuer="ALPHABET INC" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="0" proceeds="0" value="1500" quantity="50"
+                         fifoPnlRealized="0" mtmPnl="0" code="" type="SO" />
+
+        <!-- Merger/Acquisition -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="ACQUIRED" description="ACQUIRED CORP - Merger"
+                         conid="11111112" securityID="" securityIDType="" cusip="123456789"
+                         isin="US1234567890" underlyingConid="" underlyingSymbol=""
+                         issuer="ACQUIRED CORP" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="5000.00" proceeds="5000.00" value="5000" quantity="-100"
+                         fifoPnlRealized="1500.00" mtmPnl="0" code="" type="TC" />
+
+        <!-- Rights Issue -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP - Rights"
+                         conid="272093" securityID="" securityIDType="" cusip="594918104"
+                         isin="US5949181045" underlyingConid="" underlyingSymbol=""
+                         issuer="MICROSOFT CORP" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="0" proceeds="0" value="0" quantity="20"
+                         fifoPnlRealized="0" mtmPnl="0" code="" type="RI" />
+
+        <!-- Stock Dividend -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="NVDA" description="NVIDIA CORP - Stock Dividend"
+                         conid="4815747" securityID="" securityIDType="" cusip="67066G104"
+                         isin="US67066G1040" underlyingConid="" underlyingSymbol=""
+                         issuer="NVIDIA CORP" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="0" proceeds="0" value="2500" quantity="10"
+                         fifoPnlRealized="0" mtmPnl="0" code="" type="SD" />
+
+        <!-- Reverse Split (1-for-10) -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="SPLIT" description="SPLIT CORP - 1:10 Reverse"
+                         conid="22222223" securityID="" securityIDType="" cusip="987654321"
+                         isin="US9876543210" underlyingConid="" underlyingSymbol=""
+                         issuer="SPLIT CORP" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="0.1" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="0" proceeds="0" value="0" quantity="-900"
+                         fifoPnlRealized="0" mtmPnl="0" code="" type="RS" />
+
+        <!-- Delisting -->
+        <CorporateAction accountId="U1234567" acctAlias="Test Account" model="" currency="USD"
+                         fxRateToBase="1" assetCategory="STK" symbol="DELIST" description="DELIST CORP - Delisted"
+                         conid="33333334" securityID="" securityIDType="" cusip="555555555"
+                         isin="US5555555555" underlyingConid="" underlyingSymbol=""
+                         issuer="DELIST CORP" multiplier="" strike="" expiry="" putCall=""
+                         principalAdjustFactor="" reportDate="2025-01-15" dateTime="2025-01-15;000000"
+                         amount="0" proceeds="0" value="0" quantity="-50"
+                         fifoPnlRealized="-500.00" mtmPnl="0" code="" type="DW" />
+      </CorporateActions>
+
+      <!-- Securities Info for Corporate Actions -->
+      <SecuritiesInfo>
+        <SecurityInfo assetCategory="STK" symbol="AAPL" description="APPLE INC"
+                      conid="265598" securityID="" securityIDType="" cusip="037833100"
+                      isin="US0378331005" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="APPLE INC" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="STK" symbol="TSLA" description="TESLA INC"
+                      conid="76792991" securityID="" securityIDType="" cusip="88160R101"
+                      isin="US88160R1014" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="TESLA INC" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="2" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="STK" symbol="GOOG" description="ALPHABET INC"
+                      conid="208813719" securityID="" securityIDType="" cusip="02079K305"
+                      isin="US02079K3059" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="ALPHABET INC" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP"
+                      conid="272093" securityID="" securityIDType="" cusip="594918104"
+                      isin="US5949181045" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="MICROSOFT CORP" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+
+        <SecurityInfo assetCategory="STK" symbol="NVDA" description="NVIDIA CORP"
+                      conid="4815747" securityID="" securityIDType="" cusip="67066G104"
+                      isin="US67066G1040" underlyingConid="" underlyingSymbol="" underlyingSecurityID=""
+                      issuer="NVIDIA CORP" multiplier="" strike="" expiry=""
+                      putCall="" principalAdjustFactor="" maturity="" issueDate=""
+                      underlyingCategory="" subCategory="" code="" />
+      </SecuritiesInfo>
+
+      <ConversionRates>
+        <ConversionRate reportDate="2025-01-15" fromCurrency="USD" toCurrency="USD" rate="1" />
+      </ConversionRates>
+
+    </FlexStatement>
+  </FlexStatements>
+</FlexQueryResponse>
