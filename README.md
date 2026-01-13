@@ -6,7 +6,7 @@
 
 Pure Rust parser for Interactive Brokers FLEX XML statements with comprehensive type safety and edge case coverage.
 
-**Status**: v0.1.0 Complete - Production Ready
+**Status**: v0.1.0 Complete
 
 Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML statements. Built with zero external dependencies beyond XML/serde, featuring 100+ enum variants, comprehensive edge case handling, and excellent performance (~6.5µs for minimal parsing).
 
@@ -18,7 +18,7 @@ Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML stateme
 - ✅ **Type-safe** with 15 enums covering 100+ variants
 - 🔧 **Zero dependencies** beyond XML/serde ecosystem
 - 📦 **Comprehensive coverage** of Activity FLEX statements
-- 🛡️ **Production-ready** with 73 tests (100% passing), zero warnings
+- 🛡️ **Well-tested** with 73 tests (100% passing), zero warnings
 - 🎯 **Edge case handling** for warrants, T-Bills, CFDs, fractional shares, cancelled trades
 
 ## Installation
@@ -243,6 +243,6 @@ at your option.
 
 ---
 
-**Status**: v0.1.0 Complete - Production Ready (73/73 tests passing, zero warnings)
+**Status**: v0.1.0 Complete (73/73 tests passing, zero warnings)
 
 See [PLAN.md](PLAN.md) for detailed implementation statistics and [EDGE_CASES_SUMMARY.md](EDGE_CASES_SUMMARY.md) for edge case coverage.

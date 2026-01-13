@@ -15,7 +15,7 @@
 
 1. **Zero dependencies** beyond XML parsing (quick-xml, serde)
 2. **Type-safe** parsing with strong financial types (rust_decimal, chrono)
-3. **Production-ready** with comprehensive tests, docs, and examples
+3. **Well-tested** with comprehensive tests, docs, and examples
 4. **High performance** using quick-xml with serde support
 5. **Community-friendly** with clear documentation and contribution guidelines
 
