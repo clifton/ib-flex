@@ -25,11 +25,20 @@ chrono = { version = "0.4", features = ["serde"] }
 # Error handling
 thiserror = "1.0"
 
+# HTTP client for FLEX Web Service API (optional)
+reqwest = { version = "0.12", optional = true }
+tokio = { version = "1.0", features = ["rt-multi-thread", "macros"], optional = true }
+
 [dev-dependencies]
 anyhow = "1.0"
 criterion = "0.5"
 proptest = "1.4"
 rand = "0.8"
+tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
+
+[features]
+default = []
+api-client = ["reqwest", "tokio"]
 
 [[bench]]
 name = "parsing_benchmarks"
