@@ -18,8 +18,9 @@ Fast, type-safe parser for Interactive Brokers FLEX (Flex Web Query) XML stateme
 - ✅ **Type-safe** with 15 enums covering 100+ variants
 - 🔧 **Zero dependencies** beyond XML/serde ecosystem
 - 📦 **Comprehensive coverage** of Activity FLEX statements
-- 🛡️ **Well-tested** with 73 tests (100% passing), zero warnings
+- 🛡️ **Well-tested** with 92 tests (100% passing), zero warnings
 - 🎯 **Edge case handling** for warrants, T-Bills, CFDs, fractional shares, cancelled trades
+- 🔍 **Automatic detection** of statement types and schema versions
 
 ## Installation
 
@@ -33,40 +34,24 @@ ib-flex = "0.1"
 ## Quick Start
 
 ```rust
-use ib_flex::{parse_activity_flex, AssetCategory, BuySell};
+use ib_flex::{parse_activity_flex, detect_statement_type, StatementType};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let xml = std::fs::read_to_string("flex_statement.xml")?;
-    let response = parse_activity_flex(&xml)?;
-    let statement = &response.flex_statements[0];
 
-    println!("Account: {}", statement.account_id);
-    println!("Period: {} to {}", statement.from_date, statement.to_date);
-    println!("Generated: {}", response.when_generated);
-
-    // Filter stock trades
-    let stock_trades: Vec<_> = statement.trades
-        .iter()
-        .filter(|t| matches!(t.asset_category, Some(AssetCategory::STK)))
-        .collect();
-
-    println!("Stock trades: {}", stock_trades.len());
-
-    // Calculate total P&L
-    let total_pnl: rust_decimal::Decimal = statement.trades
-        .iter()
-        .filter_map(|t| t.fifo_pnl_realized)
-        .sum();
-
-    println!("Total realized P&L: ${}", total_pnl);
-
-    // Find all buy orders
-    let buys: Vec<_> = statement.trades
-        .iter()
-        .filter(|t| matches!(t.buy_sell, Some(BuySell::BUY)))
-        .collect();
-
-    println!("Buy orders: {}", buys.len());
+    // Automatically detect statement type
+    match detect_statement_type(&xml)? {
+        StatementType::Activity => {
+            let statement = parse_activity_flex(&xml)?;
+            println!("Account: {}", statement.account_id);
+            println!("Trades: {}", statement.trades.items.len());
+        }
+        StatementType::TradeConfirmation => {
+            let statement = ib_flex::parse_trade_confirmation(&xml)?;
+            println!("Account: {}", statement.account_id);
+            println!("Trades: {}", statement.trades.items.len());
+        }
+    }
 
     Ok(())
 }
@@ -106,7 +91,9 @@ Interactive Brokers FLEX queries must be configured in the IB Client Portal:
 - ✅ **Funds, Commodities, and more** - 20 asset categories total
 
 ### Trade Confirmation FLEX
-- 🚧 **Planned for v0.2.0** - Trade execution confirmations
+- ✅ **Trade Confirmations** - Real-time trade execution data
+- ✅ **All trade fields** - Full support for all trade attributes
+- ✅ **Automatic detection** - Detect statement type from XML
 
 ## Performance
 
@@ -133,15 +120,17 @@ All financial values use `rust_decimal::Decimal` for precise calculations withou
 
 ## Examples
 
-The repository includes three complete example programs:
+The repository includes four complete example programs:
 
-1. **parse_activity_statement.rs** - Basic parsing and display
-2. **filter_trades.rs** - Filter by asset class, side, symbol, quantity, P&L, date range
-3. **calculate_commissions.rs** - Analyze commission costs by category
+1. **parse_activity_statement.rs** - Basic Activity FLEX parsing and display
+2. **parse_trade_confirmation.rs** - Trade Confirmation FLEX parsing
+3. **filter_trades.rs** - Filter by asset class, side, symbol, quantity, P&L, date range
+4. **calculate_commissions.rs** - Analyze commission costs by category
 
 Run examples with:
 ```bash
 cargo run --example parse_activity_statement
+cargo run --example parse_trade_confirmation
 cargo run --example filter_trades
 cargo run --example calculate_commissions
 ```

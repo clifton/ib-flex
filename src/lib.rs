@@ -64,6 +64,7 @@ pub use types::{
     ActivityFlexStatement, AssetCategory, BuySell, CashTransaction, CorporateAction, OpenClose,
     OrderType, Position, PutCall, Trade, TradeConfirmationStatement,
 };
+pub use version::FlexSchemaVersion;
 
 /// Parse an Activity FLEX XML statement
 ///

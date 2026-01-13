@@ -9,9 +9,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct TradeConfirmationStatement {
     /// IB account number
+    #[serde(rename = "@accountId")]
     pub account_id: String,
 
     /// Trade executions
-    #[serde(default)]
+    #[serde(rename = "Trades", default)]
     pub trades: super::activity::TradesWrapper,
 }
