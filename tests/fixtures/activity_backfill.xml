@@ -1,0 +1,110 @@
+<FlexQueryResponse queryName="Last X Days Portfolio Feed" type="AF">
+<FlexStatements count="3">
+<FlexStatement accountId="U1234567" fromDate="20250101" toDate="20250101" period="LastNCalendarDays" whenGenerated="20250104;080000">
+<AccountInformation accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" name="Test Portfolio LLC" accountType="Advisor Client" customerType="Partnership" accountCapabilities="Portfolio Margin" tradingPermissions="Stocks,Options,Futures" dateOpened="20240101" dateFunded="20240115" dateClosed="" />
+<EquitySummaryInBase>
+<EquitySummaryByReportDateInBase accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" reportDate="20250101" cash="100000" cashLong="100000" cashShort="0" stock="50000" stockLong="50000" stockShort="0" options="5000" optionsLong="5000" optionsShort="0" bonds="0" bondsLong="0" bondsShort="0" commodities="0" commoditiesLong="0" commoditiesShort="0" total="155000" totalLong="155000" totalShort="0" dividendAccruals="0" interestAccruals="100" />
+</EquitySummaryInBase>
+<ChangeInNAV accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fromDate="20250101" toDate="20250101" startingValue="150000" mtm="3500" realized="1000" changeInUnrealized="500" depositsWithdrawals="0" dividends="0" interest="0" commissions="-50" endingValue="155000" twr="0.033333" />
+<CashReport>
+<CashReportCurrency accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" levelOfDetail="Currency" fromDate="20250101" toDate="20250101" startingCash="100050" endingCash="100000" commissions="-50" dividends="0" brokerInterest="0" netTradesSales="0" netTradesPurchases="0" />
+</CashReport>
+<OpenPositions>
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" multiplier="1" reportDate="20250101" position="100" markPrice="250" positionValue="25000" costBasisPrice="240" costBasisMoney="24000" fifoPnlUnrealized="1000" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" listingExchange="NASDAQ" multiplier="1" reportDate="20250101" position="50" markPrice="500" positionValue="25000" costBasisPrice="480" costBasisMoney="24000" fifoPnlUnrealized="1000" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="OPT" symbol="AAPL  250117C00260000" description="AAPL 17JAN25 260 C" conid="123456789" listingExchange="SMART" multiplier="100" strike="260" expiry="20250117" putCall="C" reportDate="20250101" position="5" markPrice="10" positionValue="5000" costBasisPrice="8" costBasisMoney="4000" fifoPnlUnrealized="1000" side="Long" underlyingSymbol="AAPL" underlyingConid="265598" />
+</OpenPositions>
+<Trades>
+<Trade accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" tradeID="100001" multiplier="1" tradeDate="20250101" dateTime="20250101;103000" buySell="BUY" quantity="50" tradePrice="248" tradeMoney="12400" proceeds="-12400" ibCommission="-25" netCash="-12425" openCloseIndicator="O" fifoPnlRealized="0" mtmPnl="100" exchange="NASDAQ" orderType="LMT" levelOfDetail="EXECUTION" />
+<Trade accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="GOOG" description="ALPHABET INC-CL C" conid="208813719" securityID="US02079K1079" securityIDType="ISIN" cusip="02079K107" isin="US02079K1079" listingExchange="NASDAQ" tradeID="100002" multiplier="1" tradeDate="20250101" dateTime="20250101;140000" buySell="SELL" quantity="-20" tradePrice="180" tradeMoney="-3600" proceeds="3600" ibCommission="-25" netCash="3575" openCloseIndicator="C" fifoPnlRealized="500" mtmPnl="0" exchange="NASDAQ" orderType="MKT" levelOfDetail="EXECUTION" />
+</Trades>
+<CashTransactions>
+<CashTransaction accountId="U1234567" acctAlias="TestAccount" currency="USD" fxRateToBase="1" type="Dividends" amount="150" reportDate="20250101" dateTime="20250101;080000" description="MSFT(US5949181045) CASH DIVIDEND USD 0.75 PER SHARE" symbol="MSFT" conid="272093" />
+</CashTransactions>
+<CorporateActions>
+</CorporateActions>
+<SecuritiesInfo>
+<SecurityInfo assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="GOOG" description="ALPHABET INC-CL C" conid="208813719" securityID="US02079K1079" securityIDType="ISIN" cusip="02079K107" isin="US02079K1079" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+</SecuritiesInfo>
+<ConversionRates>
+<ConversionRate reportDate="20250101" fromCurrency="EUR" toCurrency="USD" rate="1.1050" />
+<ConversionRate reportDate="20250101" fromCurrency="GBP" toCurrency="USD" rate="1.2750" />
+<ConversionRate reportDate="20250101" fromCurrency="CAD" toCurrency="USD" rate="0.7350" />
+</ConversionRates>
+</FlexStatement>
+<FlexStatement accountId="U1234567" fromDate="20250102" toDate="20250102" period="LastNCalendarDays" whenGenerated="20250104;080000">
+<AccountInformation accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" name="Test Portfolio LLC" accountType="Advisor Client" customerType="Partnership" accountCapabilities="Portfolio Margin" tradingPermissions="Stocks,Options,Futures" dateOpened="20240101" dateFunded="20240115" dateClosed="" />
+<EquitySummaryInBase>
+<EquitySummaryByReportDateInBase accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" reportDate="20250102" cash="98000" cashLong="98000" cashShort="0" stock="55000" stockLong="55000" stockShort="0" options="6000" optionsLong="6000" optionsShort="0" bonds="0" bondsLong="0" bondsShort="0" commodities="0" commoditiesLong="0" commoditiesShort="0" total="159000" totalLong="159000" totalShort="0" dividendAccruals="0" interestAccruals="110" />
+</EquitySummaryInBase>
+<ChangeInNAV accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fromDate="20250102" toDate="20250102" startingValue="155000" mtm="4200" realized="0" changeInUnrealized="4000" depositsWithdrawals="0" dividends="0" interest="0" commissions="-200" endingValue="159000" twr="0.025806" />
+<CashReport>
+<CashReportCurrency accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" levelOfDetail="Currency" fromDate="20250102" toDate="20250102" startingCash="100000" endingCash="98000" commissions="-200" dividends="0" brokerInterest="0" netTradesSales="3200" netTradesPurchases="-5000" />
+</CashReport>
+<OpenPositions>
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" multiplier="1" reportDate="20250102" position="100" markPrice="255" positionValue="25500" costBasisPrice="240" costBasisMoney="24000" fifoPnlUnrealized="1500" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" listingExchange="NASDAQ" multiplier="1" reportDate="20250102" position="50" markPrice="510" positionValue="25500" costBasisPrice="480" costBasisMoney="24000" fifoPnlUnrealized="1500" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="NVDA" description="NVIDIA CORP" conid="4815747" securityID="US67066G1040" securityIDType="ISIN" cusip="67066G104" isin="US67066G1040" listingExchange="NASDAQ" multiplier="1" reportDate="20250102" position="10" markPrice="400" positionValue="4000" costBasisPrice="390" costBasisMoney="3900" fifoPnlUnrealized="100" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="OPT" symbol="AAPL  250117C00260000" description="AAPL 17JAN25 260 C" conid="123456789" listingExchange="SMART" multiplier="100" strike="260" expiry="20250117" putCall="C" reportDate="20250102" position="5" markPrice="12" positionValue="6000" costBasisPrice="8" costBasisMoney="4000" fifoPnlUnrealized="2000" side="Long" underlyingSymbol="AAPL" underlyingConid="265598" />
+</OpenPositions>
+<Trades>
+<Trade accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="NVDA" description="NVIDIA CORP" conid="4815747" securityID="US67066G1040" securityIDType="ISIN" cusip="67066G104" isin="US67066G1040" listingExchange="NASDAQ" tradeID="100003" multiplier="1" tradeDate="20250102" dateTime="20250102;093500" buySell="BUY" quantity="10" tradePrice="390" tradeMoney="3900" proceeds="-3900" ibCommission="-100" netCash="-4000" openCloseIndicator="O" fifoPnlRealized="0" mtmPnl="100" exchange="NASDAQ" orderType="LMT" levelOfDetail="EXECUTION" />
+<Trade accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="TSLA" description="TESLA INC" conid="76792991" securityID="US88160R1014" securityIDType="ISIN" cusip="88160R101" isin="US88160R1014" listingExchange="NASDAQ" tradeID="100004" multiplier="1" tradeDate="20250102" dateTime="20250102;110000" buySell="SELL" quantity="-10" tradePrice="420" tradeMoney="-4200" proceeds="4200" ibCommission="-100" netCash="4100" openCloseIndicator="C" fifoPnlRealized="200" mtmPnl="0" exchange="NASDAQ" orderType="MKT" levelOfDetail="EXECUTION" />
+</Trades>
+<CashTransactions>
+<CashTransaction accountId="U1234567" acctAlias="TestAccount" currency="USD" fxRateToBase="1" type="Broker Interest Received" amount="10" reportDate="20250102" dateTime="20250102;080000" description="USD CREDIT INT FOR DEC-2024" />
+</CashTransactions>
+<CorporateActions>
+</CorporateActions>
+<SecuritiesInfo>
+<SecurityInfo assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="NVDA" description="NVIDIA CORP" conid="4815747" securityID="US67066G1040" securityIDType="ISIN" cusip="67066G104" isin="US67066G1040" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="TSLA" description="TESLA INC" conid="76792991" securityID="US88160R1014" securityIDType="ISIN" cusip="88160R101" isin="US88160R1014" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+</SecuritiesInfo>
+<ConversionRates>
+<ConversionRate reportDate="20250102" fromCurrency="EUR" toCurrency="USD" rate="1.1055" />
+<ConversionRate reportDate="20250102" fromCurrency="GBP" toCurrency="USD" rate="1.2760" />
+<ConversionRate reportDate="20250102" fromCurrency="CAD" toCurrency="USD" rate="0.7360" />
+</ConversionRates>
+</FlexStatement>
+<FlexStatement accountId="U1234567" fromDate="20250103" toDate="20250103" period="LastNCalendarDays" whenGenerated="20250104;080000">
+<AccountInformation accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" name="Test Portfolio LLC" accountType="Advisor Client" customerType="Partnership" accountCapabilities="Portfolio Margin" tradingPermissions="Stocks,Options,Futures" dateOpened="20240101" dateFunded="20240115" dateClosed="" />
+<EquitySummaryInBase>
+<EquitySummaryByReportDateInBase accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" reportDate="20250103" cash="95000" cashLong="95000" cashShort="0" stock="60000" stockLong="60000" stockShort="0" options="7500" optionsLong="7500" optionsShort="0" bonds="0" bondsLong="0" bondsShort="0" commodities="0" commoditiesLong="0" commoditiesShort="0" total="162500" totalLong="162500" totalShort="0" dividendAccruals="50" interestAccruals="120" />
+</EquitySummaryInBase>
+<ChangeInNAV accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fromDate="20250103" toDate="20250103" startingValue="159000" mtm="3700" realized="500" changeInUnrealized="3000" depositsWithdrawals="0" dividends="50" interest="10" commissions="-60" endingValue="162500" twr="0.022013" />
+<CashReport>
+<CashReportCurrency accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" levelOfDetail="Currency" fromDate="20250103" toDate="20250103" startingCash="98000" endingCash="95000" commissions="-60" dividends="50" brokerInterest="10" netTradesSales="2000" netTradesPurchases="-5000" />
+</CashReport>
+<OpenPositions>
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" multiplier="1" reportDate="20250103" position="120" markPrice="258" positionValue="30960" costBasisPrice="242" costBasisMoney="29040" fifoPnlUnrealized="1920" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" listingExchange="NASDAQ" multiplier="1" reportDate="20250103" position="50" markPrice="515" positionValue="25750" costBasisPrice="480" costBasisMoney="24000" fifoPnlUnrealized="1750" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="NVDA" description="NVIDIA CORP" conid="4815747" securityID="US67066G1040" securityIDType="ISIN" cusip="67066G104" isin="US67066G1040" listingExchange="NASDAQ" multiplier="1" reportDate="20250103" position="5" markPrice="410" positionValue="2050" costBasisPrice="390" costBasisMoney="1950" fifoPnlUnrealized="100" side="Long" />
+<OpenPosition accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="OPT" symbol="AAPL  250117C00260000" description="AAPL 17JAN25 260 C" conid="123456789" listingExchange="SMART" multiplier="100" strike="260" expiry="20250117" putCall="C" reportDate="20250103" position="5" markPrice="15" positionValue="7500" costBasisPrice="8" costBasisMoney="4000" fifoPnlUnrealized="3500" side="Long" underlyingSymbol="AAPL" underlyingConid="265598" />
+</OpenPositions>
+<Trades>
+<Trade accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" tradeID="100005" multiplier="1" tradeDate="20250103" dateTime="20250103;100000" buySell="BUY" quantity="20" tradePrice="256" tradeMoney="5120" proceeds="-5120" ibCommission="-30" netCash="-5150" openCloseIndicator="O" fifoPnlRealized="0" mtmPnl="40" exchange="NASDAQ" orderType="LMT" levelOfDetail="EXECUTION" />
+<Trade accountId="U1234567" acctAlias="TestAccount" model="" currency="USD" fxRateToBase="1" assetCategory="STK" symbol="NVDA" description="NVIDIA CORP" conid="4815747" securityID="US67066G1040" securityIDType="ISIN" cusip="67066G104" isin="US67066G1040" listingExchange="NASDAQ" tradeID="100006" multiplier="1" tradeDate="20250103" dateTime="20250103;143000" buySell="SELL" quantity="-5" tradePrice="405" tradeMoney="-2025" proceeds="2025" ibCommission="-30" netCash="1995" openCloseIndicator="C" fifoPnlRealized="75" mtmPnl="0" exchange="NASDAQ" orderType="MKT" levelOfDetail="EXECUTION" />
+</Trades>
+<CashTransactions>
+<CashTransaction accountId="U1234567" acctAlias="TestAccount" currency="USD" fxRateToBase="1" type="Dividends" amount="50" reportDate="20250103" dateTime="20250103;080000" description="AAPL(US0378331005) CASH DIVIDEND USD 0.50 PER SHARE" symbol="AAPL" conid="265598" />
+<CashTransaction accountId="U1234567" acctAlias="TestAccount" currency="USD" fxRateToBase="1" type="Broker Interest Received" amount="10" reportDate="20250103" dateTime="20250103;080000" description="USD CREDIT INT FOR DEC-2024" />
+</CashTransactions>
+<CorporateActions>
+</CorporateActions>
+<SecuritiesInfo>
+<SecurityInfo assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" securityIDType="ISIN" cusip="037833100" isin="US0378331005" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="MSFT" description="MICROSOFT CORP" conid="272093" securityID="US5949181045" securityIDType="ISIN" cusip="594918104" isin="US5949181045" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+<SecurityInfo assetCategory="STK" symbol="NVDA" description="NVIDIA CORP" conid="4815747" securityID="US67066G1040" securityIDType="ISIN" cusip="67066G104" isin="US67066G1040" listingExchange="NASDAQ" multiplier="1" currency="USD" />
+</SecuritiesInfo>
+<ConversionRates>
+<ConversionRate reportDate="20250103" fromCurrency="EUR" toCurrency="USD" rate="1.1060" />
+<ConversionRate reportDate="20250103" fromCurrency="GBP" toCurrency="USD" rate="1.2770" />
+<ConversionRate reportDate="20250103" fromCurrency="CAD" toCurrency="USD" rate="0.7370" />
+</ConversionRates>
+</FlexStatement>
+</FlexStatements>
+</FlexQueryResponse>

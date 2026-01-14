@@ -1,14 +1,23 @@
 //! Parse an Activity FLEX statement and display summary
+//!
+//! Usage:
+//!   cargo run --example parse_activity_statement
+//!   cargo run --example parse_activity_statement -- path/to/statement.xml
 
 use ib_flex::parse_activity_flex;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    // Read XML from file or use embedded example
-    let xml = include_str!("../tests/fixtures/activity_minimal.xml");
+    // Read XML from file argument or use embedded example
+    let args: Vec<String> = std::env::args().collect();
+    let xml: std::borrow::Cow<'static, str> = if let Some(path) = args.get(1) {
+        std::fs::read_to_string(path)?.into()
+    } else {
+        include_str!("../tests/fixtures/activity_minimal.xml").into()
+    };
 
     // Parse the statement
-    let statement = parse_activity_flex(xml)?;
+    let statement = parse_activity_flex(&xml)?;
 
     // Display account info
     println!("=== Activity FLEX Statement ===");

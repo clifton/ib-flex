@@ -60,3 +60,24 @@ jobs:
         run: cargo doc --no-deps --document-private-items
         env:
           RUSTDOCFLAGS: -D warnings
+
+  examples:
+    name: Examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci-examples
+          cache-on-failure: true
+      - name: Run parse_activity_statement example
+        run: cargo run --example parse_activity_statement
+      - name: Run filter_trades example
+        run: cargo run --example filter_trades
+      - name: Run calculate_commissions example
+        run: cargo run --example calculate_commissions
+      - name: Run parse_trade_confirmation example
+        run: cargo run --example parse_trade_confirmation
+      - name: Run backfill_summary example
+        run: cargo run --example backfill_summary -- tests/fixtures/activity_backfill.xml
