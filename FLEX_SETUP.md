@@ -109,7 +109,7 @@ This configuration is optimized for **fund portfolio management** with support f
 - Short selling / securities borrowing
 - Options trading
 
-We recommend **18 sections** that provide comprehensive coverage without unnecessary bulk.
+We recommend **19 sections** that provide comprehensive coverage without unnecessary bulk.
 
 ### Important: Models and Realized P&L
 
@@ -117,9 +117,9 @@ We recommend **18 sections** that provide comprehensive coverage without unneces
 >
 > **Workaround**: Calculate realized P&L from the `fifoPnlRealized` field on individual trades in the Trades section.
 
-### Recommended 18 Sections
+### Recommended 19 Sections
 
-#### Core Portfolio (11 sections)
+#### Core Portfolio (12 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
@@ -134,28 +134,31 @@ We recommend **18 sections** that provide comprehensive coverage without unneces
 | 9 | **Open Dividend Accruals** | Pending dividends | Symbol, ExDate, PayDate, Quantity, GrossRate, GrossAmount, NetAmount |
 | 10 | **Interest Accruals** | Interest tracking | StartingAccrualBalance, InterestAccrued, EndingAccrualBalance |
 | 11 | **Transfers** | Asset movements | Type, Direction, Symbol, Quantity, TransferPrice, DateTime |
+| 12 | **Equity Summary by Report Date in Base** | EOD equity breakdown | Total, Cash, Stock, Options, Commodities, Bonds, Funds, Notes, InterestAccruals, DividendAccruals |
+
+> **Note on Margin Monitoring**: The Equity Summary section provides EOD equity breakdown by asset class, useful for tracking portfolio composition. However, **real-time margin requirements** (initial margin, maintenance margin, excess liquidity) are not available in FLEX reports - use the IB API for margin monitoring.
 
 #### Transaction Cost Analysis (3 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 12 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
-| 13 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
-| 14 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
+| 13 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
+| 14 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
+| 15 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
 
 #### Short Selling (3 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 15 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
-| 16 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
-| 17 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
+| 16 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
+| 17 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
+| 18 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
 
 #### Options (1 section)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 18 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
+| 19 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
 
 ### Sections to Skip
 
@@ -269,6 +272,20 @@ For each section, select **all fields** unless noted. Key fields are highlighted
 - `advisorFees`, `otherFees`
 - `withholdingTax`, `transactionTax`
 - `netTradesSales`, `netTradesPurchases`
+
+#### Equity Summary by Report Date in Base Section
+
+- `reportDate` - Date of the equity snapshot
+- `total` - Total equity (net liquidating value)
+- `cash` - Cash and cash equivalents
+- `stock` - Long/short stock value
+- `options` - Options value
+- `commodities` - Futures and commodities value
+- `bonds` - Bond holdings value
+- `funds` - Mutual fund holdings
+- `notes` - IB notes
+- `interestAccruals` - Accrued interest
+- `dividendAccruals` - Accrued dividends
 
 #### Change in NAV Section
 
