@@ -38,6 +38,21 @@
 //! cargo run --example historical_backfill --features api-client -- --period ytd
 //! ```
 
+/// Sanitize a string for safe use in filenames
+///
+/// Replaces path separators and other dangerous characters to prevent
+/// path traversal attacks when using external data in filenames.
+#[cfg(feature = "api-client")]
+fn sanitize_filename(s: &str) -> String {
+    s.chars()
+        .map(|c| match c {
+            '/' | '\\' | '\0' | ':' | '*' | '?' | '"' | '<' | '>' | '|' => '_',
+            _ => c,
+        })
+        .collect::<String>()
+        .replace("..", "__")
+}
+
 #[cfg(feature = "api-client")]
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -96,10 +111,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse the statement
     let statement = ib_flex::parse_activity_flex(&xml)?;
 
-    // Save raw XML
+    // Save raw XML (sanitize account_id to prevent path traversal)
     let xml_filename = format!(
         "{}_{}_to_{}.xml",
-        statement.account_id, statement.from_date, statement.to_date
+        sanitize_filename(&statement.account_id),
+        statement.from_date,
+        statement.to_date
     );
     let xml_path = output_dir.join(&xml_filename);
     fs::write(&xml_path, &xml)?;
@@ -128,10 +145,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  Unrealized P&L: ${:.2}", snapshot.unrealized_pnl);
         }
 
-        // Save daily snapshots as JSON
+        // Save daily snapshots as JSON (sanitize account_id to prevent path traversal)
         let json_filename = format!(
             "{}_{}_to_{}_daily.json",
-            statement.account_id, statement.from_date, statement.to_date
+            sanitize_filename(&statement.account_id),
+            statement.from_date,
+            statement.to_date
         );
         let json_path = output_dir.join(&json_filename);
         let json = serde_json::to_string_pretty(&daily_data)?;
