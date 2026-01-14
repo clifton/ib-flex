@@ -82,8 +82,10 @@ For each section, a configuration window will appear. Select **all fields** or t
 - **Accounts**: Select the account(s) to include
 - **Format**: Select **XML** (required for parsing with ib-flex)
 - **Period**: Select **Last Business Day** for daily feeds
+- **Breakout By Day**: Select **Yes**
+- **Include Currency Rates**: Select **Yes**
 
-<!-- Screenshot placeholder: delivery_configuration.png -->
+<img width="700" height="828" alt="image" src="https://github.com/user-attachments/assets/d3f18e76-6364-49d6-8ede-4c4001d9d2d0" />
 
 ### Step 6: Set General Configuration
 
