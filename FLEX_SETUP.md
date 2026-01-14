@@ -425,10 +425,15 @@ The `ib-flex` library supports specific date formats. **Incorrect formats will c
 | Period | Description | Use Case |
 |--------|-------------|----------|
 | Last Business Day | Previous trading day | **Daily feed (recommended)** |
+| Last 7 Calendar Days | Rolling week | Weekly reconciliation |
+| Last 30 Calendar Days | Rolling month | Monthly catch-up |
+| Last 180 Calendar Days | Rolling 6 months | **Historical backfill** |
+| Last 365 Calendar Days | Rolling year | Annual analysis |
 | Month to Date | Current month | Monthly reconciliation |
 | Year to Date | Current year | Annual analysis |
-| Last 365 Days | Rolling year | Historical analysis |
 | Custom | Specific date range | Ad-hoc queries |
+
+> **💡 Backfill Tip**: Create a query with "Last 180 Calendar Days" or similar, download the XML, then run `cargo run --example backfill_summary -- your_file.xml` to see NAV history, trading activity, and monthly returns.
 
 ---
 
