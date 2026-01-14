@@ -101,135 +101,234 @@ Configure date/time formats as specified in [Configuration Settings](#configurat
 
 ## Recommended Sections and Fields
 
-For comprehensive portfolio management data, enable the following sections. We recommend selecting **all fields** for each section to ensure you capture all potentially useful data.
+This configuration is optimized for **fund portfolio management** with support for:
+- Portfolio tracking and reconciliation
+- Transaction cost analysis (TCA)
+- Short selling / securities borrowing
+- Options trading
 
-### Core Sections (Essential)
+We recommend **18 sections** that provide comprehensive coverage without unnecessary bulk.
 
-| Section | Purpose | Key Use Cases |
-|---------|---------|---------------|
-| **Trades** | Complete execution history | Transaction cost analysis, P&L attribution, trade reconciliation |
-| **Open Positions** | Current holdings snapshot | Risk management, portfolio valuation, exposure analysis |
-| **Cash Transactions** | All cash flows | Dividend tracking, fee analysis, deposit/withdrawal reconciliation |
-| **Corporate Actions** | Stock events | Position adjustments, cost basis tracking |
-| **Securities Info** | Reference data | Security identification, derivative details |
-| **Conversion Rates** | FX rates | Multi-currency reconciliation |
+### Important: Models and Realized P&L
 
-### Extended Sections (Recommended)
+> **Warning**: If you include the "Model" field (for strategy/sleeve tracking), IB disables native Realized P&L sections. This is an IB limitation.
+>
+> **Workaround**: Calculate realized P&L from the `fifoPnlRealized` field on individual trades in the Trades section.
 
-| Section | Purpose | Key Use Cases |
-|---------|---------|---------------|
-| **Change in NAV** | Portfolio value changes | Performance attribution, daily P&L summary |
-| **Equity Summary by Report Date** | Asset allocation | Portfolio composition, diversification analysis |
-| **Cash Report** | Cash flow by currency | Multi-currency cash management |
-| **Trade Confirms** | Execution confirmations | Trade verification |
-| **Option EAE** | Option exercises/assignments/expirations | Options portfolio management |
-| **FX Transactions** | Currency conversions | FX cost tracking |
-| **Change in Dividend Accruals** | Dividend changes | Expected income tracking |
-| **Open Dividend Accruals** | Pending dividends | Cash flow forecasting |
-| **Interest Accruals** | Interest tracking | Margin cost analysis |
-| **Transfers** | Security movements | Account transfer tracking |
+### Recommended 18 Sections
+
+#### Core Portfolio (11 sections)
+
+| # | Section | Purpose | Key Fields |
+|---|---------|---------|------------|
+| 1 | **Account Information** | Account identity | ClientAccountID, AccountAlias, CurrencyPrimary, Name, AccountType |
+| 2 | **Open Positions** | Current holdings | Symbol, Quantity, MarkPrice, PositionValue, CostBasisMoney, FifoPnlUnrealized |
+| 3 | **Trades** | Execution history | TradeID, Symbol, DateTime, Quantity, Price, Proceeds, Commission, FifoPnlRealized |
+| 4 | **Cash Transactions** | Dividends, fees, interest | Type, Symbol, Amount, DateTime, Description |
+| 5 | **Cash Report** | Cash flow summary | StartingCash, EndingCash, Dividends, Commissions, Deposits, Withdrawals |
+| 6 | **Change in NAV** | Performance tracking | StartingValue, EndingValue, Mtm, Realized, ChangeInUnrealized, TWR |
+| 7 | **Corporate Actions** | Splits, mergers, spinoffs | Type, Symbol, Quantity, Amount, Proceeds, ActionDescription |
+| 8 | **Financial Instrument Information** | Security master data | Conid, Symbol, CUSIP, ISIN, FIGI, AssetClass, Multiplier, Strike, Expiry |
+| 9 | **Open Dividend Accruals** | Pending dividends | Symbol, ExDate, PayDate, Quantity, GrossRate, GrossAmount, NetAmount |
+| 10 | **Interest Accruals** | Interest tracking | StartingAccrualBalance, InterestAccrued, EndingAccrualBalance |
+| 11 | **Transfers** | Asset movements | Type, Direction, Symbol, Quantity, TransferPrice, DateTime |
+
+#### Transaction Cost Analysis (3 sections)
+
+| # | Section | Purpose | Key Fields |
+|---|---------|---------|------------|
+| 12 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
+| 13 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
+| 14 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
+
+#### Short Selling (3 sections)
+
+| # | Section | Purpose | Key Fields |
+|---|---------|---------|------------|
+| 15 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
+| 16 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
+| 17 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
+
+#### Options (1 section)
+
+| # | Section | Purpose | Key Fields |
+|---|---------|---------|------------|
+| 18 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
+
+### Sections to Skip
+
+These sections are unnecessary for most fund use cases:
+
+| Section | Skip Unless... |
+|---------|----------------|
+| CFD Charges | Trading CFDs |
+| Complex Positions | Multi-leg option strategies needing aggregate view |
+| Debit Card Activity | Fund uses IB debit card |
+| Deposits on Hold | Need pending deposit visibility |
+| FDIC-Insured Deposits by Bank | Need bank sweep details |
+| Forex Balances / P&L Details | Active FX trading as profit center |
+| Grant Activity | Stock compensation plans |
+| HK IPO Subscriptions | Trading Hong Kong IPOs |
+| IBG Notes | Using IB notes product |
+| Incentive Coupon Accrual | Very specialized |
+| Mark-to-Market Performance Summary | Redundant with trade-level MTM |
+| Month & Year to Date Performance | Disabled with Models; use Change in NAV |
+| Mutual Fund Dividend Details | Holding mutual funds |
+| Net Stock Position Summary | Detailed short position reconciliation |
+| Prior Period Positions | Historical position reconciliation |
+| Realized/Unrealized Performance | Disabled with Models |
+| Sales Tax Details | International tax tracking |
+| Securities Collateral at IBSS | Securities lending collateral |
+| Soft Dollar Activity | Soft dollar arrangements |
+| Statement of Funds | Redundant with Cash Report + Trades |
+| Unbooked Trades | Trade settlement issues |
+| Unsettled Transfers | Pending ACATS transfers |
+| Change in Dividend Accruals | Redundant with Open Dividend Accruals |
+| Change in Position Value Summary | Nice but adds bulk |
 
 ### Detailed Field Recommendations by Section
 
-#### Trades Section
+For each section, select **all fields** unless noted. Key fields are highlighted below.
 
-Select **all fields** for maximum coverage. Key fields include:
+#### Account Information (Trim Address Fields)
+
+**Keep:**
+- `ClientAccountID`, `AccountAlias`, `Model`
+- `CurrencyPrimary`, `Name`, `AccountType`, `CustomerType`
+- `AccountCapabilities`, `TradingPermissions`
+- `DateOpened`, `DateFunded`, `DateClosed`, `LastTradedDate`
+- `MasterName`, `IBEntity`, `PrimaryEmail`
+
+**Optional (skip to reduce bulk):**
+- Street address fields (Street, Street2, City, State, Country, PostalCode)
+- Residential address fields
+- AccountRepName, AccountRepPhone
+
+#### Trades Section
 
 **Identification:**
 - `transactionID` - Unique identifier (for idempotency)
-- `tradeID`, `orderID`, `execID` - Cross-reference IDs
+- `tradeID`, `IBOrderID`, `IBExecID` - Cross-reference IDs
 - `conid` - IB contract ID
 
 **Security Details:**
-- `symbol`, `description`
-- `assetCategory` - STK, OPT, FUT, etc.
+- `symbol`, `description`, `assetCategory`
 - `cusip`, `isin`, `figi` - External identifiers
 - `underlyingSymbol`, `underlyingConid` - For derivatives
 
-**Derivative Details (Options/Futures):**
-- `strike`, `expiry`, `putCall`
-- `multiplier`
+**Derivative Details:**
+- `strike`, `expiry`, `putCall`, `multiplier`
 
-**Execution Details:**
-- `tradeDate`, `tradeTime`, `dateTime`
+**Execution Details (critical for TCA):**
+- `tradeDate`, `dateTime`, `orderTime` - Timing analysis
 - `buySell`, `openCloseIndicator`
-- `quantity`, `price`, `proceeds`
+- `quantity`, `tradePrice`, `tradeMoney`, `proceeds`
 - `orderType` - LMT, MKT, STP, etc.
-- `exchange`, `listingExchange`
+- `exchange`, `listingExchange` - Venue analysis
 
-**Costs & Fees (for TCA):**
+**Costs & Fees:**
 - `ibCommission`, `ibCommissionCurrency`
-- `taxes`
-- `netCash`
+- `taxes`, `netCash`
 
 **P&L:**
 - `fifoPnlRealized` - Realized P&L (FIFO basis)
 - `mtmPnl` - Mark-to-market P&L
-- `fxPnl` - Currency P&L
+- `costBasis`
 
 **Position Tracking:**
-- `cost`, `costBasisMoney`
-- `settleDateTarget`
-- `fxRateToBase`
+- `settleDateTarget`, `fxRateToBase`
+- `origTradePrice`, `origTradeDate`, `origTradeID` - Lot tracking
 
 #### Open Positions Section
 
-**Core Fields:**
-- `symbol`, `conid`, `description`
-- `assetCategory`
-- `position` - Quantity (negative for short)
-- `markPrice` - Current market price
-- `positionValue` - Total position value
-
-**Cost Basis:**
-- `costBasisPrice`, `costBasisMoney`
-- `openPrice`
-
-**P&L:**
-- `fifoPnlUnrealized`
-- `percentOfNAV`
-
-**Derivatives:**
+- `symbol`, `conid`, `description`, `assetCategory`
+- `quantity` (negative for short), `side`
+- `markPrice`, `positionValue`
+- `costBasisPrice`, `costBasisMoney`, `openPrice`
+- `fifoPnlUnrealized`, `percentOfNAV`
 - `strike`, `expiry`, `putCall`, `multiplier`
 - `underlyingSymbol`, `underlyingConid`
-
-**Currency:**
 - `currency`, `fxRateToBase`
+- `reportDate`
 
 #### Cash Transactions Section
 
-- `transactionID`
-- `type` - Dividends, Interest, Deposits, Withdrawals, Fees, etc.
-- `dateTime`, `reportDate`
-- `amount`, `currency`
+- `transactionID`, `type`
+- `dateTime`, `reportDate`, `settleDate`
+- `amount`, `currency`, `fxRateToBase`
 - `description`
-- `symbol`, `conid` - Related security (for dividends)
-- `fxRateToBase`
+- `symbol`, `conid` - Related security
+
+#### Cash Report Section
+
+- `startingCash`, `endingCash`, `endingSettledCash`
+- `commissions`, `dividends`, `brokerInterest`
+- `deposits`, `withdrawals`
+- `advisorFees`, `otherFees`
+- `withholdingTax`, `transactionTax`
+- `netTradesSales`, `netTradesPurchases`
+
+#### Change in NAV Section
+
+**Use "Realized & Unrealized" option if available (disabled with Models)**
+
+- `startingValue`, `endingValue`
+- `mtm`, `realized`, `changeInUnrealized`
+- `dividends`, `withholdingTax`
+- `interest`, `changeInInterestAccruals`
+- `commissions`, `advisorFees`, `otherFees`
+- `depositsWithdrawals`, `assetTransfers`
+- `fxTranslation`, `twr` (time-weighted return)
 
 #### Corporate Actions Section
 
-- `transactionID`, `actionID`
-- `type` - FS (split), RS (reverse split), SO (spinoff), etc.
-- `symbol`, `conid`, `description`
+- `transactionID`, `actionID`, `type`
+- `symbol`, `conid`, `description`, `actionDescription`
 - `quantity`, `amount`, `proceeds`, `value`
-- `fifoPnlRealized`
+- `costBasis`, `fifoPnlRealized`, `mtmPnl`
 - `reportDate`, `dateTime`
 
-#### Securities Info Section
+#### Financial Instrument Information Section
 
 - `conid`, `symbol`, `description`
-- `assetCategory`
-- `cusip`, `isin`, `figi`, `securityID`
-- `listingExchange`
+- `assetCategory`, `subCategory`
+- `cusip`, `isin`, `figi`, `securityID`, `securityIDType`
+- `listingExchange`, `currency`
 - `multiplier`, `strike`, `expiry`, `putCall`
 - `underlyingSymbol`, `underlyingConid`
-- `currency`
+- `maturity`, `issueDate` - For bonds
 
-#### Conversion Rates Section
+#### Commission Details Section (TCA)
 
-- `reportDate`
-- `fromCurrency`, `toCurrency`
-- `rate`
+- `tradeID`, `dateTime`, `symbol`
+- `totalCommission`
+- `brokerExecutionCharge`, `brokerClearingCharge`
+- `thirdPartyExecutionCharge`, `thirdPartyClearingCharge`, `thirdPartyRegulatoryCharge`
+- `regFINRATradingActivityFee`, `regSection31TransactionFee`, `regOther`
+
+#### Routing Commissions Section (TCA)
+
+- `tradeID`, `execID`, `symbol`
+- `tradeDate`, `tradeTime`, `orderTime`
+- `executionExchange`, `lowestFeeExchange`
+- `routingFee`, `exchangeFee`, `creditForLowestExchangeFee`
+- `quantity`, `price`, `proceeds`
+
+#### Borrow Fees Details Section (Short Selling)
+
+- `symbol`, `conid`, `description`
+- `valueDate`, `quantity`, `price`, `value`
+- `borrowFeeRate`, `borrowFee`
+- `currency`, `fxRateToBase`
+
+#### Securities Borrowed/Lent Fee Details Section (Short Selling)
+
+- `symbol`, `conid`
+- `valueDate`, `startDate`, `type`
+- `quantity`, `collateralAmount`
+- `feeRate%`, `fee`
+- `marketFeeRate%`, `netLendFeeRate%`, `netLendFee`
+- `carryCharge`, `ticketCharge`, `totalCharges`
 
 ---
 
