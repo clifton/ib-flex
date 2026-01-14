@@ -109,7 +109,7 @@ This configuration is optimized for **fund portfolio management** with support f
 - Short selling / securities borrowing
 - Options trading
 
-We recommend **19 sections** that provide comprehensive coverage without unnecessary bulk.
+We recommend **22 sections** that provide comprehensive coverage without unnecessary bulk.
 
 ### Important: Models and Realized P&L
 
@@ -117,9 +117,9 @@ We recommend **19 sections** that provide comprehensive coverage without unneces
 >
 > **Workaround**: Calculate realized P&L from the `fifoPnlRealized` field on individual trades in the Trades section.
 
-### Recommended 19 Sections
+### Recommended 22 Sections
 
-#### Core Portfolio (12 sections)
+#### Core Portfolio (15 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
@@ -135,30 +135,37 @@ We recommend **19 sections** that provide comprehensive coverage without unneces
 | 10 | **Interest Accruals** | Interest tracking | StartingAccrualBalance, InterestAccrued, EndingAccrualBalance |
 | 11 | **Transfers** | Asset movements | Type, Direction, Symbol, Quantity, TransferPrice, DateTime |
 | 12 | **Equity Summary by Report Date in Base** | EOD equity breakdown | Total, Cash, Stock, Options, Commodities, Bonds, Funds, Notes, InterestAccruals, DividendAccruals |
+| 13 | **Net Asset Value (NAV) in Base** | Absolute daily NAV | NAV, CashBalances, StockValue, OptionsValue, CommoditiesValue, BondsValue, FundsValue |
+| 14 | **Mark-to-Market Performance Summary in Base** | P&L attribution by asset class | AssetCategory, Mtm, Realized, Unrealized, Dividends, Interest, ChangeInPrice |
+| 15 | **Realized and Unrealized Performance Summary in Base** | P&L checksum (may be empty with Models) | AssetCategory, Realized, Unrealized, Total, CostBasis, GainLoss |
 
 > **Note on Margin Monitoring**: The Equity Summary section provides EOD equity breakdown by asset class, useful for tracking portfolio composition. However, **real-time margin requirements** (initial margin, maintenance margin, excess liquidity) are not available in FLEX reports - use the IB API for margin monitoring.
+
+> **Reconciliation Strategy**: Use `Yesterday's NAV + Change in NAV = Today's NAV` as a daily sanity check to prevent drift from rounding errors in calculated P&L.
+
+> **Note on Realized/Unrealized Performance**: This section may return empty if you use IB Models. Keep it enabled as a checksum - costs nothing to include.
 
 #### Transaction Cost Analysis (3 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 13 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
-| 14 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
-| 15 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
+| 16 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
+| 17 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
+| 18 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
 
 #### Short Selling (3 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 16 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
-| 17 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
-| 18 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
+| 19 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
+| 20 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
+| 21 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
 
 #### Options (1 section)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 19 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
+| 22 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
 
 ### Sections to Skip
 
@@ -286,6 +293,45 @@ For each section, select **all fields** unless noted. Key fields are highlighted
 - `notes` - IB notes
 - `interestAccruals` - Accrued interest
 - `dividendAccruals` - Accrued dividends
+
+#### Net Asset Value (NAV) in Base Section
+
+- `reportDate` - Date of NAV snapshot
+- `nav` - Total net asset value
+- `cashBalances` - Cash component
+- `stockValue` - Equity positions value
+- `optionsValue` - Options positions value
+- `commoditiesValue` - Futures/commodities value
+- `bondsValue` - Fixed income value
+- `fundsValue` - Mutual fund value
+- `interestAccruals`, `dividendAccruals`
+
+> **Use Case**: Daily reconciliation. `Yesterday NAV + Change in NAV = Today NAV`
+
+#### Mark-to-Market Performance Summary in Base Section
+
+- `assetCategory` - STK, OPT, FUT, CASH, etc.
+- `mtm` - Mark-to-market P&L
+- `realized` - Realized P&L
+- `unrealized` - Unrealized P&L
+- `dividends` - Dividend income
+- `interest` - Interest income
+- `changeInPrice` - Price change component
+- `changeInQuantity` - Quantity change component
+- `fees`, `commissions`
+
+> **Use Case**: When NAV drops 2%, identify if it was equity, options, or FX that caused it.
+
+#### Realized and Unrealized Performance Summary in Base Section
+
+- `assetCategory` - Asset class breakdown
+- `realized` - Total realized gains/losses
+- `unrealized` - Total unrealized gains/losses
+- `total` - Combined P&L
+- `costBasis` - Cost basis of positions
+- `gainLoss` - Net gain/loss
+
+> **Note**: May be empty if using IB Models. Keep enabled as P&L checksum.
 
 #### Change in NAV Section
 
