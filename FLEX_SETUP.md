@@ -69,7 +69,7 @@ IBKR offers two types of Flex Queries:
 
 Click on each section you want to include. For comprehensive coverage, enable **all sections** listed below.
 
-<img width="1048" height="1181" alt="image" src="https://github.com/user-attachments/assets/8bc756c8-7d5a-4a6d-bf56-3389bb6b0d8d" />
+<img width="1044" height="1181" alt="image" src="https://github.com/user-attachments/assets/8a07870d-0549-4b0f-8b72-c65d4c30b469" />
 
 ### Step 4: Configure Fields for Each Section
 
