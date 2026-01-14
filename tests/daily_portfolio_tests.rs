@@ -318,7 +318,7 @@ fn test_currency_exposure() {
     let usd_total = by_currency.get("USD").unwrap();
     let cad_total = by_currency.get("CAD").unwrap();
 
-    assert!(*usd_total > Decimal::ZERO || *usd_total < Decimal::ZERO); // Has exposure
+    assert!(*usd_total != Decimal::ZERO); // Has exposure
     assert!(*cad_total > Decimal::ZERO); // Long CAD
 }
 
