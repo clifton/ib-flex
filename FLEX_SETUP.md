@@ -109,7 +109,7 @@ This configuration is optimized for **fund portfolio management** with support f
 - Short selling / securities borrowing
 - Options trading
 
-We recommend **22 sections** that provide comprehensive coverage without unnecessary bulk.
+We recommend **21 sections** that provide comprehensive coverage without unnecessary bulk.
 
 ### Important: Models and Realized P&L
 
@@ -117,9 +117,9 @@ We recommend **22 sections** that provide comprehensive coverage without unneces
 >
 > **Workaround**: Calculate realized P&L from the `fifoPnlRealized` field on individual trades in the Trades section.
 
-### Recommended 22 Sections
+### Recommended 21 Sections
 
-#### Core Portfolio (15 sections)
+#### Core Portfolio (14 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
@@ -134,14 +134,13 @@ We recommend **22 sections** that provide comprehensive coverage without unneces
 | 9 | **Open Dividend Accruals** | Pending dividends | Symbol, ExDate, PayDate, Quantity, GrossRate, GrossAmount, NetAmount |
 | 10 | **Interest Accruals** | Interest tracking | StartingAccrualBalance, InterestAccrued, EndingAccrualBalance |
 | 11 | **Transfers** | Asset movements | Type, Direction, Symbol, Quantity, TransferPrice, DateTime |
-| 12 | **Equity Summary by Report Date in Base** | EOD equity breakdown | Total, Cash, Stock, Options, Commodities, Bonds, Funds, Notes, InterestAccruals, DividendAccruals |
-| 13 | **Net Asset Value (NAV) in Base** | Absolute daily NAV | NAV, CashBalances, StockValue, OptionsValue, CommoditiesValue, BondsValue, FundsValue |
-| 14 | **Mark-to-Market Performance Summary in Base** | P&L attribution by asset class | AssetCategory, Mtm, Realized, Unrealized, Dividends, Interest, ChangeInPrice |
-| 15 | **Realized and Unrealized Performance Summary in Base** | P&L checksum (may be empty with Models) | AssetCategory, Realized, Unrealized, Total, CostBasis, GainLoss |
+| 12 | **Net Asset Value (NAV) in Base** | Absolute daily NAV + asset breakdown | Total, Cash, Stock, Options, Commodities, Bonds, Funds, DividendAccruals, InterestAccruals |
+| 13 | **Mark-to-Market Performance Summary in Base** | P&L attribution by asset class | AssetCategory, Mtm, Realized, Unrealized, Dividends, Interest, ChangeInPrice |
+| 14 | **Realized and Unrealized Performance Summary in Base** | P&L checksum (may be empty with Models) | AssetCategory, Realized, Unrealized, Total, CostBasis, GainLoss |
 
-> **Note on Margin Monitoring**: The Equity Summary section provides EOD equity breakdown by asset class, useful for tracking portfolio composition. However, **real-time margin requirements** (initial margin, maintenance margin, excess liquidity) are not available in FLEX reports - use the IB API for margin monitoring.
+> **NAV Section**: Provides both absolute NAV for reconciliation AND asset class breakdown (Cash, Stock, Options, Commodities, Bonds, Funds). Use `Yesterday's NAV + Change in NAV = Today's NAV` as a daily sanity check.
 
-> **Reconciliation Strategy**: Use `Yesterday's NAV + Change in NAV = Today's NAV` as a daily sanity check to prevent drift from rounding errors in calculated P&L.
+> **Note on Margin Monitoring**: NAV in Base provides EOD equity breakdown by asset class, but **real-time margin requirements** (initial margin, maintenance margin, excess liquidity) are not available in FLEX reports - use the IB API for margin monitoring.
 
 > **Note on Realized/Unrealized Performance**: This section may return empty if you use IB Models. Keep it enabled as a checksum - costs nothing to include.
 
@@ -149,23 +148,23 @@ We recommend **22 sections** that provide comprehensive coverage without unneces
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 16 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
-| 17 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
-| 18 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
+| 15 | **Commission Details** | Fee breakdown | BrokerExecutionCharge, BrokerClearingCharge, ThirdPartyExecutionCharge, RegFINRATradingActivityFee, RegSection31TransactionFee |
+| 16 | **Transaction Fees** | Taxes and fees | TaxDescription, TaxAmount, TradeID |
+| 17 | **Routing Commissions** | Venue analysis | ExecutionExchange, LowestFeeExchange, RoutingFee, ExchangeFee, CreditForLowestExchangeFee |
 
 #### Short Selling (3 sections)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 19 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
-| 20 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
-| 21 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
+| 18 | **Borrow Fees Details** | Daily borrow rates | Symbol, Quantity, BorrowFeeRate, BorrowFee, Value |
+| 19 | **Securities Borrowed/Lent Fee Details** | Fee breakdown | FeeRate%, MarketFeeRate%, CollateralAmount, NetLendFee, CarryCharge |
+| 20 | **Securities Borrowed/Lent Activity** | Borrow activity log | ActivityDescription, Type, Quantity, CollateralAmount, MarkQuantity |
 
 #### Options (1 section)
 
 | # | Section | Purpose | Key Fields |
 |---|---------|---------|------------|
-| 22 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
+| 21 | **Option Exercises, Assignments and Expirations** | Options lifecycle | TransactionType, Symbol, Strike, Expiry, Quantity, Proceeds, RealizedPnl |
 
 ### Sections to Skip
 
@@ -280,33 +279,22 @@ For each section, select **all fields** unless noted. Key fields are highlighted
 - `withholdingTax`, `transactionTax`
 - `netTradesSales`, `netTradesPurchases`
 
-#### Equity Summary by Report Date in Base Section
-
-- `reportDate` - Date of the equity snapshot
-- `total` - Total equity (net liquidating value)
-- `cash` - Cash and cash equivalents
-- `stock` - Long/short stock value
-- `options` - Options value
-- `commodities` - Futures and commodities value
-- `bonds` - Bond holdings value
-- `funds` - Mutual fund holdings
-- `notes` - IB notes
-- `interestAccruals` - Accrued interest
-- `dividendAccruals` - Accrued dividends
-
 #### Net Asset Value (NAV) in Base Section
 
 - `reportDate` - Date of NAV snapshot
-- `nav` - Total net asset value
-- `cashBalances` - Cash component
-- `stockValue` - Equity positions value
-- `optionsValue` - Options positions value
-- `commoditiesValue` - Futures/commodities value
-- `bondsValue` - Fixed income value
-- `fundsValue` - Mutual fund value
-- `interestAccruals`, `dividendAccruals`
+- `total` - Total net asset value
+- `cash` - Cash and cash equivalents
+- `stock` - Equity positions value
+- `options` - Options positions value
+- `commodities` - Futures/commodities value
+- `bonds` - Fixed income value
+- `funds` - Mutual fund value
+- `notes` - IB notes
+- `dividendAccruals` - Accrued dividends
+- `interestAccruals` - Accrued interest
+- `slbCashCollateral` - Securities lending collateral
 
-> **Use Case**: Daily reconciliation. `Yesterday NAV + Change in NAV = Today NAV`
+> **Use Case**: Daily reconciliation (`Yesterday NAV + Change in NAV = Today NAV`) AND asset class composition tracking.
 
 #### Mark-to-Market Performance Summary in Base Section
 
