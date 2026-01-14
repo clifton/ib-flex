@@ -384,7 +384,7 @@ fn test_equity_summary() {
     assert_eq!(eq.cash, Some(Decimal::from_str("150000.50").unwrap()));
     assert_eq!(eq.stock, Some(Decimal::from_str("250000.00").unwrap()));
     assert_eq!(eq.options, Some(Decimal::from_str("25000.00").unwrap()));
-    assert_eq!(eq.total, Decimal::from_str("425526.00").unwrap());
+    assert_eq!(eq.total, Some(Decimal::from_str("425526.00").unwrap()));
 }
 
 /// Test extended types - interest accruals

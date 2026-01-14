@@ -206,6 +206,91 @@ pub struct ActivityFlexStatement {
     /// Security transfers
     #[serde(rename = "Transfers", default)]
     pub transfers: TransfersWrapper,
+
+    // v0.3.0+ sections - Performance and advanced features
+    /// MTM performance summary by underlying
+    #[serde(rename = "MTMPerformanceSummaryInBase", default)]
+    pub mtm_performance_summary: MTMPerformanceSummaryWrapper,
+
+    /// FIFO performance summary by underlying
+    #[serde(rename = "FIFOPerformanceSummaryInBase", default)]
+    pub fifo_performance_summary: FIFOPerformanceSummaryWrapper,
+
+    /// MTD/YTD performance summary
+    #[serde(rename = "MTDYTDPerformanceSummary", default)]
+    pub mtd_ytd_performance_summary: MTDYTDPerformanceSummaryWrapper,
+
+    /// Statement of funds (cash flow tracking)
+    #[serde(rename = "StmtFunds", default)]
+    pub statement_of_funds: StatementOfFundsWrapper,
+
+    /// Change in position value (reconciliation)
+    #[serde(rename = "ChangeInPositionValues", default)]
+    pub change_in_position_values: ChangeInPositionValueWrapper,
+
+    /// Unbundled commission details
+    #[serde(rename = "UnbundledCommissionDetails", default)]
+    pub unbundled_commission_details: UnbundledCommissionDetailWrapper,
+
+    /// Client fees (advisory fees)
+    #[serde(rename = "ClientFees", default)]
+    pub client_fees: ClientFeesWrapper,
+
+    /// Client fees detail
+    #[serde(rename = "ClientFeesDetails", default)]
+    pub client_fees_detail: ClientFeesDetailWrapper,
+
+    /// Securities lending activities
+    #[serde(rename = "SLBActivities", default)]
+    pub slb_activities: SLBActivitiesWrapper,
+
+    /// Securities lending fees
+    #[serde(rename = "SLBFees", default)]
+    pub slb_fees: SLBFeesWrapper,
+
+    /// Hard to borrow details
+    #[serde(rename = "HardToBorrowDetails", default)]
+    pub hard_to_borrow_details: HardToBorrowDetailsWrapper,
+
+    /// FX position lots
+    #[serde(rename = "FxLots", default)]
+    pub fx_lots: FxLotsWrapper,
+
+    /// Unsettled transfers
+    #[serde(rename = "UnsettledTransfers", default)]
+    pub unsettled_transfers: UnsettledTransfersWrapper,
+
+    /// Trade transfers (inter-broker)
+    #[serde(rename = "TradeTransfers", default)]
+    pub trade_transfers: TradeTransfersWrapper,
+
+    /// Prior period positions
+    #[serde(rename = "PriorPeriodPositions", default)]
+    pub prior_period_positions: PriorPeriodPositionsWrapper,
+
+    /// Tier interest details
+    #[serde(rename = "TierInterestDetails", default)]
+    pub tier_interest_details: TierInterestDetailsWrapper,
+
+    /// Debit card activities
+    #[serde(rename = "DebitCardActivities", default)]
+    pub debit_card_activities: DebitCardActivitiesWrapper,
+
+    /// Sales tax
+    #[serde(rename = "SalesTaxes", default)]
+    pub sales_tax: SalesTaxWrapper,
+
+    /// Symbol summaries
+    #[serde(rename = "SymbolSummary", default)]
+    pub symbol_summary: SymbolSummaryWrapper,
+
+    /// Asset summaries
+    #[serde(rename = "AssetSummary", default)]
+    pub asset_summary: AssetSummaryWrapper,
+
+    /// Orders
+    #[serde(rename = "Orders", default)]
+    pub orders: OrdersWrapper,
 }
 
 /// Wrapper for trades section
@@ -496,6 +581,267 @@ pub struct Trade {
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
     pub listing_exchange: Option<String>,
+
+    // Tax-critical lot tracking fields
+    /// Original trade date (for lot tracking and holding period)
+    #[serde(
+        rename = "@origTradeDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub orig_trade_date: Option<NaiveDate>,
+
+    /// Original trade price (cost basis of the lot)
+    #[serde(
+        rename = "@origTradePrice",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub orig_trade_price: Option<Decimal>,
+
+    /// Original trade ID (links closing trade to opening trade)
+    #[serde(rename = "@origTradeID", default)]
+    pub orig_trade_id: Option<String>,
+
+    /// Original transaction ID
+    #[serde(rename = "@origTransactionID", default)]
+    pub orig_transaction_id: Option<String>,
+
+    /// Original order ID
+    #[serde(rename = "@origOrderID", default)]
+    pub orig_order_id: Option<String>,
+
+    /// Holding period date/time (for long-term vs short-term determination)
+    #[serde(rename = "@holdingPeriodDateTime", default)]
+    pub holding_period_date_time: Option<String>,
+
+    /// When position was opened
+    #[serde(rename = "@openDateTime", default)]
+    pub open_date_time: Option<String>,
+
+    /// When P&L was realized
+    #[serde(rename = "@whenRealized", default)]
+    pub when_realized: Option<String>,
+
+    /// When position was reopened (for wash sale tracking)
+    #[serde(rename = "@whenReopened", default)]
+    pub when_reopened: Option<String>,
+
+    /// Trade notes/codes (may contain wash sale indicator "W")
+    #[serde(rename = "@notes", default)]
+    pub notes: Option<String>,
+
+    /// Level of detail (EXECUTION, ORDER, CLOSED_LOT, etc.)
+    #[serde(rename = "@levelOfDetail", default)]
+    pub level_of_detail: Option<String>,
+
+    /// Transaction type (ExchTrade, BookTrade, etc.)
+    #[serde(rename = "@transactionType", default)]
+    pub transaction_type: Option<String>,
+
+    // Additional identifiers
+    /// CUSIP
+    #[serde(rename = "@cusip", default)]
+    pub cusip: Option<String>,
+
+    /// ISIN
+    #[serde(rename = "@isin", default)]
+    pub isin: Option<String>,
+
+    /// FIGI
+    #[serde(rename = "@figi", default)]
+    pub figi: Option<String>,
+
+    /// Security ID
+    #[serde(rename = "@securityID", default)]
+    pub security_id: Option<String>,
+
+    /// Security ID type
+    #[serde(rename = "@securityIDType", default)]
+    pub security_id_type: Option<String>,
+
+    /// Issuer
+    #[serde(rename = "@issuer", default)]
+    pub issuer: Option<String>,
+
+    /// Issuer country code
+    #[serde(rename = "@issuerCountryCode", default)]
+    pub issuer_country_code: Option<String>,
+
+    /// Sub-category
+    #[serde(rename = "@subCategory", default)]
+    pub sub_category: Option<String>,
+
+    // Order and execution details
+    /// Brokerage order ID
+    #[serde(rename = "@brokerageOrderID", default)]
+    pub brokerage_order_id: Option<String>,
+
+    /// Order reference
+    #[serde(rename = "@orderReference", default)]
+    pub order_reference: Option<String>,
+
+    /// Order time
+    #[serde(rename = "@orderTime", default)]
+    pub order_time: Option<String>,
+
+    /// Exchange order ID
+    #[serde(rename = "@exchOrderId", default)]
+    pub exch_order_id: Option<String>,
+
+    /// External execution ID
+    #[serde(rename = "@extExecID", default)]
+    pub ext_exec_id: Option<String>,
+
+    /// IB execution ID
+    #[serde(rename = "@ibExecID", default)]
+    pub ib_exec_id: Option<String>,
+
+    /// Trader ID
+    #[serde(rename = "@traderID", default)]
+    pub trader_id: Option<String>,
+
+    /// Is API order
+    #[serde(rename = "@isAPIOrder", default)]
+    pub is_api_order: Option<String>,
+
+    /// Volatility order link
+    #[serde(rename = "@volatilityOrderLink", default)]
+    pub volatility_order_link: Option<String>,
+
+    /// Clearing firm ID
+    #[serde(rename = "@clearingFirmID", default)]
+    pub clearing_firm_id: Option<String>,
+
+    // Price and P&L details
+    /// Trade money (quantity * price)
+    #[serde(
+        rename = "@tradeMoney",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub trade_money: Option<Decimal>,
+
+    /// Close price
+    #[serde(
+        rename = "@closePrice",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub close_price: Option<Decimal>,
+
+    /// Change in price
+    #[serde(
+        rename = "@changeInPrice",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub change_in_price: Option<Decimal>,
+
+    /// Change in quantity
+    #[serde(
+        rename = "@changeInQuantity",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub change_in_quantity: Option<Decimal>,
+
+    /// Principal adjust factor
+    #[serde(
+        rename = "@principalAdjustFactor",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub principal_adjust_factor: Option<Decimal>,
+
+    // Related trade tracking
+    /// Related trade ID
+    #[serde(rename = "@relatedTradeID", default)]
+    pub related_trade_id: Option<String>,
+
+    /// Related transaction ID
+    #[serde(rename = "@relatedTransactionID", default)]
+    pub related_transaction_id: Option<String>,
+
+    // Underlying security details
+    /// Underlying listing exchange
+    #[serde(rename = "@underlyingListingExchange", default)]
+    pub underlying_listing_exchange: Option<String>,
+
+    /// Underlying security ID
+    #[serde(rename = "@underlyingSecurityID", default)]
+    pub underlying_security_id: Option<String>,
+
+    // Commodity/physical delivery fields
+    /// Serial number (for physical delivery)
+    #[serde(rename = "@serialNumber", default)]
+    pub serial_number: Option<String>,
+
+    /// Delivery type
+    #[serde(rename = "@deliveryType", default)]
+    pub delivery_type: Option<String>,
+
+    /// Commodity type
+    #[serde(rename = "@commodityType", default)]
+    pub commodity_type: Option<String>,
+
+    /// Fineness (for precious metals)
+    #[serde(
+        rename = "@fineness",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fineness: Option<Decimal>,
+
+    /// Weight
+    #[serde(rename = "@weight", default)]
+    pub weight: Option<String>,
+
+    // Bond fields
+    /// Accrued interest
+    #[serde(
+        rename = "@accruedInt",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub accrued_int: Option<Decimal>,
+
+    // Other
+    /// Report date
+    #[serde(
+        rename = "@reportDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub report_date: Option<NaiveDate>,
+
+    /// Exchange where trade executed
+    #[serde(rename = "@exchange", default)]
+    pub exchange: Option<String>,
+
+    /// Model (for model portfolios)
+    #[serde(rename = "@model", default)]
+    pub model: Option<String>,
+
+    /// Account alias
+    #[serde(rename = "@acctAlias", default)]
+    pub acct_alias: Option<String>,
+
+    /// RTN
+    #[serde(rename = "@rtn", default)]
+    pub rtn: Option<String>,
+
+    /// Position action ID
+    #[serde(rename = "@positionActionID", default)]
+    pub position_action_id: Option<String>,
+
+    /// Initial investment
+    #[serde(
+        rename = "@initialInvestment",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub initial_investment: Option<Decimal>,
 }
 
 /// An open position snapshot
@@ -659,6 +1005,144 @@ pub struct Position {
         deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
     )]
     pub report_date: NaiveDate,
+
+    // Tax-critical fields
+    /// Holding period date/time (for long-term vs short-term determination)
+    #[serde(rename = "@holdingPeriodDateTime", default)]
+    pub holding_period_date_time: Option<String>,
+
+    /// When position was opened
+    #[serde(rename = "@openDateTime", default)]
+    pub open_date_time: Option<String>,
+
+    /// Originating order ID (links to opening trade)
+    #[serde(rename = "@originatingOrderID", default)]
+    pub originating_order_id: Option<String>,
+
+    /// Originating transaction ID
+    #[serde(rename = "@originatingTransactionID", default)]
+    pub originating_transaction_id: Option<String>,
+
+    /// Position code (may contain tax-related codes)
+    #[serde(rename = "@code", default)]
+    pub code: Option<String>,
+
+    // Additional identifiers
+    /// CUSIP
+    #[serde(rename = "@cusip", default)]
+    pub cusip: Option<String>,
+
+    /// ISIN
+    #[serde(rename = "@isin", default)]
+    pub isin: Option<String>,
+
+    /// FIGI
+    #[serde(rename = "@figi", default)]
+    pub figi: Option<String>,
+
+    /// Security ID
+    #[serde(rename = "@securityID", default)]
+    pub security_id: Option<String>,
+
+    /// Security ID type
+    #[serde(rename = "@securityIDType", default)]
+    pub security_id_type: Option<String>,
+
+    /// Issuer
+    #[serde(rename = "@issuer", default)]
+    pub issuer: Option<String>,
+
+    /// Issuer country code
+    #[serde(rename = "@issuerCountryCode", default)]
+    pub issuer_country_code: Option<String>,
+
+    /// Sub-category
+    #[serde(rename = "@subCategory", default)]
+    pub sub_category: Option<String>,
+
+    /// Listing exchange
+    #[serde(rename = "@listingExchange", default)]
+    pub listing_exchange: Option<String>,
+
+    // Underlying security details
+    /// Underlying contract ID
+    #[serde(rename = "@underlyingConid", default)]
+    pub underlying_conid: Option<String>,
+
+    /// Underlying symbol
+    #[serde(rename = "@underlyingSymbol", default)]
+    pub underlying_symbol: Option<String>,
+
+    /// Underlying listing exchange
+    #[serde(rename = "@underlyingListingExchange", default)]
+    pub underlying_listing_exchange: Option<String>,
+
+    /// Underlying security ID
+    #[serde(rename = "@underlyingSecurityID", default)]
+    pub underlying_security_id: Option<String>,
+
+    // Commodity/physical fields
+    /// Serial number (for physical delivery)
+    #[serde(rename = "@serialNumber", default)]
+    pub serial_number: Option<String>,
+
+    /// Delivery type
+    #[serde(rename = "@deliveryType", default)]
+    pub delivery_type: Option<String>,
+
+    /// Commodity type
+    #[serde(rename = "@commodityType", default)]
+    pub commodity_type: Option<String>,
+
+    /// Fineness (for precious metals)
+    #[serde(
+        rename = "@fineness",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fineness: Option<Decimal>,
+
+    /// Weight
+    #[serde(rename = "@weight", default)]
+    pub weight: Option<String>,
+
+    // Bond fields
+    /// Accrued interest
+    #[serde(
+        rename = "@accruedInt",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub accrued_int: Option<Decimal>,
+
+    /// Principal adjust factor
+    #[serde(
+        rename = "@principalAdjustFactor",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub principal_adjust_factor: Option<Decimal>,
+
+    // Other
+    /// Level of detail
+    #[serde(rename = "@levelOfDetail", default)]
+    pub level_of_detail: Option<String>,
+
+    /// Model (for model portfolios)
+    #[serde(rename = "@model", default)]
+    pub model: Option<String>,
+
+    /// Account alias
+    #[serde(rename = "@acctAlias", default)]
+    pub acct_alias: Option<String>,
+
+    /// Vesting date (for restricted stock)
+    #[serde(
+        rename = "@vestingDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub vesting_date: Option<NaiveDate>,
 }
 
 /// A cash transaction (deposit, withdrawal, dividend, interest, fee)
@@ -771,6 +1255,177 @@ pub struct CashTransaction {
     /// Related security's symbol
     #[serde(rename = "@symbol", default)]
     pub symbol: Option<String>,
+
+    // Additional identifiers
+    /// Account alias
+    #[serde(rename = "@acctAlias", default)]
+    pub acct_alias: Option<String>,
+
+    /// Action ID
+    #[serde(rename = "@actionID", default)]
+    pub action_id: Option<String>,
+
+    /// Trade ID (for dividend/interest related to specific trade)
+    #[serde(rename = "@tradeID", default)]
+    pub trade_id: Option<String>,
+
+    /// Client reference
+    #[serde(rename = "@clientReference", default)]
+    pub client_reference: Option<String>,
+
+    /// Transaction code
+    #[serde(rename = "@code", default)]
+    pub code: Option<String>,
+
+    // Dates
+    /// Settlement date
+    #[serde(
+        rename = "@settleDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub settle_date: Option<NaiveDate>,
+
+    /// Ex-dividend date
+    #[serde(
+        rename = "@exDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub ex_date: Option<NaiveDate>,
+
+    /// Available for trading date
+    #[serde(
+        rename = "@availableForTradingDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub available_for_trading_date: Option<NaiveDate>,
+
+    // Security identifiers
+    /// CUSIP
+    #[serde(rename = "@cusip", default)]
+    pub cusip: Option<String>,
+
+    /// ISIN
+    #[serde(rename = "@isin", default)]
+    pub isin: Option<String>,
+
+    /// FIGI
+    #[serde(rename = "@figi", default)]
+    pub figi: Option<String>,
+
+    /// Security ID
+    #[serde(rename = "@securityID", default)]
+    pub security_id: Option<String>,
+
+    /// Security ID type
+    #[serde(rename = "@securityIDType", default)]
+    pub security_id_type: Option<String>,
+
+    /// Issuer
+    #[serde(rename = "@issuer", default)]
+    pub issuer: Option<String>,
+
+    /// Issuer country code
+    #[serde(rename = "@issuerCountryCode", default)]
+    pub issuer_country_code: Option<String>,
+
+    /// Sub-category
+    #[serde(rename = "@subCategory", default)]
+    pub sub_category: Option<String>,
+
+    /// Listing exchange
+    #[serde(rename = "@listingExchange", default)]
+    pub listing_exchange: Option<String>,
+
+    // Option/derivative fields
+    /// Strike price
+    #[serde(
+        rename = "@strike",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub strike: Option<Decimal>,
+
+    /// Expiry date
+    #[serde(
+        rename = "@expiry",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub expiry: Option<NaiveDate>,
+
+    /// Put or Call
+    #[serde(rename = "@putCall", default)]
+    pub put_call: Option<PutCall>,
+
+    /// Contract multiplier
+    #[serde(
+        rename = "@multiplier",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub multiplier: Option<Decimal>,
+
+    // Underlying security
+    /// Underlying contract ID
+    #[serde(rename = "@underlyingConid", default)]
+    pub underlying_conid: Option<String>,
+
+    /// Underlying symbol
+    #[serde(rename = "@underlyingSymbol", default)]
+    pub underlying_symbol: Option<String>,
+
+    /// Underlying listing exchange
+    #[serde(rename = "@underlyingListingExchange", default)]
+    pub underlying_listing_exchange: Option<String>,
+
+    /// Underlying security ID
+    #[serde(rename = "@underlyingSecurityID", default)]
+    pub underlying_security_id: Option<String>,
+
+    // Commodity/physical fields
+    /// Serial number
+    #[serde(rename = "@serialNumber", default)]
+    pub serial_number: Option<String>,
+
+    /// Delivery type
+    #[serde(rename = "@deliveryType", default)]
+    pub delivery_type: Option<String>,
+
+    /// Commodity type
+    #[serde(rename = "@commodityType", default)]
+    pub commodity_type: Option<String>,
+
+    /// Fineness
+    #[serde(
+        rename = "@fineness",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fineness: Option<Decimal>,
+
+    /// Weight
+    #[serde(rename = "@weight", default)]
+    pub weight: Option<String>,
+
+    /// Principal adjust factor
+    #[serde(
+        rename = "@principalAdjustFactor",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub principal_adjust_factor: Option<Decimal>,
+
+    // Other
+    /// Level of detail
+    #[serde(rename = "@levelOfDetail", default)]
+    pub level_of_detail: Option<String>,
+
+    /// Model
+    #[serde(rename = "@model", default)]
+    pub model: Option<String>,
 }
 
 /// A corporate action (split, merger, spinoff, etc.)
@@ -821,6 +1476,14 @@ pub struct CorporateAction {
     #[serde(rename = "@accountId")]
     pub account_id: String,
 
+    /// Account alias
+    #[serde(rename = "@acctAlias", default)]
+    pub acct_alias: Option<String>,
+
+    /// Model (for model portfolios)
+    #[serde(rename = "@model", default)]
+    pub model: Option<String>,
+
     /// IB transaction ID
     #[serde(rename = "@transactionID", default)]
     pub transaction_id: Option<String>,
@@ -852,6 +1515,30 @@ pub struct CorporateAction {
     )]
     pub report_date: NaiveDate,
 
+    /// Ex-date (ex-dividend date for dividends)
+    #[serde(
+        rename = "@exDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub ex_date: Option<NaiveDate>,
+
+    /// Pay date
+    #[serde(
+        rename = "@payDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub pay_date: Option<NaiveDate>,
+
+    /// Record date
+    #[serde(
+        rename = "@recordDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub record_date: Option<NaiveDate>,
+
     /// IB contract ID
     #[serde(rename = "@conid")]
     pub conid: String,
@@ -867,6 +1554,89 @@ pub struct CorporateAction {
     /// Asset category
     #[serde(rename = "@assetCategory", default)]
     pub asset_category: Option<AssetCategory>,
+
+    // Security identifiers
+    /// CUSIP
+    #[serde(rename = "@cusip", default)]
+    pub cusip: Option<String>,
+
+    /// ISIN
+    #[serde(rename = "@isin", default)]
+    pub isin: Option<String>,
+
+    /// FIGI
+    #[serde(rename = "@figi", default)]
+    pub figi: Option<String>,
+
+    /// Security ID
+    #[serde(rename = "@securityID", default)]
+    pub security_id: Option<String>,
+
+    /// Security ID type
+    #[serde(rename = "@securityIDType", default)]
+    pub security_id_type: Option<String>,
+
+    /// Issuer
+    #[serde(rename = "@issuer", default)]
+    pub issuer: Option<String>,
+
+    /// Issuer country code
+    #[serde(rename = "@issuerCountryCode", default)]
+    pub issuer_country_code: Option<String>,
+
+    /// Sub-category
+    #[serde(rename = "@subCategory", default)]
+    pub sub_category: Option<String>,
+
+    /// Listing exchange
+    #[serde(rename = "@listingExchange", default)]
+    pub listing_exchange: Option<String>,
+
+    // Derivative fields
+    /// Strike price (for options)
+    #[serde(
+        rename = "@strike",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub strike: Option<Decimal>,
+
+    /// Expiry date (for options/futures)
+    #[serde(
+        rename = "@expiry",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub expiry: Option<NaiveDate>,
+
+    /// Put or Call
+    #[serde(rename = "@putCall", default)]
+    pub put_call: Option<PutCall>,
+
+    /// Contract multiplier
+    #[serde(
+        rename = "@multiplier",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub multiplier: Option<Decimal>,
+
+    // Underlying security
+    /// Underlying contract ID
+    #[serde(rename = "@underlyingConid", default)]
+    pub underlying_conid: Option<String>,
+
+    /// Underlying symbol
+    #[serde(rename = "@underlyingSymbol", default)]
+    pub underlying_symbol: Option<String>,
+
+    /// Underlying listing exchange
+    #[serde(rename = "@underlyingListingExchange", default)]
+    pub underlying_listing_exchange: Option<String>,
+
+    /// Underlying security ID
+    #[serde(rename = "@underlyingSecurityID", default)]
+    pub underlying_security_id: Option<String>,
 
     /// Currency
     #[serde(rename = "@currency", default)]
@@ -912,6 +1682,14 @@ pub struct CorporateAction {
     )]
     pub value: Option<Decimal>,
 
+    /// Cost
+    #[serde(
+        rename = "@cost",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub cost: Option<Decimal>,
+
     /// FIFO P&L realized
     #[serde(
         rename = "@fifoPnlRealized",
@@ -919,6 +1697,65 @@ pub struct CorporateAction {
         deserialize_with = "deserialize_optional_decimal"
     )]
     pub fifo_pnl_realized: Option<Decimal>,
+
+    /// Mark-to-market P&L
+    #[serde(
+        rename = "@mtmPnl",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub mtm_pnl: Option<Decimal>,
+
+    // Commodity/physical fields
+    /// Serial number
+    #[serde(rename = "@serialNumber", default)]
+    pub serial_number: Option<String>,
+
+    /// Delivery type
+    #[serde(rename = "@deliveryType", default)]
+    pub delivery_type: Option<String>,
+
+    /// Commodity type
+    #[serde(rename = "@commodityType", default)]
+    pub commodity_type: Option<String>,
+
+    /// Fineness (for precious metals)
+    #[serde(
+        rename = "@fineness",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fineness: Option<Decimal>,
+
+    /// Weight
+    #[serde(rename = "@weight", default)]
+    pub weight: Option<String>,
+
+    // Bond fields
+    /// Accrued interest
+    #[serde(
+        rename = "@accruedInt",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub accrued_int: Option<Decimal>,
+
+    /// Principal adjust factor
+    #[serde(
+        rename = "@principalAdjustFactor",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub principal_adjust_factor: Option<Decimal>,
+
+    // Other
+    /// Code (may contain additional info)
+    #[serde(rename = "@code", default)]
+    pub code: Option<String>,
+
+    /// Level of detail
+    #[serde(rename = "@levelOfDetail", default)]
+    pub level_of_detail: Option<String>,
 }
 
 /// Security information (reference data)
@@ -999,6 +1836,10 @@ pub struct SecurityInfo {
     #[serde(rename = "@figi", default)]
     pub figi: Option<String>,
 
+    /// SEDOL
+    #[serde(rename = "@sedol", default)]
+    pub sedol: Option<String>,
+
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
     pub listing_exchange: Option<String>,
@@ -1022,6 +1863,14 @@ pub struct SecurityInfo {
     /// Issuer
     #[serde(rename = "@issuer", default)]
     pub issuer: Option<String>,
+
+    /// Issuer country code
+    #[serde(rename = "@issuerCountryCode", default)]
+    pub issuer_country_code: Option<String>,
+
+    /// Sub-category
+    #[serde(rename = "@subCategory", default)]
+    pub sub_category: Option<String>,
 
     /// Multiplier
     #[serde(
@@ -1047,6 +1896,18 @@ pub struct SecurityInfo {
     )]
     pub expiry: Option<NaiveDate>,
 
+    /// Maturity date (for bonds)
+    #[serde(
+        rename = "@maturity",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub maturity: Option<NaiveDate>,
+
+    /// Delivery month (for futures)
+    #[serde(rename = "@deliveryMonth", default)]
+    pub delivery_month: Option<String>,
+
     /// Put or Call
     #[serde(rename = "@putCall", default)]
     pub put_call: Option<PutCall>,
@@ -1062,6 +1923,35 @@ pub struct SecurityInfo {
     /// Currency
     #[serde(rename = "@currency", default)]
     pub currency: Option<String>,
+
+    // Commodity/physical fields
+    /// Serial number
+    #[serde(rename = "@serialNumber", default)]
+    pub serial_number: Option<String>,
+
+    /// Delivery type
+    #[serde(rename = "@deliveryType", default)]
+    pub delivery_type: Option<String>,
+
+    /// Commodity type
+    #[serde(rename = "@commodityType", default)]
+    pub commodity_type: Option<String>,
+
+    /// Fineness (for precious metals)
+    #[serde(
+        rename = "@fineness",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fineness: Option<Decimal>,
+
+    /// Weight
+    #[serde(rename = "@weight", default)]
+    pub weight: Option<String>,
+
+    /// Code
+    #[serde(rename = "@code", default)]
+    pub code: Option<String>,
 }
 
 /// Foreign exchange conversion rate
@@ -1214,4 +2104,174 @@ pub struct TransfersWrapper {
     /// List of transfers
     #[serde(rename = "Transfer", default)]
     pub items: Vec<super::extended::Transfer>,
+}
+
+// v0.3.0+ wrappers for performance and advanced features
+
+/// Wrapper for MTM performance summary section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct MTMPerformanceSummaryWrapper {
+    /// List of MTM performance summaries by underlying
+    #[serde(rename = "MTMPerformanceSummaryUnderlying", default)]
+    pub items: Vec<super::extended::MTMPerformanceSummaryUnderlying>,
+}
+
+/// Wrapper for FIFO performance summary section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct FIFOPerformanceSummaryWrapper {
+    /// List of FIFO performance summaries by underlying
+    #[serde(rename = "FIFOPerformanceSummaryUnderlying", default)]
+    pub items: Vec<super::extended::FIFOPerformanceSummaryUnderlying>,
+}
+
+/// Wrapper for MTD/YTD performance summary section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct MTDYTDPerformanceSummaryWrapper {
+    /// List of MTD/YTD performance summaries
+    #[serde(rename = "MTDYTDPerformanceSummary", default)]
+    pub items: Vec<super::extended::MTDYTDPerformanceSummary>,
+}
+
+/// Wrapper for statement of funds section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct StatementOfFundsWrapper {
+    /// List of statement of funds lines
+    #[serde(rename = "StatementOfFundsLine", default)]
+    pub items: Vec<super::extended::StatementOfFundsLine>,
+}
+
+/// Wrapper for change in position value section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct ChangeInPositionValueWrapper {
+    /// List of position value changes
+    #[serde(rename = "ChangeInPositionValue", default)]
+    pub items: Vec<super::extended::ChangeInPositionValue>,
+}
+
+/// Wrapper for unbundled commission details section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct UnbundledCommissionDetailWrapper {
+    /// List of unbundled commission details
+    #[serde(rename = "UnbundledCommissionDetail", default)]
+    pub items: Vec<super::extended::UnbundledCommissionDetail>,
+}
+
+/// Wrapper for client fees section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct ClientFeesWrapper {
+    /// List of client fees
+    #[serde(rename = "ClientFee", default)]
+    pub items: Vec<super::extended::ClientFee>,
+}
+
+/// Wrapper for client fees detail section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct ClientFeesDetailWrapper {
+    /// List of client fee details
+    #[serde(rename = "ClientFeesDetail", default)]
+    pub items: Vec<super::extended::ClientFeesDetail>,
+}
+
+/// Wrapper for SLB activities section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct SLBActivitiesWrapper {
+    /// List of SLB activities
+    #[serde(rename = "SLBActivity", default)]
+    pub items: Vec<super::extended::SLBActivity>,
+}
+
+/// Wrapper for SLB fees section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct SLBFeesWrapper {
+    /// List of SLB fees
+    #[serde(rename = "SLBFee", default)]
+    pub items: Vec<super::extended::SLBFee>,
+}
+
+/// Wrapper for hard to borrow details section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct HardToBorrowDetailsWrapper {
+    /// List of hard to borrow details
+    #[serde(rename = "HardToBorrowDetail", default)]
+    pub items: Vec<super::extended::HardToBorrowDetail>,
+}
+
+/// Wrapper for FX lots section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct FxLotsWrapper {
+    /// List of FX lots
+    #[serde(rename = "FxLot", default)]
+    pub items: Vec<super::extended::FxLot>,
+}
+
+/// Wrapper for unsettled transfers section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct UnsettledTransfersWrapper {
+    /// List of unsettled transfers
+    #[serde(rename = "UnsettledTransfer", default)]
+    pub items: Vec<super::extended::UnsettledTransfer>,
+}
+
+/// Wrapper for trade transfers section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct TradeTransfersWrapper {
+    /// List of trade transfers
+    #[serde(rename = "TradeTransfer", default)]
+    pub items: Vec<super::extended::TradeTransfer>,
+}
+
+/// Wrapper for prior period positions section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct PriorPeriodPositionsWrapper {
+    /// List of prior period positions
+    #[serde(rename = "PriorPeriodPosition", default)]
+    pub items: Vec<super::extended::PriorPeriodPosition>,
+}
+
+/// Wrapper for tier interest details section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct TierInterestDetailsWrapper {
+    /// List of tier interest details
+    #[serde(rename = "TierInterestDetail", default)]
+    pub items: Vec<super::extended::TierInterestDetail>,
+}
+
+/// Wrapper for debit card activities section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct DebitCardActivitiesWrapper {
+    /// List of debit card activities
+    #[serde(rename = "DebitCardActivity", default)]
+    pub items: Vec<super::extended::DebitCardActivity>,
+}
+
+/// Wrapper for sales tax section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct SalesTaxWrapper {
+    /// List of sales tax entries
+    #[serde(rename = "SalesTax", default)]
+    pub items: Vec<super::extended::SalesTax>,
+}
+
+/// Wrapper for symbol summary section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct SymbolSummaryWrapper {
+    /// List of symbol summaries
+    #[serde(rename = "SymbolSummary", default)]
+    pub items: Vec<super::extended::SymbolSummary>,
+}
+
+/// Wrapper for asset summary section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct AssetSummaryWrapper {
+    /// List of asset summaries
+    #[serde(rename = "AssetSummary", default)]
+    pub items: Vec<super::extended::AssetSummary>,
+}
+
+/// Wrapper for orders section
+#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+pub struct OrdersWrapper {
+    /// List of orders
+    #[serde(rename = "Order", default)]
+    pub items: Vec<super::extended::Order>,
 }

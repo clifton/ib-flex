@@ -80,7 +80,7 @@ fn test_equity_summary() {
         Some(Decimal::from_str("15000.00").unwrap())
     );
     assert_eq!(summary.bonds, Some(Decimal::from_str("2500.00").unwrap()));
-    assert_eq!(summary.total, Decimal::from_str("107500.00").unwrap());
+    assert_eq!(summary.total, Some(Decimal::from_str("107500.00").unwrap()));
 }
 
 #[test]
