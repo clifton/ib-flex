@@ -689,7 +689,7 @@ These sections appear in FLEX statements but are currently ignored:
 
 **Create new enums:**
 - [x] `LevelOfDetail` { Summary, Detail, Execution, Lot }
-- [ ] `SecurityIdType` { Cusip, Isin, Figi, Sedol }
+- [x] `SecurityIdType` { Cusip, Isin, Figi, Sedol }
 - [ ] `SubCategory` { Etf, Adr, Reit, Preferred, Common, ... }
 
 **Create `DerivativeInfo` enum:**

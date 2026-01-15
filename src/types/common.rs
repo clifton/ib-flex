@@ -834,6 +834,41 @@ pub enum LevelOfDetail {
     Unknown,
 }
 
+/// Security identifier type
+///
+/// Specifies the type of security identifier used in the `securityID` field.
+/// Different identifiers are used in different markets and contexts.
+///
+/// **XML Mapping**: Maps to the `securityIDType` attribute in various elements.
+///
+/// **Used by**: `Trade`, `SecurityInfo`
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+pub enum SecurityIdType {
+    /// CUSIP - Committee on Uniform Securities Identification Procedures
+    /// 9-character alphanumeric identifier for North American securities
+    #[serde(rename = "CUSIP")]
+    Cusip,
+
+    /// ISIN - International Securities Identification Number
+    /// 12-character alphanumeric code (ISO 6166 standard)
+    #[serde(rename = "ISIN")]
+    Isin,
+
+    /// FIGI - Financial Instrument Global Identifier
+    /// 12-character alphanumeric identifier (Bloomberg Open Symbology)
+    #[serde(rename = "FIGI")]
+    Figi,
+
+    /// SEDOL - Stock Exchange Daily Official List
+    /// 7-character alphanumeric identifier for UK and Irish securities
+    #[serde(rename = "SEDOL")]
+    Sedol,
+
+    /// Unknown or unrecognized security ID type
+    #[serde(other)]
+    Unknown,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
