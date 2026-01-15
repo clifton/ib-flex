@@ -7,27 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Phase 0: Project Setup
-- ✅ Created project structure
-- ✅ Initialized git repository
-- ✅ Added CLAUDE.md (project guide for Claude Code)
-- ✅ Added PLAN.md (detailed implementation plan)
-- ✅ Added Cargo.toml with metadata
-- ✅ Added MIT and Apache-2.0 licenses
-- ✅ Created README.md
-- ✅ Created CONTRIBUTING.md
-- ✅ Created basic type system structure
-- ✅ Created parser module structure
-- ✅ Project compiles successfully
+## [0.1.1] - 2026-01-14
 
-### To Do
-- [ ] Implement Activity FLEX parser
-- [ ] Implement Trade Confirmation parser
-- [ ] Add comprehensive tests
-- [ ] Add example programs
-- [ ] Set up CI/CD
-- [ ] Publish v0.1.0 to crates.io
+### Added
+- Add robust release script
+- Add robust release script
+- Add daily portfolio parsing support and comprehensive tests (#7) ([#7](https://github.com/clifton/ib-flex/pull/7))
+- Add comprehensive v0.2.0 extended FLEX support (#3) ([#3](https://github.com/clifton/ib-flex/pull/3))
+- Add comprehensive reliability testing suite (#4) ([#4](https://github.com/clifton/ib-flex/pull/4))
 
+### Fixed
+- Handle interleaved Trades elements with enum-based parsing (#8) ([#8](https://github.com/clifton/ib-flex/pull/8))
+- Fix formatting in README for automatic detection feature
+- Remove unused import from reliability tests
+
+### Documentation
+- Add mandatory pre-commit requirements to CLAUDE.md
+- Add mandatory pre-commit requirements to CLAUDE.md
+- Remove version numbers and test counts from README
+
+### Changed
+- dont commit local ralph loop stuff
+- Complete All Library TODOs - Trade Confirmation, Version Detection, Type Detection (#6) ([#6](https://github.com/clifton/ib-flex/pull/6))
+- FLEX Web Service API Client (Optional Feature) (#5) ([#5](https://github.com/clifton/ib-flex/pull/5))
+- Remove explicit "production ready" references throughout documentation
+- Update README to reflect v0.1.0 production-ready status
+- One shot the flex query parser (#2) ([#2](https://github.com/clifton/ib-flex/pull/2))
+- "Claude Code Review workflow"
+- "Claude PR Assistant workflow"
 ## [0.1.0] - Unreleased
 
 Initial release (in development).
