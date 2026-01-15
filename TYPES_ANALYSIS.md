@@ -675,7 +675,7 @@ These sections appear in FLEX statements but are currently ignored:
 **Rename existing enums for clarity:**
 - [x] `Code` → `TransactionCode`
 - [x] `Reorg` → `CorporateActionType`
-- [ ] `CashAction` → `CashTransactionType`
+- [x] `CashAction` → `CashTransactionType`
 
 **Rename `TransactionCode` variants (cryptic → descriptive):**
 - [ ] `A` → `Assignment`, `Ae` → `AutoExercise`, `Af` → `AutoFx`

@@ -261,8 +261,14 @@ pub enum TradeType {
 }
 
 /// Cash transaction action type
+///
+/// Represents the type of cash transaction (dividend, interest, fee, etc.).
+/// This enum is used by the `CashTransaction` struct to classify cash activity
+/// in the account statement.
+///
+/// **XML Mapping**: Maps to the `type` attribute in `<CashTransaction>` elements.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
-pub enum CashAction {
+pub enum CashTransactionType {
     /// Deposits and withdrawals
     #[serde(rename = "Deposits & Withdrawals")]
     DepositsWithdrawals,
