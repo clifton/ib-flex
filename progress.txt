@@ -470,8 +470,44 @@
 - All fields are properly documented with descriptions
 - Properly exported in mod.rs with alphabetical ordering maintained
 
+---
+
+### Task 14: Add Trade.derivative() method
+**Status**: COMPLETE ✅
+**Started**: 2026-01-14
+**Completed**: 2026-01-14
+
+**Objective**: Add a method to Trade that constructs `DerivativeInfo` from flat derivative fields based on the asset_category.
+
+**Files modified**:
+1. src/types/activity.rs - Added DerivativeInfo import and Trade::derivative() method
+
+**Steps completed**:
+1. ✅ Added DerivativeInfo to imports in src/types/activity.rs (line 8)
+2. ✅ Created impl Trade block with derivative() method (lines 988-1078)
+3. ✅ Implemented logic to construct DerivativeInfo based on asset_category:
+   - AssetCategory::Option → DerivativeInfo::Option (requires strike, expiry, put_call, underlying_symbol)
+   - AssetCategory::Future → DerivativeInfo::Future (requires expiry, underlying_symbol)
+   - AssetCategory::FutureOption → DerivativeInfo::FutureOption (requires strike, expiry, put_call, underlying_symbol)
+   - AssetCategory::Warrant → DerivativeInfo::Warrant (requires underlying_symbol, optional strike/expiry)
+   - Other asset categories → None
+4. ✅ Added comprehensive documentation with example usage
+5. ✅ Ran cargo fmt - passed
+6. ✅ Ran cargo clippy --all-targets -- -D warnings - passed with 0 warnings
+7. ✅ Ran cargo test - all 145 tests passed (24 + 0 + 19 + 11 + 13 + 47 + 15 + 16)
+8. ✅ Updated progress.txt
+
+**Test results**: 145 tests passed
+
+**Notes**:
+- Implemented as a method rather than a field to avoid serialization complexity
+- The method uses the ? operator to return None if required fields are missing
+- This provides a clean API for users to access structured derivative info without dealing with flat fields
+- The method is properly documented with a doc test example
+- All existing tests continue to pass, showing backward compatibility
+
 ## Summary
 
-**Total tasks completed**: 13/13
-**Total time**: ~85 minutes
-**Status**: Task 13 complete (DerivativeInfo enum created), ready for next task
+**Total tasks completed**: 14/14
+**Total time**: ~95 minutes
+**Status**: Task 14 complete (Trade.derivative() method added), ready for next task

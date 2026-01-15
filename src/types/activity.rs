@@ -5,8 +5,8 @@ use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 use super::common::{
-    AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, SecurityIdType,
-    SubCategory, TradeType,
+    AssetCategory, BuySell, DerivativeInfo, LevelOfDetail, OpenClose, OrderType, PutCall,
+    SecurityIdType, SubCategory, TradeType,
 };
 use crate::parsers::xml_utils::{
     deserialize_optional_bool, deserialize_optional_date, deserialize_optional_decimal,
@@ -983,6 +983,98 @@ pub struct Trade {
         deserialize_with = "deserialize_optional_decimal"
     )]
     pub initial_investment: Option<Decimal>,
+}
+
+impl Trade {
+    /// Constructs derivative information from flat fields based on asset category
+    ///
+    /// This method consolidates derivative-specific fields (strike, expiry, put_call,
+    /// underlying_symbol, underlying_conid) into a structured `DerivativeInfo` enum
+    /// based on the trade's asset category.
+    ///
+    /// # Returns
+    /// - `Some(DerivativeInfo)` if the asset is a derivative with complete information
+    /// - `None` if the asset is not a derivative or lacks required fields
+    ///
+    /// # Example
+    /// ```no_run
+    /// use ib_flex::parse_activity_flex;
+    ///
+    /// let xml = std::fs::read_to_string("activity.xml")?;
+    /// let statement = parse_activity_flex(&xml)?;
+    ///
+    /// for trade in &statement.trades.items {
+    ///     if let Some(derivative) = trade.derivative() {
+    ///         match derivative {
+    ///             ib_flex::types::DerivativeInfo::Option { strike, expiry, put_call, .. } => {
+    ///                 println!("Option trade: {:?} ${} exp {}", put_call, strike, expiry);
+    ///             }
+    ///             ib_flex::types::DerivativeInfo::Future { expiry, .. } => {
+    ///                 println!("Future trade: exp {}", expiry);
+    ///             }
+    ///             _ => {}
+    ///         }
+    ///     }
+    /// }
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn derivative(&self) -> Option<DerivativeInfo> {
+        match self.asset_category {
+            AssetCategory::Option => {
+                // For options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Option {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Future => {
+                // For futures, we need: expiry, underlying_symbol
+                let expiry = self.expiry?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Future {
+                    expiry,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::FutureOption => {
+                // For future options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::FutureOption {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Warrant => {
+                // For warrants, all fields are optional but we need at least underlying_symbol
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Warrant {
+                    strike: self.strike,
+                    expiry: self.expiry,
+                    underlying_symbol: Some(underlying_symbol),
+                })
+            }
+            // Not a derivative type
+            _ => None,
+        }
+    }
 }
 
 /// An open position snapshot
