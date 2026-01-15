@@ -101,8 +101,65 @@
 
 ---
 
+---
+
+### Task 4: Rename TransactionCode variants (cryptic → descriptive)
+**Status**: COMPLETE ✅
+**Started**: 2026-01-14
+**Completed**: 2026-01-14
+
+**Objective**: Rename all TransactionCode enum variants from cryptic single/double-letter codes to descriptive names for better code clarity and maintainability.
+
+**Files modified**:
+1. src/types/common.rs - Renamed all 45 TransactionCode variants with #[serde(rename = "...")] attributes
+
+**Steps completed**:
+1. ✅ Read current TransactionCode enum definition
+2. ✅ Renamed all variants following the mapping in TYPES_ANALYSIS.md table (lines 320-377):
+   - `A` → `Assignment`
+   - `Ae` → `AutoExercise`
+   - `Af` → `AutoFx`
+   - `B` → `BuyIn`
+   - `Bo` → `BorrowFee`
+   - `C` → `Closing`
+   - `Ca` → `Cancelled`
+   - `D` → `DualAgent`
+   - `Ex` → `Expired`
+   - `G` → `Guaranteed`
+   - `Hc` → `HighestCost`
+   - `I` → `InternalTransfer`
+   - `L` → `MarginLiquidation`
+   - `Li` → `Lifo`
+   - `Lt` → `LongTermGain`
+   - `M` → `ManualEntry`
+   - `O` → `Exercise`
+   - `P` → `Opening`
+   - `R` → `Reopen`
+   - `St` → `ShortTermGain`
+   - `T` → `Transfer`
+   - `W` → `WashSale`
+   - Plus all remaining 23 variants
+3. ✅ Added #[serde(rename = "...")] attributes to preserve XML serialization compatibility
+4. ✅ Enhanced documentation comments with detailed descriptions
+5. ✅ Ran cargo fmt - passed
+6. ✅ Ran cargo clippy --all-targets -- -D warnings - passed with 0 warnings
+7. ✅ Ran cargo test - all 124 tests passed
+8. ✅ Updated TYPES_ANALYSIS.md to mark task complete
+9. ✅ Updated progress.txt
+
+**Test results**: 124 tests passed (19 unit + 11 error + 13 extended + 47 integration + 15 reliability + 15 doc + 4 other)
+
+**Notes**:
+- All 45 transaction code variants successfully renamed to descriptive names
+- XML serialization preserved through serde rename attributes
+- Documentation enhanced with full descriptions and tax impact notes
+- No breaking changes to API - serde handles the XML mapping transparently
+- Code is now much more readable and self-documenting
+
+---
+
 ## Summary
 
-**Total tasks completed**: 3/3
-**Total time**: ~15 minutes
-**Status**: Task 3 complete, ready for next task
+**Total tasks completed**: 4/4
+**Total time**: ~20 minutes
+**Status**: Task 4 complete, ready for next task

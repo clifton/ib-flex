@@ -541,170 +541,225 @@ pub enum TransferType {
 /// They provide critical context for tax reporting and trade classification.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub enum TransactionCode {
-    /// Assignment
-    A,
+    /// Assignment - Option assignment triggering stock delivery
+    #[serde(rename = "A")]
+    Assignment,
 
-    /// Adjustment
-    Adj,
+    /// Adjustment - Manual adjustment affecting cost basis
+    #[serde(rename = "Adj")]
+    Adjustment,
 
-    /// Allocation
-    Al,
+    /// Allocation - Trade allocation to sub-account (master/sub allocation)
+    #[serde(rename = "Al")]
+    Allocation,
 
-    /// Auto exercise
-    Ae,
+    /// Auto Exercise - Automatic exercise (dividend-related, exercise before ex-div)
+    #[serde(rename = "Ae")]
+    AutoExercise,
 
-    /// Auto FX
-    Af,
+    /// Auto FX - AutoFX currency conversion for settlement
+    #[serde(rename = "Af")]
+    AutoFx,
 
-    /// Away trade
-    Aw,
+    /// Away Trade - Trade executed away from IB (third-party execution)
+    #[serde(rename = "Aw")]
+    AwayTrade,
 
-    /// Buy-in
-    B,
+    /// Buy-In - Forced purchase to cover failed delivery (forced short cover)
+    #[serde(rename = "B")]
+    BuyIn,
 
-    /// Borrow fee
-    Bo,
+    /// Borrow - Securities borrowing fee (lending charge)
+    #[serde(rename = "Bo")]
+    BorrowFee,
 
-    /// Cancellation
-    Ca,
+    /// Cancellation - Trade cancelled/busted (trade reversed)
+    #[serde(rename = "Ca")]
+    Cancelled,
 
-    /// Closing
-    C,
+    /// Closing - Closing trade (reduces position)
+    #[serde(rename = "C")]
+    Closing,
 
-    /// Cash delivery
-    Cd,
+    /// Cash Delivery - Cash delivery for exercise (cash vs physical)
+    #[serde(rename = "Cd")]
+    CashDelivery,
 
-    /// Complex position
-    Cp,
+    /// Complex Position - Complex/combo position (multi-leg strategy)
+    #[serde(rename = "Cp")]
+    ComplexPosition,
 
-    /// Correct
-    Cr,
+    /// Correction - Trade correction (amended execution)
+    #[serde(rename = "Cr")]
+    Correction,
 
-    /// Crossing
-    Cs,
+    /// Crossing - Internal IB cross (matched internally)
+    #[serde(rename = "Cs")]
+    Crossing,
 
-    /// Dual
-    D,
+    /// Dual Agent - IB dual agent capacity (disclosed dual role)
+    #[serde(rename = "D")]
+    DualAgent,
 
-    /// ETF creation
-    Et,
+    /// ETF - ETF creation/redemption (in-kind basket)
+    #[serde(rename = "Et")]
+    Etf,
 
-    /// Expired
-    Ex,
+    /// Expired - From expired position (option/warrant expiry)
+    #[serde(rename = "Ex")]
+    Expired,
 
-    /// Exercise
-    O,
+    /// Exercise - Option exercise (long option exercised)
+    #[serde(rename = "O")]
+    Exercise,
 
-    /// Guaranteed
-    G,
+    /// Guaranteed - Guaranteed account segment (special margin)
+    #[serde(rename = "G")]
+    Guaranteed,
 
-    /// Highest cost
-    Hc,
+    /// Highest Cost - Highest cost tax lot (tax lot selection)
+    #[serde(rename = "Hc")]
+    HighestCost,
 
-    /// HF investment
-    Hi,
+    /// HF Investment - Hedge fund investment (fund subscription)
+    #[serde(rename = "Hi")]
+    HfInvestment,
 
-    /// HF redemption
-    Hr,
+    /// HF Redemption - Hedge fund redemption (fund redemption)
+    #[serde(rename = "Hr")]
+    HfRedemption,
 
-    /// Internal transfer
-    I,
+    /// Internal - Internal transfer (between IB accounts)
+    #[serde(rename = "I")]
+    InternalTransfer,
 
-    /// Affiliated account transfer
-    Ia,
+    /// Affiliate - Affiliate execution (related party trade)
+    #[serde(rename = "Ia")]
+    Affiliate,
 
-    /// Investor
-    Iv,
+    /// Investor - Investment from investor (capital contribution)
+    #[serde(rename = "Iv")]
+    Investor,
 
-    /// Margin low
-    L,
+    /// Margin Violation - Liquidation due to margin (forced liquidation)
+    #[serde(rename = "L")]
+    MarginLiquidation,
 
-    /// LIFO (Last In First Out)
-    Li,
+    /// LIFO - LIFO tax lot (tax lot selection)
+    #[serde(rename = "Li")]
+    Lifo,
 
-    /// Loan
-    Ln,
+    /// Loan - Securities lending income (lending income)
+    #[serde(rename = "Ln")]
+    Loan,
 
-    /// Long-term capital gain
-    Lt,
+    /// Long-Term - Long-term gain/loss (holding > 1 year)
+    #[serde(rename = "Lt")]
+    LongTermGain,
 
-    /// Maximum loss
-    M,
+    /// Manual - Manual IB entry (manual adjustment)
+    #[serde(rename = "M")]
+    ManualEntry,
 
-    /// Maximum long-term capital gain
-    Ml,
+    /// Max Loss - Maximize losses (tax optimization)
+    #[serde(rename = "Ml")]
+    MaxLoss,
 
-    /// Minimum long-term capital gain
-    Mn,
+    /// Min LT Gain - Minimize long-term gain (tax optimization)
+    #[serde(rename = "Mn")]
+    MinLongTermGain,
 
-    /// Maximum short-term capital gain
-    Ms,
+    /// Max ST Gain - Maximize short-term gain (tax optimization)
+    #[serde(rename = "Ms")]
+    MaxShortTermGain,
 
-    /// Minimum short-term capital gain
-    Mi,
+    /// Min ST Gain - Minimize short-term gain (tax optimization)
+    #[serde(rename = "Mi")]
+    MinShortTermGain,
 
-    /// Manual exercise
-    Mx,
+    /// Manual Exercise - Manual exercise (discretionary exercise)
+    #[serde(rename = "Mx")]
+    ManualExercise,
 
-    /// Opening
-    P,
+    /// Opening - Opening trade (new position)
+    #[serde(rename = "P")]
+    Opening,
 
-    /// Partial execution
-    Pt,
+    /// Partial - Partial execution (partial fill)
+    #[serde(rename = "Pt")]
+    Partial,
 
-    /// Fractional risk-less principal
-    Fr,
+    /// Frac Riskless - Fractional riskless principal (fractional share method)
+    #[serde(rename = "Fr")]
+    FracRiskless,
 
-    /// Fractional principal
-    Fp,
+    /// Frac Principal - Fractional principal (fractional share method)
+    #[serde(rename = "Fp")]
+    FracPrincipal,
 
-    /// Price improvement
-    Pi,
+    /// Price Improvement - Better than quoted (price improvement)
+    #[serde(rename = "Pi")]
+    PriceImprovement,
 
-    /// Post accrual
-    Pa,
+    /// Post Accrual - Accrual posting (accrual entry)
+    #[serde(rename = "Pa")]
+    PostAccrual,
 
-    /// Principal
-    Pr,
+    /// Principal - IB principal execution (principal trade)
+    #[serde(rename = "Pr")]
+    Principal,
 
-    /// Reinvestment
-    Re,
+    /// Reinvestment - Dividend reinvestment (DRIP)
+    #[serde(rename = "Re")]
+    Reinvestment,
 
-    /// Redemption
-    Rd,
+    /// Redemption - Capital distribution (fund redemption)
+    #[serde(rename = "Rd")]
+    Redemption,
 
-    /// Reopen
-    R,
+    /// Reopen - Position reopened (wash sale reopen)
+    #[serde(rename = "R")]
+    Reopen,
 
-    /// Reverse
-    Rv,
+    /// Reverse - Accrual reversal (accounting reversal)
+    #[serde(rename = "Rv")]
+    Reverse,
 
-    /// Reimbursement
-    Ri,
+    /// Reimbursement - Fee refund (expense refund)
+    #[serde(rename = "Ri")]
+    Reimbursement,
 
-    /// Solicited IB
-    Si,
+    /// Solicited IB - IB solicited order (IB-initiated)
+    #[serde(rename = "Si")]
+    SolicitedIb,
 
-    /// Specific lot
-    Sp,
+    /// Specific Lot - Specific tax lot (tax lot selection)
+    #[serde(rename = "Sp")]
+    SpecificLot,
 
-    /// Solicited other
-    So,
+    /// Solicited Other - Third-party solicited (broker-solicited)
+    #[serde(rename = "So")]
+    SolicitedOther,
 
-    /// Shortened settlement
-    Ss,
+    /// Short Settlement - T+0 or T+1 settlement (accelerated settle)
+    #[serde(rename = "Ss")]
+    ShortSettlement,
 
-    /// Short-term capital gain
-    St,
+    /// Short-Term - Short-term gain/loss (holding <= 1 year)
+    #[serde(rename = "St")]
+    ShortTermGain,
 
-    /// Stock yield
-    Sy,
+    /// Stock Yield - Stock yield eligible (lending eligible)
+    #[serde(rename = "Sy")]
+    StockYield,
 
-    /// Transfer
-    T,
+    /// Transfer - Position transfer
+    #[serde(rename = "T")]
+    Transfer,
 
-    /// Wash sale
-    W,
+    /// Wash Sale - Wash sale (loss disallowed)
+    #[serde(rename = "W")]
+    WashSale,
 
     /// Unknown code
     #[serde(other)]

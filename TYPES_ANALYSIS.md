@@ -678,14 +678,14 @@ These sections appear in FLEX statements but are currently ignored:
 - [x] `CashAction` → `CashTransactionType`
 
 **Rename `TransactionCode` variants (cryptic → descriptive):**
-- [ ] `A` → `Assignment`, `Ae` → `AutoExercise`, `Af` → `AutoFx`
-- [ ] `B` → `BuyIn`, `Bo` → `BorrowFee`, `C` → `Closing`, `Ca` → `Cancelled`
-- [ ] `D` → `DualAgent`, `Ex` → `Expired`, `G` → `Guaranteed`
-- [ ] `Hc` → `HighestCost`, `I` → `InternalTransfer`, `L` → `MarginLiquidation`
-- [ ] `Li` → `Lifo`, `Lt` → `LongTermGain`, `M` → `ManualEntry`
-- [ ] `O` → `Exercise`, `P` → `Opening`, `R` → `Reopen`
-- [ ] `St` → `ShortTermGain`, `T` → `Transfer`, `W` → `WashSale`
-- [ ] (and remaining variants - see Naming Improvements section)
+- [x] `A` → `Assignment`, `Ae` → `AutoExercise`, `Af` → `AutoFx`
+- [x] `B` → `BuyIn`, `Bo` → `BorrowFee`, `C` → `Closing`, `Ca` → `Cancelled`
+- [x] `D` → `DualAgent`, `Ex` → `Expired`, `G` → `Guaranteed`
+- [x] `Hc` → `HighestCost`, `I` → `InternalTransfer`, `L` → `MarginLiquidation`
+- [x] `Li` → `Lifo`, `Lt` → `LongTermGain`, `M` → `ManualEntry`
+- [x] `O` → `Exercise`, `P` → `Opening`, `R` → `Reopen`
+- [x] `St` → `ShortTermGain`, `T` → `Transfer`, `W` → `WashSale`
+- [x] All remaining variants renamed (45 total variants completed)
 
 **Create new enums:**
 - [ ] `LevelOfDetail` { Summary, Detail, Execution, Lot }
