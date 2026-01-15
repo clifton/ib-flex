@@ -25,7 +25,7 @@
 //!
 //! // Calculate total commissions
 //! let total_commission: rust_decimal::Decimal =
-//!     statement.trades.items.iter().map(|t| t.commission).sum();
+//!     statement.trades.items.iter().filter_map(|t| t.commission).sum();
 //! println!("Total commissions: ${}", total_commission);
 //! # Ok(())
 //! # }
@@ -106,6 +106,23 @@ pub use version::FlexSchemaVersion;
 /// ```
 pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement> {
     parsers::parse_activity_flex(xml)
+}
+
+/// Parse all Activity FLEX statements from XML
+///
+/// FLEX queries can contain multiple statements (e.g., for different days
+/// in a date range backfill). This function returns all of them.
+///
+/// # Arguments
+///
+/// * `xml` - XML string from IB Activity FLEX query
+///
+/// # Returns
+///
+/// * `Ok(Vec<ActivityFlexStatement>)` - All parsed statements
+/// * `Err(ParseError)` - Parse error with context
+pub fn parse_activity_flex_all(xml: &str) -> Result<Vec<ActivityFlexStatement>> {
+    parsers::parse_activity_flex_all(xml)
 }
 
 /// Parse a Trade Confirmation FLEX XML statement

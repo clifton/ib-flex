@@ -25,8 +25,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!();
 
     // Calculate total commissions
-    let total_commission: rust_decimal::Decimal =
-        statement.trades.items.iter().map(|t| t.commission).sum();
+    let total_commission: rust_decimal::Decimal = statement
+        .trades
+        .items
+        .iter()
+        .filter_map(|t| t.commission)
+        .sum();
 
     println!("Total trades: {}", statement.trades.items.len());
     println!("Total commissions: ${}", total_commission);
@@ -41,7 +45,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             .entry(trade.symbol.clone())
             .or_insert((0i32, rust_decimal::Decimal::ZERO));
         entry.0 += 1;
-        entry.1 += trade.commission;
+        entry.1 += trade.commission.unwrap_or_default();
     }
 
     for (symbol, (count, commission)) in symbols {

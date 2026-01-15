@@ -40,27 +40,29 @@ fn test_change_in_nav() {
     let xml = include_str!("fixtures/activity_extended.xml");
     let statement = parse_activity_flex(xml).expect("Failed to parse");
 
-    assert_eq!(statement.change_in_nav.items.len(), 1);
-    let nav = &statement.change_in_nav.items[0];
+    // ChangeInNAV is now a single element, not a wrapper
+    let nav = statement
+        .change_in_nav
+        .as_ref()
+        .expect("Expected ChangeInNAV");
 
     assert_eq!(nav.account_id, "U1234567");
     assert_eq!(nav.from_date.to_string(), "2025-01-01");
     assert_eq!(nav.to_date.to_string(), "2025-01-31");
     assert_eq!(nav.starting_value, Decimal::from_str("100000.00").unwrap());
-    assert_eq!(nav.transfers, Some(Decimal::from_str("5000.00").unwrap()));
+    assert_eq!(nav.ending_value, Decimal::from_str("107500.00").unwrap());
+    // New field names matching production schema
+    assert_eq!(nav.mtm, Some(Decimal::from_str("2500.00").unwrap()));
+    assert_eq!(nav.realized, Some(Decimal::from_str("1500.00").unwrap()));
     assert_eq!(
-        nav.mtm_plus_realized_pnl,
-        Some(Decimal::from_str("2500.00").unwrap())
-    );
-    assert_eq!(
-        nav.realized_pnl,
-        Some(Decimal::from_str("1500.00").unwrap())
-    );
-    assert_eq!(
-        nav.unrealized_pnl,
+        nav.change_in_unrealized,
         Some(Decimal::from_str("1000.00").unwrap())
     );
-    assert_eq!(nav.ending_value, Decimal::from_str("107500.00").unwrap());
+    assert_eq!(
+        nav.deposits_withdrawals,
+        Some(Decimal::from_str("5000.00").unwrap())
+    );
+    assert_eq!(nav.commissions, Some(Decimal::from_str("-50.00").unwrap()));
 }
 
 #[test]
@@ -80,7 +82,7 @@ fn test_equity_summary() {
         Some(Decimal::from_str("15000.00").unwrap())
     );
     assert_eq!(summary.bonds, Some(Decimal::from_str("2500.00").unwrap()));
-    assert_eq!(summary.total, Decimal::from_str("107500.00").unwrap());
+    assert_eq!(summary.total, Some(Decimal::from_str("107500.00").unwrap()));
 }
 
 #[test]
@@ -262,7 +264,7 @@ fn test_extended_types_default_to_empty() {
 
     // All extended sections should default to empty
     assert!(statement.account_information.is_none());
-    assert_eq!(statement.change_in_nav.items.len(), 0);
+    assert!(statement.change_in_nav.is_none()); // Single element, not wrapper
     assert_eq!(statement.equity_summary.items.len(), 0);
     assert_eq!(statement.cash_report.items.len(), 0);
     assert_eq!(statement.trade_confirms.items.len(), 0);

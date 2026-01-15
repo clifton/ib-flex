@@ -145,10 +145,22 @@ fn test_trade_parsing() {
         .unwrap();
     assert_eq!(buy_trade.quantity, Some(Decimal::from(100)));
     assert_eq!(buy_trade.price, Some(Decimal::from_str("175.50").unwrap()));
-    assert_eq!(buy_trade.proceeds, Decimal::from_str("-17550.00").unwrap());
-    assert_eq!(buy_trade.commission, Decimal::from_str("-1.25").unwrap());
-    assert_eq!(buy_trade.trade_date.to_string(), "2025-01-15");
-    assert_eq!(buy_trade.settle_date.to_string(), "2025-01-17");
+    assert_eq!(
+        buy_trade.proceeds,
+        Some(Decimal::from_str("-17550.00").unwrap())
+    );
+    assert_eq!(
+        buy_trade.commission,
+        Some(Decimal::from_str("-1.25").unwrap())
+    );
+    assert_eq!(
+        buy_trade.trade_date.map(|d| d.to_string()),
+        Some("2025-01-15".to_string())
+    );
+    assert_eq!(
+        buy_trade.settle_date.map(|d| d.to_string()),
+        Some("2025-01-17".to_string())
+    );
 
     // Verify sell trade with realized P&L
     let sell_trade = trades
@@ -157,7 +169,7 @@ fn test_trade_parsing() {
         .unwrap();
     assert_eq!(sell_trade.symbol, "MSFT");
     assert_eq!(sell_trade.quantity, Some(Decimal::from(-50)));
-    assert!(sell_trade.proceeds > Decimal::ZERO);
+    assert!(sell_trade.proceeds.unwrap() > Decimal::ZERO);
     assert_eq!(
         sell_trade.fifo_pnl_realized,
         Some(Decimal::from_str("511.75").unwrap())
@@ -185,7 +197,7 @@ fn test_trade_summary() {
     let trades = &statement.trades.items;
 
     // Total commissions
-    let total_commissions: Decimal = trades.iter().map(|t| t.commission).sum();
+    let total_commissions: Decimal = trades.iter().filter_map(|t| t.commission).sum();
     assert_eq!(total_commissions, Decimal::from_str("-8.50").unwrap());
 
     // Total realized P&L
@@ -219,7 +231,7 @@ fn test_cash_transactions() {
     // Dividend
     let dividend = cash
         .iter()
-        .find(|c| c.transaction_type == "Dividends")
+        .find(|c| c.transaction_type.as_deref() == Some("Dividends"))
         .unwrap();
     assert_eq!(dividend.symbol.as_deref(), Some("AAPL"));
     assert_eq!(dividend.amount, Decimal::from_str("125.00").unwrap());
@@ -227,14 +239,14 @@ fn test_cash_transactions() {
     // Withholding tax
     let tax = cash
         .iter()
-        .find(|c| c.transaction_type == "Withholding Tax")
+        .find(|c| c.transaction_type.as_deref() == Some("Withholding Tax"))
         .unwrap();
     assert_eq!(tax.amount, Decimal::from_str("-18.75").unwrap());
 
     // Interest
     let interest = cash
         .iter()
-        .find(|c| c.transaction_type == "Broker Interest Paid")
+        .find(|c| c.transaction_type.as_deref() == Some("Broker Interest Paid"))
         .unwrap();
     assert!(interest.amount < Decimal::ZERO);
 }
@@ -250,7 +262,12 @@ fn test_cash_flow_summary() {
     // Total dividends
     let dividends: Decimal = cash
         .iter()
-        .filter(|c| c.transaction_type.contains("Dividend"))
+        .filter(|c| {
+            c.transaction_type
+                .as_ref()
+                .map(|t| t.contains("Dividend"))
+                .unwrap_or(false)
+        })
         .map(|c| c.amount)
         .sum();
     assert_eq!(dividends, Decimal::from_str("125.00").unwrap());
@@ -258,7 +275,12 @@ fn test_cash_flow_summary() {
     // Total taxes
     let taxes: Decimal = cash
         .iter()
-        .filter(|c| c.transaction_type.contains("Tax"))
+        .filter(|c| {
+            c.transaction_type
+                .as_ref()
+                .map(|t| t.contains("Tax"))
+                .unwrap_or(false)
+        })
         .map(|c| c.amount)
         .sum();
     assert_eq!(taxes, Decimal::from_str("-18.75").unwrap());
@@ -275,7 +297,7 @@ fn test_corporate_actions() {
 
     let split = &actions[0];
     assert_eq!(split.symbol, "XYZ");
-    assert_eq!(split.action_type, "FS"); // Forward Split
+    assert_eq!(split.action_type, Some("FS".to_string())); // Forward Split
     assert_eq!(split.quantity, Some(Decimal::from(100)));
 }
 
@@ -354,10 +376,12 @@ fn test_nav_change() {
     let xml = include_str!("fixtures/activity_daily_portfolio.xml");
     let statement = parse_activity_flex(xml).expect("Failed to parse");
 
-    let nav = &statement.change_in_nav.items;
-    assert_eq!(nav.len(), 1);
+    // ChangeInNAV is now a single element, not a wrapper
+    let change = statement
+        .change_in_nav
+        .as_ref()
+        .expect("Expected ChangeInNAV");
 
-    let change = &nav[0];
     assert_eq!(change.from_date.to_string(), "2025-01-15");
     assert_eq!(
         change.starting_value,
@@ -384,7 +408,7 @@ fn test_equity_summary() {
     assert_eq!(eq.cash, Some(Decimal::from_str("150000.50").unwrap()));
     assert_eq!(eq.stock, Some(Decimal::from_str("250000.00").unwrap()));
     assert_eq!(eq.options, Some(Decimal::from_str("25000.00").unwrap()));
-    assert_eq!(eq.total, Decimal::from_str("425526.00").unwrap());
+    assert_eq!(eq.total, Some(Decimal::from_str("425526.00").unwrap()));
 }
 
 /// Test extended types - interest accruals

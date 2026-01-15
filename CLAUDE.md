@@ -80,7 +80,7 @@ ib-flex/
 
 **ALWAYS run these commands before EVERY commit:**
 ```bash
-cargo fmt && cargo clippy -- -D warnings
+cargo fmt && cargo clippy --all-targets -- -D warnings
 ```
 
 **No exceptions.** Fix all clippy warnings before committing. This has been missed in multiple PRs and must be enforced strictly.
@@ -200,13 +200,13 @@ pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement>
 - Major: Breaking changes
 
 ### 6. Code Quality Before Every Commit
-**Rule**: ALWAYS run both `cargo fmt` and `cargo clippy -- -D warnings` before committing code.
+**Rule**: ALWAYS run both `cargo fmt` and `cargo clippy --all-targets -- -D warnings` before committing code.
 
 **Why**: Ensures consistent code style and catches common issues before they reach version control.
 
 **CRITICAL REQUIREMENT**:
 - Run `cargo fmt` to format all code
-- Run `cargo clippy -- -D warnings` to catch all clippy warnings
+- Run `cargo clippy --all-targets -- -D warnings` to catch all clippy warnings
 - Fix all clippy warnings before committing
 - These checks MUST pass before creating commits or PRs
 - No exceptions - this has been missed in multiple PRs and must not happen again
@@ -214,7 +214,7 @@ pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement>
 **Enforcement**:
 ```bash
 # Before EVERY commit, run:
-cargo fmt && cargo clippy -- -D warnings
+cargo fmt && cargo clippy --all-targets -- -D warnings
 ```
 
 ---
@@ -645,10 +645,10 @@ cargo bench
 cargo fmt
 
 # Lint (REQUIRED before commit - must have zero warnings)
-cargo clippy -- -D warnings
+cargo clippy --all-targets -- -D warnings
 
 # Recommended: Run both together before committing
-cargo fmt && cargo clippy -- -D warnings
+cargo fmt && cargo clippy --all-targets -- -D warnings
 
 # Check docs
 cargo doc --no-deps --open
@@ -661,9 +661,9 @@ cargo doc --no-deps --open
 Before publishing to crates.io:
 
 ### Pre-Release
-- [ ] **Run `cargo fmt && cargo clippy -- -D warnings`** (MUST be first!)
+- [ ] **Run `cargo fmt && cargo clippy --all-targets -- -D warnings`** (MUST be first!)
 - [ ] All tests pass (`cargo test`)
-- [ ] Clippy clean with zero warnings (`cargo clippy -- -D warnings`)
+- [ ] Clippy clean with zero warnings (`cargo clippy --all-targets -- -D warnings`)
 - [ ] Code formatted (`cargo fmt --check`)
 - [ ] Documentation complete (`cargo doc --no-deps`)
 - [ ] Examples run successfully
@@ -733,7 +733,7 @@ This is an open-source project. Contributions welcome!
 ### Pull Requests
 1. Fork and create branch
 2. Add tests for new features
-3. **CRITICAL**: Run `cargo fmt && cargo clippy -- -D warnings` and fix all issues
+3. **CRITICAL**: Run `cargo fmt && cargo clippy --all-targets -- -D warnings` and fix all issues
 4. Ensure all tests pass (`cargo test`)
 5. Update CHANGELOG.md
 6. Submit PR with clear description
