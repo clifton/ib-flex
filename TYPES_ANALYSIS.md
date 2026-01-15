@@ -673,7 +673,7 @@ These sections appear in FLEX statements but are currently ignored:
 ### Phase 1: Enum Improvements
 
 **Rename existing enums for clarity:**
-- [ ] `Code` → `TransactionCode`
+- [x] `Code` → `TransactionCode`
 - [ ] `Reorg` → `CorporateActionType`
 - [ ] `CashAction` → `CashTransactionType`
 

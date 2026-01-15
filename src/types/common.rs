@@ -524,9 +524,11 @@ pub enum TransferType {
 
 /// Transaction code
 ///
-/// Comprehensive list of IB transaction classification codes
+/// Comprehensive list of IB transaction classification codes.
+/// These codes appear in `notes` fields and can be combined (e.g., "C;W" for closing + wash sale).
+/// They provide critical context for tax reporting and trade classification.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
-pub enum Code {
+pub enum TransactionCode {
     /// Assignment
     A,
 
