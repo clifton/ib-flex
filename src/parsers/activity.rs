@@ -41,6 +41,35 @@ pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement> {
     Ok(statement)
 }
 
+/// Parse all Activity FLEX statements from XML
+///
+/// FLEX queries can contain multiple statements (e.g., for different days
+/// in a date range backfill). This function returns all of them.
+///
+/// # Arguments
+///
+/// * `xml` - XML string from IB Activity FLEX query
+///
+/// # Returns
+///
+/// * `Ok(Vec<ActivityFlexStatement>)` - All parsed statements
+/// * `Err(ParseError)` - Parse error with context
+///
+/// # Errors
+///
+/// Returns `ParseError` if XML is malformed, required fields are missing,
+/// or date/decimal formats are invalid.
+pub fn parse_activity_flex_all(xml: &str) -> Result<Vec<ActivityFlexStatement>> {
+    // Parse XML using quick-xml with serde
+    let response: FlexQueryResponse =
+        quick_xml::de::from_str(xml).map_err(|e| ParseError::XmlError {
+            message: format!("Failed to parse FLEX XML: {}", e),
+            location: None,
+        })?;
+
+    Ok(response.statements.statements)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -354,10 +354,12 @@ fn test_nav_change() {
     let xml = include_str!("fixtures/activity_daily_portfolio.xml");
     let statement = parse_activity_flex(xml).expect("Failed to parse");
 
-    let nav = &statement.change_in_nav.items;
-    assert_eq!(nav.len(), 1);
+    // ChangeInNAV is now a single element, not a wrapper
+    let change = statement
+        .change_in_nav
+        .as_ref()
+        .expect("Expected ChangeInNAV");
 
-    let change = &nav[0];
     assert_eq!(change.from_date.to_string(), "2025-01-15");
     assert_eq!(
         change.starting_value,

@@ -21,12 +21,14 @@
                                acctAlias="Main" currency="USD" name="John Doe"
                                masterName="MASTER" />
 
-            <ChangeInNAV>
-                <ChangeInNAV accountId="U1234567" fromDate="2025-01-01" toDate="2025-01-31"
-                            startingValue="100000.00" transfers="5000.00"
-                            mtmPlusRealizedPnl="2500.00" realizedPnl="1500.00"
-                            unrealizedPnl="1000.00" endingValue="107500.00" />
-            </ChangeInNAV>
+            <ChangeInNAV accountId="U1234567" acctAlias="Main" model="" currency="USD"
+                        fromDate="20250101" toDate="20250131"
+                        startingValue="100000.00" endingValue="107500.00"
+                        mtm="2500.00" realized="1500.00" changeInUnrealized="1000.00"
+                        depositsWithdrawals="5000.00" dividends="100.00" withholdingTax="0"
+                        changeInDividendAccruals="0" interest="0" changeInInterestAccruals="0"
+                        advisorFees="0" clientFees="0" otherFees="0" commissions="-50.00"
+                        fxTranslation="0" twr="7.5" corporateActionProceeds="0" />
 
             <EquitySummaryInBase>
                 <EquitySummaryByReportDateInBase accountId="U1234567"

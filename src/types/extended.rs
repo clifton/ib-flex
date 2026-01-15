@@ -128,6 +128,18 @@ pub struct ChangeInNAV {
     #[serde(rename = "@accountId")]
     pub account_id: String,
 
+    /// Account alias
+    #[serde(rename = "@acctAlias", default)]
+    pub acct_alias: Option<String>,
+
+    /// Model
+    #[serde(rename = "@model", default)]
+    pub model: Option<String>,
+
+    /// Currency
+    #[serde(rename = "@currency", default)]
+    pub currency: Option<String>,
+
     /// From date
     #[serde(rename = "@fromDate", deserialize_with = "deserialize_flex_date")]
     pub from_date: NaiveDate,
@@ -136,45 +148,141 @@ pub struct ChangeInNAV {
     #[serde(rename = "@toDate", deserialize_with = "deserialize_flex_date")]
     pub to_date: NaiveDate,
 
-    /// Starting value
+    /// Starting NAV value
     #[serde(rename = "@startingValue")]
     pub starting_value: Decimal,
 
-    /// Transfers (deposits/withdrawals)
-    #[serde(
-        rename = "@transfers",
-        default,
-        deserialize_with = "deserialize_optional_decimal"
-    )]
-    pub transfers: Option<Decimal>,
+    /// Ending NAV value
+    #[serde(rename = "@endingValue")]
+    pub ending_value: Decimal,
 
     /// Mark-to-market P&L
     #[serde(
-        rename = "@mtmPlusRealizedPnl",
+        rename = "@mtm",
         default,
         deserialize_with = "deserialize_optional_decimal"
     )]
-    pub mtm_plus_realized_pnl: Option<Decimal>,
+    pub mtm: Option<Decimal>,
 
     /// Realized P&L
     #[serde(
-        rename = "@realizedPnl",
+        rename = "@realized",
         default,
         deserialize_with = "deserialize_optional_decimal"
     )]
-    pub realized_pnl: Option<Decimal>,
+    pub realized: Option<Decimal>,
 
-    /// Unrealized P&L
+    /// Change in unrealized P&L
     #[serde(
-        rename = "@unrealizedPnl",
+        rename = "@changeInUnrealized",
         default,
         deserialize_with = "deserialize_optional_decimal"
     )]
-    pub unrealized_pnl: Option<Decimal>,
+    pub change_in_unrealized: Option<Decimal>,
 
-    /// Ending value
-    #[serde(rename = "@endingValue")]
-    pub ending_value: Decimal,
+    /// Deposits and withdrawals
+    #[serde(
+        rename = "@depositsWithdrawals",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub deposits_withdrawals: Option<Decimal>,
+
+    /// Dividends received
+    #[serde(
+        rename = "@dividends",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub dividends: Option<Decimal>,
+
+    /// Withholding tax
+    #[serde(
+        rename = "@withholdingTax",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub withholding_tax: Option<Decimal>,
+
+    /// Change in dividend accruals
+    #[serde(
+        rename = "@changeInDividendAccruals",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub change_in_dividend_accruals: Option<Decimal>,
+
+    /// Interest income
+    #[serde(
+        rename = "@interest",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub interest: Option<Decimal>,
+
+    /// Change in interest accruals
+    #[serde(
+        rename = "@changeInInterestAccruals",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub change_in_interest_accruals: Option<Decimal>,
+
+    /// Advisor fees
+    #[serde(
+        rename = "@advisorFees",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub advisor_fees: Option<Decimal>,
+
+    /// Client fees
+    #[serde(
+        rename = "@clientFees",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub client_fees: Option<Decimal>,
+
+    /// Other fees
+    #[serde(
+        rename = "@otherFees",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub other_fees: Option<Decimal>,
+
+    /// Commissions
+    #[serde(
+        rename = "@commissions",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub commissions: Option<Decimal>,
+
+    /// FX translation P&L
+    #[serde(
+        rename = "@fxTranslation",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fx_translation: Option<Decimal>,
+
+    /// Time-weighted return
+    #[serde(
+        rename = "@twr",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub twr: Option<Decimal>,
+
+    /// Corporate action proceeds
+    #[serde(
+        rename = "@corporateActionProceeds",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub corporate_action_proceeds: Option<Decimal>,
 }
 
 /// Equity summary by report date in base currency
@@ -2360,13 +2468,9 @@ pub struct UnbundledCommissionDetail {
     #[serde(rename = "@tradeID", default)]
     pub trade_id: Option<String>,
 
-    /// Trade date
-    #[serde(
-        rename = "@dateTime",
-        default,
-        deserialize_with = "deserialize_optional_date"
-    )]
-    pub date_time: Option<NaiveDate>,
+    /// Trade date/time (format: YYYYMMDD;HHMMSS)
+    #[serde(rename = "@dateTime", default)]
+    pub date_time: Option<String>,
 
     /// Exchange
     #[serde(rename = "@exchange", default)]
@@ -3196,6 +3300,135 @@ pub struct TierInterestDetail {
     #[serde(rename = "@currency", default)]
     pub currency: Option<String>,
 
+    /// FX rate to base currency
+    #[serde(
+        rename = "@fxRateToBase",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub fx_rate_to_base: Option<Decimal>,
+
+    /// Interest type (e.g., "Debit Interest", "Short Credit Interest")
+    #[serde(rename = "@interestType", default)]
+    pub interest_type: Option<String>,
+
+    /// Report date
+    #[serde(
+        rename = "@reportDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub report_date: Option<NaiveDate>,
+
+    /// Value date
+    #[serde(
+        rename = "@valueDate",
+        default,
+        deserialize_with = "deserialize_optional_date"
+    )]
+    pub value_date: Option<NaiveDate>,
+
+    /// Tier break (Roman numerals like "I", "II", etc.)
+    #[serde(rename = "@tierBreak", default)]
+    pub tier_break: Option<String>,
+
+    /// Balance threshold
+    #[serde(
+        rename = "@balanceThreshold",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub balance_threshold: Option<Decimal>,
+
+    /// Securities principal
+    #[serde(
+        rename = "@securitiesPrincipal",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub securities_principal: Option<Decimal>,
+
+    /// Commodities principal
+    #[serde(
+        rename = "@commoditiesPrincipal",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub commodities_principal: Option<Decimal>,
+
+    /// IBUKL principal
+    #[serde(
+        rename = "@ibuklPrincipal",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub ibukl_principal: Option<Decimal>,
+
+    /// Total principal
+    #[serde(
+        rename = "@totalPrincipal",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub total_principal: Option<Decimal>,
+
+    /// Interest rate
+    #[serde(
+        rename = "@rate",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub rate: Option<Decimal>,
+
+    /// Securities interest
+    #[serde(
+        rename = "@securitiesInterest",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub securities_interest: Option<Decimal>,
+
+    /// Commodities interest
+    #[serde(
+        rename = "@commoditiesInterest",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub commodities_interest: Option<Decimal>,
+
+    /// IBUKL interest
+    #[serde(
+        rename = "@ibuklInterest",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub ibukl_interest: Option<Decimal>,
+
+    /// Total interest
+    #[serde(
+        rename = "@totalInterest",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub total_interest: Option<Decimal>,
+
+    /// Code
+    #[serde(rename = "@code", default)]
+    pub code: Option<String>,
+
+    /// From account
+    #[serde(rename = "@fromAcct", default)]
+    pub from_acct: Option<String>,
+
+    /// To account
+    #[serde(rename = "@toAcct", default)]
+    pub to_acct: Option<String>,
+
+    /// Margin balance
+    #[serde(rename = "@marginBalance", default)]
+    pub margin_balance: Option<String>,
+
+    // Legacy fields (may appear in older reports)
     /// Date
     #[serde(
         rename = "@date",
@@ -3220,15 +3453,7 @@ pub struct TierInterestDetail {
     )]
     pub to_date: Option<NaiveDate>,
 
-    /// Tier break
-    #[serde(
-        rename = "@tierBreak",
-        default,
-        deserialize_with = "deserialize_optional_decimal"
-    )]
-    pub tier_break: Option<Decimal>,
-
-    /// Balance
+    /// Balance (legacy)
     #[serde(
         rename = "@balance",
         default,
@@ -3236,7 +3461,7 @@ pub struct TierInterestDetail {
     )]
     pub balance: Option<Decimal>,
 
-    /// Interest rate
+    /// Interest rate (legacy field name)
     #[serde(
         rename = "@interestRate",
         default,
@@ -3244,21 +3469,13 @@ pub struct TierInterestDetail {
     )]
     pub interest_rate: Option<Decimal>,
 
-    /// Interest
+    /// Interest (legacy)
     #[serde(
         rename = "@interest",
         default,
         deserialize_with = "deserialize_optional_decimal"
     )]
     pub interest: Option<Decimal>,
-
-    /// Value date
-    #[serde(
-        rename = "@valueDate",
-        default,
-        deserialize_with = "deserialize_optional_date"
-    )]
-    pub value_date: Option<NaiveDate>,
 }
 
 // =============================================================================

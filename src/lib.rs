@@ -108,6 +108,23 @@ pub fn parse_activity_flex(xml: &str) -> Result<ActivityFlexStatement> {
     parsers::parse_activity_flex(xml)
 }
 
+/// Parse all Activity FLEX statements from XML
+///
+/// FLEX queries can contain multiple statements (e.g., for different days
+/// in a date range backfill). This function returns all of them.
+///
+/// # Arguments
+///
+/// * `xml` - XML string from IB Activity FLEX query
+///
+/// # Returns
+///
+/// * `Ok(Vec<ActivityFlexStatement>)` - All parsed statements
+/// * `Err(ParseError)` - Parse error with context
+pub fn parse_activity_flex_all(xml: &str) -> Result<Vec<ActivityFlexStatement>> {
+    parsers::parse_activity_flex_all(xml)
+}
+
 /// Parse a Trade Confirmation FLEX XML statement
 ///
 /// Parses Interactive Brokers Trade Confirmation FLEX XML into a structured
