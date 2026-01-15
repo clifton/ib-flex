@@ -14,8 +14,8 @@ pub use activity::{
 };
 pub use common::{
     AssetCategory, BuySell, CashTransactionType, CorporateActionType, DeliveredReceived, InOut,
-    LongShort, OpenClose, OptionAction, OrderType, PutCall, ToFrom, TradeType, TransactionCode,
-    TransferType,
+    LevelOfDetail, LongShort, OpenClose, OptionAction, OrderType, PutCall, ToFrom, TradeType,
+    TransactionCode, TransferType,
 };
 pub use extended::{
     // Account info

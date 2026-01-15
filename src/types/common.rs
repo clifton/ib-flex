@@ -808,6 +808,32 @@ pub enum DeliveredReceived {
     Unknown,
 }
 
+/// Level of detail for reporting
+///
+/// Specifies the granularity of data in FLEX reports.
+/// Used by `Trade`, `Position`, and `CashTransaction` structs to indicate
+/// the level of detail requested in the FLEX query.
+///
+/// **XML Mapping**: Maps to the `levelOfDetail` attribute in various elements.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+pub enum LevelOfDetail {
+    /// Summary level - aggregated data with minimal details
+    Summary,
+
+    /// Detail level - standard reporting with all key fields
+    Detail,
+
+    /// Execution level - detailed execution information including time and venue
+    Execution,
+
+    /// Lot level - tax lot level details for cost basis tracking
+    Lot,
+
+    /// Unknown or unrecognized level of detail
+    #[serde(other)]
+    Unknown,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

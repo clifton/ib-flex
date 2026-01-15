@@ -688,7 +688,7 @@ These sections appear in FLEX statements but are currently ignored:
 - [x] All remaining variants renamed (45 total variants completed)
 
 **Create new enums:**
-- [ ] `LevelOfDetail` { Summary, Detail, Execution, Lot }
+- [x] `LevelOfDetail` { Summary, Detail, Execution, Lot }
 - [ ] `SecurityIdType` { Cusip, Isin, Figi, Sedol }
 - [ ] `SubCategory` { Etf, Adr, Reit, Preferred, Common, ... }
 
