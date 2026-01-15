@@ -5,7 +5,7 @@ use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 use super::common::{
-    AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, TradeType,
+    AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, SecurityIdType, TradeType,
 };
 use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
 
@@ -534,7 +534,7 @@ pub struct Trade {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives (Options/Futures) ---
     /// Contract multiplier (for futures/options)
@@ -1061,7 +1061,7 @@ pub struct Position {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives (Options/Futures) ---
     /// Contract multiplier
@@ -1435,7 +1435,7 @@ pub struct CashTransaction {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives ---
     /// Contract multiplier
@@ -1726,7 +1726,7 @@ pub struct CorporateAction {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives ---
     /// Contract multiplier
@@ -2004,7 +2004,7 @@ pub struct SecurityInfo {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     /// CUSIP
     #[serde(rename = "@cusip", default)]
