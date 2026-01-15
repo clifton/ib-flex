@@ -8,7 +8,6 @@
 #   --dry-run        Preview changes without making them
 #   -y, --yes        Non-interactive mode (auto-confirm all prompts)
 #   --skip-tests     Skip cargo fmt/clippy/test checks
-#   --skip-publish   Skip crates.io publish step
 #   -h, --help       Show this help message
 #
 # Examples:
@@ -33,7 +32,6 @@ readonly GITHUB_REPO="clifton/ib-flex"
 DRY_RUN=false
 AUTO_CONFIRM=false
 SKIP_TESTS=false
-SKIP_PUBLISH=false
 VERSION_TYPE="patch"
 CURRENT_VERSION=""
 NEW_VERSION=""
@@ -44,7 +42,6 @@ FIRST_RELEASE=false
 DID_COMMIT=false
 DID_PUSH=false
 DID_RELEASE=false
-DID_PUBLISH=false
 
 # Temp files for cleanup
 TEMP_FILES=()
@@ -178,7 +175,6 @@ OPTIONS:
     --dry-run       Preview all changes without making them
     -y, --yes       Non-interactive mode (auto-confirm all prompts)
     --skip-tests    Skip cargo fmt, clippy, and test checks
-    --skip-publish  Skip publishing to crates.io
     -h, --help      Show this help message
 
 EXAMPLES:
@@ -202,7 +198,7 @@ WORKFLOW:
     6. Create git commit and tag
     7. Push to remote (prompted)
     8. Create GitHub release (prompted)
-    9. Publish to crates.io (prompted)
+    9. GitHub Action publishes to crates.io automatically
 
 EOF
     exit 0
@@ -228,10 +224,6 @@ parse_args() {
                 ;;
             --skip-tests)
                 SKIP_TESTS=true
-                shift
-                ;;
-            --skip-publish)
-                SKIP_PUBLISH=true
                 shift
                 ;;
             -h|--help)
@@ -874,45 +866,6 @@ create_github_release() {
     log_success "Created GitHub release v$NEW_VERSION"
 }
 
-publish_to_crates_io() {
-    if $SKIP_PUBLISH; then
-        log_info "Skipping crates.io publish (--skip-publish)"
-        return
-    fi
-
-    if $DRY_RUN; then
-        log_info "[DRY RUN] Would publish to crates.io"
-        # Show what would be packaged
-        echo ""
-        log_info "Files that would be published:"
-        cargo package --list --allow-dirty 2>/dev/null | head -15 || true
-        echo "  ..."
-        return
-    fi
-
-    if ! confirm "Publish v$NEW_VERSION to crates.io?"; then
-        log_info "Skipped crates.io publish"
-        echo ""
-        log_info "To publish manually: cargo publish"
-        return
-    fi
-
-    # Show package contents
-    echo ""
-    log_info "Package contents preview:"
-    cargo package --list 2>/dev/null | head -15 || true
-    echo "  ..."
-    echo ""
-
-    if ! confirm "Continue with publish?"; then
-        log_info "Aborted crates.io publish"
-        return
-    fi
-
-    cargo publish
-    DID_PUBLISH=true
-    log_success "Published v$NEW_VERSION to crates.io"
-}
 
 # ============================================================================
 # SUMMARY
@@ -936,7 +889,6 @@ print_summary() {
     echo -e "  Committed:    $(if $DID_COMMIT; then echo "${GREEN}Yes${NC}"; else echo "${DIM}No${NC}"; fi)"
     echo -e "  Pushed:       $(if $DID_PUSH; then echo "${GREEN}Yes${NC}"; else echo "${DIM}No${NC}"; fi)"
     echo -e "  GH Release:   $(if $DID_RELEASE; then echo "${GREEN}Yes${NC}"; else echo "${DIM}No${NC}"; fi)"
-    echo -e "  Published:    $(if $DID_PUBLISH; then echo "${GREEN}Yes${NC}"; else echo "${DIM}No${NC}"; fi)"
 
     if ! $DID_PUSH; then
         echo ""
@@ -949,9 +901,9 @@ print_summary() {
         echo "  Release URL: https://github.com/$GITHUB_REPO/releases/tag/v$NEW_VERSION"
     fi
 
-    if $DID_PUBLISH; then
+    if $DID_PUSH; then
         echo ""
-        echo "  Crates.io: https://crates.io/crates/ib-flex/$NEW_VERSION"
+        echo "  crates.io publish will be handled by GitHub Action"
     fi
 }
 
@@ -1022,7 +974,6 @@ main() {
     log_step "Release operations"
     push_to_remote
     create_github_release
-    publish_to_crates_io
 
     # Summary
     print_summary
