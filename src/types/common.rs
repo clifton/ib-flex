@@ -322,8 +322,14 @@ pub enum CashAction {
 }
 
 /// Corporate action reorganization type
+///
+/// Represents the type of corporate action (split, merger, spinoff, etc.).
+/// This enum is used by the `CorporateAction` struct to classify corporate events
+/// that affect security positions and holdings.
+///
+/// **XML Mapping**: Maps to the `type` attribute in `<CorporateAction>` elements.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
-pub enum Reorg {
+pub enum CorporateActionType {
     /// Stock split (forward split)
     #[serde(rename = "Stock Split")]
     StockSplit,

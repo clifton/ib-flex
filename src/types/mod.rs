@@ -13,8 +13,8 @@ pub use activity::{
     TradesWrapper,
 };
 pub use common::{
-    AssetCategory, BuySell, CashAction, DeliveredReceived, InOut, LongShort, OpenClose,
-    OptionAction, OrderType, PutCall, Reorg, ToFrom, TradeType, TransactionCode, TransferType,
+    AssetCategory, BuySell, CashAction, CorporateActionType, DeliveredReceived, InOut, LongShort,
+    OpenClose, OptionAction, OrderType, PutCall, ToFrom, TradeType, TransactionCode, TransferType,
 };
 pub use extended::{
     // Account info
