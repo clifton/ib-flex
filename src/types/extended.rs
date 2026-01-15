@@ -1117,8 +1117,8 @@ pub struct OptionEAE {
     pub action_id: Option<String>,
 
     /// Action type
-    #[serde(rename = "@type")]
-    pub action_type: OptionAction,
+    #[serde(rename = "@type", default)]
+    pub action_type: Option<OptionAction>,
 
     /// Date
     #[serde(rename = "@date", deserialize_with = "deserialize_flex_date")]
@@ -1670,8 +1670,8 @@ pub struct Transfer {
     pub transaction_id: Option<String>,
 
     /// Transfer type
-    #[serde(rename = "@type")]
-    pub transfer_type: TransferType,
+    #[serde(rename = "@type", default)]
+    pub transfer_type: Option<TransferType>,
 
     /// Contract ID
     #[serde(rename = "@conid", default)]

@@ -4,7 +4,9 @@ use std::env;
 use std::fs;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let path = env::args().nth(1).unwrap_or_else(|| "tmp/backfill-to-2026-01-13.xml".to_string());
+    let path = env::args()
+        .nth(1)
+        .unwrap_or_else(|| "tmp/backfill-to-2026-01-13.xml".to_string());
     let xml = fs::read_to_string(&path)?;
 
     println!("File size: {} bytes", xml.len());
@@ -30,8 +32,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
 
                 if trades > 0 {
-                    println!("  Statement {}: {} to {} - {} trades",
-                        i + 1, stmt.from_date, stmt.to_date, trades);
+                    println!(
+                        "  Statement {}: {} to {} - {} trades",
+                        i + 1,
+                        stmt.from_date,
+                        stmt.to_date,
+                        trades
+                    );
                 }
             }
 

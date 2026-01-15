@@ -329,7 +329,6 @@ pub struct ActivityFlexStatement {
     transaction_taxes: IgnoredSection,
     #[serde(rename = "UnbookedTrades", default, skip_serializing)]
     unbooked_trades: IgnoredSection,
-
     // Note: Catch-all flatten disabled as it causes issues with multi-statement files
     // All unknown sections should be explicitly listed above with IgnoredSection
 }
@@ -349,71 +348,19 @@ impl<'de> serde::Deserialize<'de> for IgnoredSection {
     }
 }
 
-/// Helper type for ignoring multiple elements with the same tag name.
-/// This wraps a Vec internally but presents a simple interface for the parser.
-#[derive(Debug, Clone, PartialEq, Default)]
-struct IgnoredVec;
-
-impl<'de> serde::Deserialize<'de> for IgnoredVec {
-    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        struct IgnoredVecVisitor;
-
-        impl<'de> serde::de::Visitor<'de> for IgnoredVecVisitor {
-            type Value = IgnoredVec;
-
-            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-                formatter.write_str("a sequence of elements or a single element to ignore")
-            }
-
-            fn visit_seq<A>(self, mut seq: A) -> std::result::Result<Self::Value, A::Error>
-            where
-                A: serde::de::SeqAccess<'de>,
-            {
-                // Consume all elements in the sequence
-                while seq.next_element::<serde::de::IgnoredAny>()?.is_some() {}
-                Ok(IgnoredVec)
-            }
-
-            fn visit_map<A>(self, mut map: A) -> std::result::Result<Self::Value, A::Error>
-            where
-                A: serde::de::MapAccess<'de>,
-            {
-                // Consume all key-value pairs (XML attributes)
-                while map.next_entry::<serde::de::IgnoredAny, serde::de::IgnoredAny>()?.is_some() {}
-                Ok(IgnoredVec)
-            }
-
-            fn visit_unit<E>(self) -> std::result::Result<Self::Value, E>
-            where
-                E: serde::de::Error,
-            {
-                Ok(IgnoredVec)
-            }
-
-            fn visit_none<E>(self) -> std::result::Result<Self::Value, E>
-            where
-                E: serde::de::Error,
-            {
-                Ok(IgnoredVec)
-            }
-        }
-
-        deserializer.deserialize_any(IgnoredVecVisitor)
-    }
-}
-
-impl serde::Serialize for IgnoredVec {
-    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        use serde::ser::SerializeSeq;
-        let seq = serializer.serialize_seq(Some(0))?;
-        seq.end()
-    }
+/// Element types that can appear in the `<Trades>` section.
+///
+/// IB FLEX interleaves different element types by symbol, so we parse them all
+/// into an enum and then filter by type for user access.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+enum TradesItem {
+    Trade(Trade),
+    Order(Trade),
+    SymbolSummary(Trade),
+    AssetSummary(Trade),
+    WashSale(Trade),
+    Lot(Trade),
 }
 
 /// Wrapper for trades section
@@ -422,30 +369,48 @@ impl serde::Serialize for IgnoredVec {
 /// the `levelOfDetail` attribute:
 /// - `<Trade>` with levelOfDetail="EXECUTION" - individual trade executions
 /// - `<Order>` with levelOfDetail="ORDER" - order summaries
-/// - `<SymbolSummary>`, `<AssetSummary>`, `<WashSale>` - various summary/analysis records
-#[derive(Debug, Clone, PartialEq, Default, Deserialize, Serialize)]
+/// - `<SymbolSummary>`, `<AssetSummary>`, `<WashSale>`, `<Lot>` - various summary records
+///
+/// These elements can be interleaved (grouped by symbol), not by type.
+#[derive(Debug, Clone, PartialEq, Default, Serialize)]
 pub struct TradesWrapper {
-    /// List of trade executions (levelOfDetail="EXECUTION")
-    #[serde(rename = "Trade", default)]
+    /// Trade executions (main trading data)
     pub items: Vec<Trade>,
 
-    /// Order summary records (levelOfDetail="ORDER") - same structure as Trade
-    #[serde(rename = "Order", default)]
-    pub order_summaries: Vec<Trade>,
-
-    /// Symbol summary records (levelOfDetail="SYMBOL_SUMMARY") - same structure as Trade
-    /// These aggregate multiple trade executions for the same symbol on the same day
-    #[serde(rename = "SymbolSummary", default)]
-    pub symbol_summaries: Vec<Trade>,
-
-    /// Asset summary records (levelOfDetail="ASSET_SUMMARY") - same structure as Trade
-    #[serde(rename = "AssetSummary", default)]
-    pub asset_summaries: Vec<Trade>,
-
-    /// Wash sale records - these track wash sale disallowed amounts
-    /// Note: These use the Trade structure but with wash-sale specific fields
-    #[serde(rename = "WashSale", default)]
+    /// Wash sale records
     pub wash_sales: Vec<Trade>,
+}
+
+impl<'de> serde::Deserialize<'de> for TradesWrapper {
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct Raw {
+            #[serde(rename = "$value", default)]
+            items: Vec<TradesItem>,
+        }
+
+        let raw = Raw::deserialize(deserializer)?;
+
+        let mut trades = Vec::new();
+        let mut wash_sales = Vec::new();
+
+        for item in raw.items {
+            match item {
+                TradesItem::Trade(t) => trades.push(t),
+                TradesItem::WashSale(t) => wash_sales.push(t),
+                // Ignore Order, SymbolSummary, AssetSummary, Lot for items
+                _ => {}
+            }
+        }
+
+        Ok(TradesWrapper {
+            items: trades,
+            wash_sales,
+        })
+    }
 }
 
 /// Wrapper for positions section
@@ -607,19 +572,21 @@ pub struct Trade {
     pub underlying_symbol: Option<String>,
 
     // --- Trade Execution ---
-    /// Trade date
+    /// Trade date (may be empty for summary records)
     #[serde(
         rename = "@tradeDate",
-        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+        default,
+        deserialize_with = "deserialize_optional_date"
     )]
-    pub trade_date: NaiveDate,
+    pub trade_date: Option<NaiveDate>,
 
-    /// Settlement date
+    /// Settlement date (may be empty for summary records)
     #[serde(
         rename = "@settleDateTarget",
-        deserialize_with = "crate::parsers::xml_utils::deserialize_flex_date"
+        default,
+        deserialize_with = "deserialize_optional_date"
     )]
-    pub settle_date: NaiveDate,
+    pub settle_date: Option<NaiveDate>,
 
     /// Buy or Sell
     #[serde(rename = "@buySell", default)]
@@ -651,8 +618,12 @@ pub struct Trade {
     pub price: Option<Decimal>,
 
     /// Trade proceeds (negative for buys, positive for sells)
-    #[serde(rename = "@proceeds")]
-    pub proceeds: Decimal,
+    #[serde(
+        rename = "@proceeds",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub proceeds: Option<Decimal>,
 
     /// Cost basis
     #[serde(
@@ -664,8 +635,12 @@ pub struct Trade {
 
     // --- Fees and Taxes ---
     /// Commission paid
-    #[serde(rename = "@ibCommission")]
-    pub commission: Decimal,
+    #[serde(
+        rename = "@ibCommission",
+        default,
+        deserialize_with = "deserialize_optional_decimal"
+    )]
+    pub commission: Option<Decimal>,
 
     /// Taxes paid
     #[serde(
@@ -1379,8 +1354,8 @@ pub struct CashTransaction {
 
     // --- Transaction Details ---
     /// Transaction type (Deposits, Dividends, WithholdingTax, BrokerInterest, etc.)
-    #[serde(rename = "@type")]
-    pub transaction_type: String,
+    #[serde(rename = "@type", default)]
+    pub transaction_type: Option<String>,
 
     /// Description of transaction
     #[serde(rename = "@description", default)]
@@ -1671,12 +1646,12 @@ pub struct CorporateAction {
 
     // --- Action Details ---
     /// Action type (Split, Merger, Spinoff, etc.)
-    #[serde(rename = "@type")]
-    pub action_type: String,
+    #[serde(rename = "@type", default)]
+    pub action_type: Option<String>,
 
     /// Description of corporate action
-    #[serde(rename = "@description")]
-    pub description: String,
+    #[serde(rename = "@description", default)]
+    pub description: Option<String>,
 
     // --- Dates (Tax-critical) ---
     /// Action date

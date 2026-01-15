@@ -3,7 +3,7 @@ use std::fs;
 fn main() {
     let xml = fs::read_to_string("tmp/first_statement.xml").unwrap();
     println!("File length: {} bytes", xml.len());
-    println!("Last 50 chars: {:?}", &xml[xml.len()-50..]);
+    println!("Last 50 chars: {:?}", &xml[xml.len() - 50..]);
 
     // Try to parse with ib_flex
     println!("\nTrying ib_flex::parse_activity_flex...");
@@ -46,8 +46,14 @@ fn main() {
 
             match quick_xml::de::from_str::<Test1>(&xml) {
                 Ok(r) => {
-                    println!("Minimal struct parse OK - account: {}",
-                        r.statements.statements.first().map(|s| s.account_id.as_str()).unwrap_or("none"));
+                    println!(
+                        "Minimal struct parse OK - account: {}",
+                        r.statements
+                            .statements
+                            .first()
+                            .map(|s| s.account_id.as_str())
+                            .unwrap_or("none")
+                    );
                 }
                 Err(e) => println!("Minimal struct parse FAILED: {}", e),
             }
@@ -80,8 +86,14 @@ fn main() {
             println!("\nTrying with TradesWrapper...");
             match quick_xml::de::from_str::<Test2>(&xml) {
                 Ok(r) => {
-                    println!("With TradesWrapper OK - trades: {}",
-                        r.statements.statements.first().map(|s| s.trades.items.len()).unwrap_or(0));
+                    println!(
+                        "With TradesWrapper OK - trades: {}",
+                        r.statements
+                            .statements
+                            .first()
+                            .map(|s| s.trades.items.len())
+                            .unwrap_or(0)
+                    );
                 }
                 Err(e) => println!("With TradesWrapper FAILED: {}", e),
             }
@@ -119,8 +131,14 @@ fn main() {
             println!("\nTrying with SimpleTrades (just Trade elements)...");
             match quick_xml::de::from_str::<Test3>(&xml) {
                 Ok(r) => {
-                    println!("SimpleTrades OK - trades: {}",
-                        r.statements.statements.first().map(|s| s.trades.items.len()).unwrap_or(0));
+                    println!(
+                        "SimpleTrades OK - trades: {}",
+                        r.statements
+                            .statements
+                            .first()
+                            .map(|s| s.trades.items.len())
+                            .unwrap_or(0)
+                    );
                 }
                 Err(e) => println!("SimpleTrades FAILED: {}", e),
             }
@@ -159,7 +177,11 @@ fn main() {
             match quick_xml::de::from_str::<Test4>(&xml) {
                 Ok(r) => {
                     let stmt = r.statements.statements.first().unwrap();
-                    println!("Trade + Order OK - trades: {}, orders: {}", stmt.trades.items.len(), stmt.trades.orders.len());
+                    println!(
+                        "Trade + Order OK - trades: {}, orders: {}",
+                        stmt.trades.items.len(),
+                        stmt.trades.orders.len()
+                    );
                 }
                 Err(e) => println!("Trade + Order FAILED: {}", e),
             }
@@ -198,8 +220,11 @@ fn main() {
             match quick_xml::de::from_str::<Test5>(&xml) {
                 Ok(r) => {
                     let stmt = r.statements.statements.first().unwrap();
-                    println!("Trade + SymbolSummary OK - trades: {}, symbol_summaries: {}",
-                        stmt.trades.items.len(), stmt.trades.symbol_summaries.len());
+                    println!(
+                        "Trade + SymbolSummary OK - trades: {}, symbol_summaries: {}",
+                        stmt.trades.items.len(),
+                        stmt.trades.symbol_summaries.len()
+                    );
                 }
                 Err(e) => println!("Trade + SymbolSummary FAILED: {}", e),
             }
@@ -244,10 +269,14 @@ fn main() {
             match quick_xml::de::from_str::<Test6>(&xml) {
                 Ok(r) => {
                     let stmt = r.statements.statements.first().unwrap();
-                    println!("All 5 types OK - trades: {}, orders: {}, sym: {}, asset: {}, wash: {}",
-                        stmt.trades.items.len(), stmt.trades.orders.len(),
-                        stmt.trades.symbol_summaries.len(), stmt.trades.asset_summaries.len(),
-                        stmt.trades.wash_sales.len());
+                    println!(
+                        "All 5 types OK - trades: {}, orders: {}, sym: {}, asset: {}, wash: {}",
+                        stmt.trades.items.len(),
+                        stmt.trades.orders.len(),
+                        stmt.trades.symbol_summaries.len(),
+                        stmt.trades.asset_summaries.len(),
+                        stmt.trades.wash_sales.len()
+                    );
                 }
                 Err(e) => println!("All 5 types FAILED: {}", e),
             }

@@ -8,7 +8,7 @@
 //! - Tax lot tracking
 
 use chrono::{Datelike, Duration, NaiveDate};
-use ib_flex::parse_activity_flex;
+use ib_flex::parse_activity_flex_all;
 use rust_decimal::Decimal;
 use std::collections::HashMap;
 use std::env;
@@ -59,13 +59,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Read and parse the XML file
     println!("Loading FLEX statement from: {}", xml_path);
     let xml = fs::read_to_string(&xml_path)?;
-    let statement = parse_activity_flex(&xml)?;
+    let statements = parse_activity_flex_all(&xml)?;
 
-    println!("Account: {}", statement.account_id);
-    println!("Period: {} to {}\n", statement.from_date, statement.to_date);
+    println!("Found {} statements", statements.len());
+    if statements.is_empty() {
+        println!("No statements found!");
+        return Ok(());
+    }
 
-    // Determine the tax year (use to_date's year)
-    let tax_year = statement.to_date.year();
+    // Get account and date range from all statements
+    let first = &statements[0];
+    let last = &statements[statements.len() - 1];
+    println!("Account: {}", first.account_id);
+    println!("Period: {} to {}\n", first.from_date, last.to_date);
+
+    // Analyze tax year 2025
+    let tax_year = 2025;
     let tax_year_start = NaiveDate::from_ymd_opt(tax_year, 1, 1).unwrap();
     let tax_year_end = NaiveDate::from_ymd_opt(tax_year, 12, 31).unwrap();
 
@@ -76,84 +85,92 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut capital_gains = CapitalGainsSummary::default();
     let mut trades_by_symbol: HashMap<String, Vec<_>> = HashMap::new();
 
-    // Collect all closing trades
-    for trade in &statement.trades.items {
-        // Skip if not in tax year
-        if trade.trade_date < tax_year_start || trade.trade_date > tax_year_end {
-            continue;
-        }
+    // Collect all closing trades from all statements
+    for statement in &statements {
+        for trade in &statement.trades.items {
+            // Skip if no trade date or not in tax year
+            let trade_date = match trade.trade_date {
+                Some(d) => d,
+                None => continue,
+            };
+            if trade_date < tax_year_start || trade_date > tax_year_end {
+                continue;
+            }
 
-        // Check for wash sale indicator in notes
-        let is_wash_sale = trade
-            .notes
-            .as_ref()
-            .map(|n| n.contains('W') || n.to_uppercase().contains("WASH"))
-            .unwrap_or(false);
+            // Check for wash sale indicator in notes
+            let is_wash_sale = trade
+                .notes
+                .as_ref()
+                .map(|n| n.contains('W') || n.to_uppercase().contains("WASH"))
+                .unwrap_or(false);
 
-        // Get realized P&L
-        if let Some(pnl) = trade.fifo_pnl_realized {
-            if pnl != Decimal::ZERO {
-                // Determine if long-term or short-term
-                let is_long_term = if let Some(orig_date) = trade.orig_trade_date {
-                    let holding_period = trade.trade_date - orig_date;
-                    holding_period > Duration::days(365)
-                } else if let Some(hpdt) = &trade.holding_period_date_time {
-                    // Parse holding period datetime if available
-                    if hpdt.len() >= 10 {
-                        if let Ok(hp_date) = NaiveDate::parse_from_str(&hpdt[..10], "%Y-%m-%d") {
-                            let holding_period = trade.trade_date - hp_date;
-                            holding_period > Duration::days(365)
+            // Get realized P&L
+            if let Some(pnl) = trade.fifo_pnl_realized {
+                if pnl != Decimal::ZERO {
+                    // Determine if long-term or short-term
+                    let is_long_term = if let Some(orig_date) = trade.orig_trade_date {
+                        let holding_period = trade_date - orig_date;
+                        holding_period > Duration::days(365)
+                    } else if let Some(hpdt) = &trade.holding_period_date_time {
+                        // Parse holding period datetime if available
+                        if hpdt.len() >= 10 {
+                            if let Ok(hp_date) = NaiveDate::parse_from_str(&hpdt[..10], "%Y-%m-%d")
+                            {
+                                let holding_period = trade_date - hp_date;
+                                holding_period > Duration::days(365)
+                            } else {
+                                false // Default to short-term if can't determine
+                            }
                         } else {
-                            false // Default to short-term if can't determine
+                            false
                         }
                     } else {
-                        false
+                        false // Default to short-term if no original date
+                    };
+
+                    // Record wash sale if applicable
+                    if is_wash_sale && pnl < Decimal::ZERO {
+                        wash_sales.push(WashSale {
+                            symbol: trade.symbol.clone(),
+                            sell_date: trade_date,
+                            loss_amount: pnl,
+                            disallowed_amount: pnl.abs(), // Assuming full loss is disallowed
+                            repurchase_date: None,        // Would need to match with purchases
+                        });
+                        capital_gains.wash_sale_disallowed += pnl.abs();
                     }
-                } else {
-                    false // Default to short-term if no original date
-                };
 
-                // Record wash sale if applicable
-                if is_wash_sale && pnl < Decimal::ZERO {
-                    wash_sales.push(WashSale {
-                        symbol: trade.symbol.clone(),
-                        sell_date: trade.trade_date,
-                        loss_amount: pnl,
-                        disallowed_amount: pnl.abs(), // Assuming full loss is disallowed
-                        repurchase_date: None,        // Would need to match with purchases
-                    });
-                    capital_gains.wash_sale_disallowed += pnl.abs();
-                }
-
-                // Categorize the gain/loss
-                if is_long_term {
-                    if pnl >= Decimal::ZERO {
-                        capital_gains.long_term_gains += pnl;
+                    // Categorize the gain/loss
+                    if is_long_term {
+                        if pnl >= Decimal::ZERO {
+                            capital_gains.long_term_gains += pnl;
+                        } else {
+                            capital_gains.long_term_losses += pnl.abs();
+                        }
+                    } else if pnl >= Decimal::ZERO {
+                        capital_gains.short_term_gains += pnl;
                     } else {
-                        capital_gains.long_term_losses += pnl.abs();
+                        capital_gains.short_term_losses += pnl.abs();
                     }
-                } else if pnl >= Decimal::ZERO {
-                    capital_gains.short_term_gains += pnl;
-                } else {
-                    capital_gains.short_term_losses += pnl.abs();
-                }
 
-                // Track by symbol for wash sale analysis
-                trades_by_symbol
-                    .entry(trade.symbol.clone())
-                    .or_default()
-                    .push((trade.trade_date, pnl, trade.quantity.unwrap_or_default()));
+                    // Track by symbol for wash sale analysis
+                    trades_by_symbol
+                        .entry(trade.symbol.clone())
+                        .or_default()
+                        .push((trade_date, pnl, trade.quantity.unwrap_or_default()));
+                }
             }
         }
-    }
+    } // End of statement loop
 
     // 2. Identify positions potentially under wash sale restriction
     // A position is restricted if acquired within 30 days before or after a loss sale
     let mut restricted_positions: Vec<RestrictedPosition> = Vec::new();
     let wash_sale_window = Duration::days(30);
-    let today = statement.to_date;
+    let today = last.to_date;
 
-    for position in &statement.positions.items {
+    // Use positions from last statement (most recent)
+    for position in &last.positions.items {
         // Parse acquisition date from open_date_time or holding_period_date_time
         let acquisition_date = if let Some(odt) = &position.open_date_time {
             if odt.len() >= 10 {
@@ -302,20 +319,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("                   STATISTICS");
     println!("=======================================================\n");
 
-    let total_trades = statement.trades.items.len();
-    let closing_trades = statement
-        .trades
-        .items
+    let total_trades: usize = statements.iter().map(|s| s.trades.items.len()).sum();
+    let closing_trades: usize = statements
         .iter()
+        .flat_map(|s| s.trades.items.iter())
         .filter(|t| t.fifo_pnl_realized.is_some() && t.fifo_pnl_realized != Some(Decimal::ZERO))
         .count();
-    let unique_symbols: std::collections::HashSet<_> =
-        statement.trades.items.iter().map(|t| &t.symbol).collect();
+    let unique_symbols: std::collections::HashSet<_> = statements
+        .iter()
+        .flat_map(|s| s.trades.items.iter())
+        .map(|t| &t.symbol)
+        .collect();
 
     println!("Total trades in period: {}", total_trades);
     println!("Closing trades (with P&L): {}", closing_trades);
     println!("Unique symbols traded: {}", unique_symbols.len());
-    println!("Open positions: {}", statement.positions.items.len());
+    println!("Open positions: {}", last.positions.items.len());
     println!();
 
     // 7. Dividends and Interest (also tax-relevant)
@@ -323,30 +342,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut total_withholding = Decimal::ZERO;
     let mut total_interest = Decimal::ZERO;
 
-    for cash_txn in &statement.cash_transactions.items {
-        // Skip if not in tax year
-        if let Some(date) = cash_txn.date {
-            if date < tax_year_start || date > tax_year_end {
-                continue;
+    for statement in &statements {
+        for cash_txn in &statement.cash_transactions.items {
+            // Skip if not in tax year
+            if let Some(date) = cash_txn.date {
+                if date < tax_year_start || date > tax_year_end {
+                    continue;
+                }
             }
-        }
 
-        match cash_txn.transaction_type.as_str() {
-            "Dividends" | "Payment In Lieu Of Dividends" => {
-                total_dividends += cash_txn.amount;
+            match cash_txn.transaction_type.as_deref() {
+                Some("Dividends") | Some("Payment In Lieu Of Dividends") => {
+                    total_dividends += cash_txn.amount;
+                }
+                Some("Withholding Tax") => {
+                    total_withholding += cash_txn.amount; // Usually negative
+                }
+                Some("Broker Interest Received") | Some("Bond Interest Received") => {
+                    total_interest += cash_txn.amount;
+                }
+                Some("Broker Interest Paid") => {
+                    total_interest += cash_txn.amount; // Usually negative
+                }
+                _ => {}
             }
-            "Withholding Tax" => {
-                total_withholding += cash_txn.amount; // Usually negative
-            }
-            "Broker Interest Received" | "Bond Interest Received" => {
-                total_interest += cash_txn.amount;
-            }
-            "Broker Interest Paid" => {
-                total_interest += cash_txn.amount; // Usually negative
-            }
-            _ => {}
         }
-    }
+    } // End statement loop
 
     println!("=======================================================");
     println!("              DIVIDENDS & INTEREST");

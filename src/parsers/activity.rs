@@ -82,8 +82,9 @@ mod tests {
         match &result {
             Ok(statement) => {
                 assert_eq!(statement.account_id, "U1234567");
-                assert!(!statement.trades.items.is_empty());
-                assert_eq!(statement.trades.items[0].symbol, "AAPL");
+                let trades = statement.trades.trades();
+                assert!(!trades.is_empty());
+                assert_eq!(trades[0].symbol, "AAPL");
             }
             Err(e) => {
                 panic!("Parse failed: {}", e);
