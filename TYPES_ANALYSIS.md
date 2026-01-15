@@ -731,7 +731,7 @@ pub enum DerivativeInfo {
 - [x] `Trade.level_of_detail`: `String` → `LevelOfDetail`
 - [x] `Position.level_of_detail`: `String` → `LevelOfDetail`
 - [x] `SecurityInfo.security_id_type`: `String` → `SecurityIdType`
-- [ ] `SecurityInfo.sub_category`: `String` → `SubCategory`
+- [x] `SecurityInfo.sub_category`: `String` → `SubCategory`
 
 **Fix primitive types:**
 - [ ] `Trade.is_api_order`: `String` → `bool` (Y/N)

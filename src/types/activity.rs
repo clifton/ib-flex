@@ -5,7 +5,8 @@ use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 use super::common::{
-    AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, SecurityIdType, TradeType,
+    AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, SecurityIdType,
+    SubCategory, TradeType,
 };
 use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
 
@@ -808,7 +809,7 @@ pub struct Trade {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -1215,7 +1216,7 @@ pub struct Position {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -1526,7 +1527,7 @@ pub struct CashTransaction {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -1864,7 +1865,7 @@ pub struct CorporateAction {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -2108,7 +2109,7 @@ pub struct SecurityInfo {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     // --- Futures ---
     /// Delivery month (for futures)
