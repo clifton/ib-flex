@@ -89,7 +89,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .trades
         .items
         .iter()
-        .filter(|t| t.trade_date == statement.from_date)
+        .filter(|t| t.trade_date == Some(statement.from_date))
         .collect();
     println!("  Found {} trades", trades_on_date.len());
 

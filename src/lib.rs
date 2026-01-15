@@ -25,7 +25,7 @@
 //!
 //! // Calculate total commissions
 //! let total_commission: rust_decimal::Decimal =
-//!     statement.trades.items.iter().map(|t| t.commission).sum();
+//!     statement.trades.items.iter().filter_map(|t| t.commission).sum();
 //! println!("Total commissions: ${}", total_commission);
 //! # Ok(())
 //! # }

@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("=== Trades ({}) ===", statement.trades.items.len());
     for trade in &statement.trades.items {
         println!(
-            "{} {:?} {} @ {} {} (Commission: {})",
+            "{:?} {:?} {} @ {} {} (Commission: {:?})",
             trade.trade_date,
             trade.buy_sell,
             trade.quantity.unwrap_or_default(),
@@ -41,8 +41,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!();
 
     // Calculate total commissions
-    let total_commission: rust_decimal::Decimal =
-        statement.trades.items.iter().map(|t| t.commission).sum();
+    let total_commission: rust_decimal::Decimal = statement
+        .trades
+        .items
+        .iter()
+        .filter_map(|t| t.commission)
+        .sum();
     println!("Total Commissions: ${}", total_commission);
     println!();
 
@@ -67,7 +71,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     );
     for cash in &statement.cash_transactions.items {
         println!(
-            "{:?} {}: {} {}",
+            "{:?} {:?}: {} {}",
             cash.date, cash.transaction_type, cash.amount, cash.currency
         );
         if let Some(desc) = &cash.description {
@@ -83,7 +87,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     );
     for action in &statement.corporate_actions.items {
         println!(
-            "{} {}: {} - {}",
+            "{} {:?}: {} - {:?}",
             action.report_date, action.action_type, action.symbol, action.description
         );
     }

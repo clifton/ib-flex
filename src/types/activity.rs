@@ -1312,22 +1312,22 @@ pub struct Position {
 /// let mut fees = Decimal::ZERO;
 ///
 /// for cash_txn in &statement.cash_transactions.items {
-///     match cash_txn.transaction_type.as_str() {
-///         "Dividends" => {
+///     match cash_txn.transaction_type.as_deref() {
+///         Some("Dividends") => {
 ///             dividends += cash_txn.amount;
 ///             println!("Dividend from {}: {}",
 ///                 cash_txn.symbol.as_ref().unwrap_or(&"N/A".to_string()),
 ///                 cash_txn.amount
 ///             );
 ///         }
-///         "Broker Interest Paid" | "Broker Interest Received" => {
+///         Some("Broker Interest Paid") | Some("Broker Interest Received") => {
 ///             interest += cash_txn.amount;
 ///         }
-///         "Other Fees" | "Commission Adjustments" => {
+///         Some("Other Fees") | Some("Commission Adjustments") => {
 ///             fees += cash_txn.amount;
 ///         }
 ///         _ => {
-///             println!("{}: {}", cash_txn.transaction_type, cash_txn.amount);
+///             println!("{:?}: {}", cash_txn.transaction_type, cash_txn.amount);
 ///         }
 ///     }
 /// }
@@ -1601,18 +1601,18 @@ pub struct CashTransaction {
 /// let statement = parse_activity_flex(&xml)?;
 ///
 /// for action in &statement.corporate_actions.items {
-///     println!("{}: {}", action.symbol, action.description);
-///     println!("  Type: {}", action.action_type);
+///     println!("{}: {:?}", action.symbol, action.description);
+///     println!("  Type: {:?}", action.action_type);
 ///
 ///     // Check action type
-///     match action.action_type.as_str() {
-///         "FS" => println!("  Forward stock split"),
-///         "RS" => println!("  Reverse stock split"),
-///         "SO" => println!("  Spinoff"),
-///         "TO" => println!("  Tender offer"),
-///         "TC" => println!("  Treasury bill/bond maturity"),
-///         "BC" => println!("  Bond conversion"),
-///         _ => println!("  Other: {}", action.action_type),
+///     match action.action_type.as_deref() {
+///         Some("FS") => println!("  Forward stock split"),
+///         Some("RS") => println!("  Reverse stock split"),
+///         Some("SO") => println!("  Spinoff"),
+///         Some("TO") => println!("  Tender offer"),
+///         Some("TC") => println!("  Treasury bill/bond maturity"),
+///         Some("BC") => println!("  Bond conversion"),
+///         _ => println!("  Other: {:?}", action.action_type),
 ///     }
 ///
 ///     // Show quantities and proceeds

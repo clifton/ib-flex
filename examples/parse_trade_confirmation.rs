@@ -81,7 +81,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         println!("  Asset Category: {:?}", trade.asset_category);
-        println!("  Trade Date: {}", trade.trade_date);
+        println!("  Trade Date: {:?}", trade.trade_date);
 
         // Trade direction
         if let Some(ref buy_sell) = trade.buy_sell {
@@ -99,7 +99,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(price) = trade.price {
             println!("  Price: ${}", price);
         }
-        println!("  Commission: ${}", trade.commission);
+        println!("  Commission: ${:?}", trade.commission);
         println!("  Currency: {}", trade.currency);
 
         println!();
@@ -120,8 +120,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter(|t| matches!(t.buy_sell, Some(BuySell::Sell)))
         .count();
 
-    let total_commission: rust_decimal::Decimal =
-        statement.trades.items.iter().map(|t| t.commission).sum();
+    let total_commission: rust_decimal::Decimal = statement
+        .trades
+        .items
+        .iter()
+        .filter_map(|t| t.commission)
+        .sum();
 
     println!("=== Summary ===");
     println!("Total Buys: {}", total_buys);

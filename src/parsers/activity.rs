@@ -82,7 +82,7 @@ mod tests {
         match &result {
             Ok(statement) => {
                 assert_eq!(statement.account_id, "U1234567");
-                let trades = statement.trades.trades();
+                let trades = &statement.trades.items;
                 assert!(!trades.is_empty());
                 assert_eq!(trades[0].symbol, "AAPL");
             }

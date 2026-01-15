@@ -68,8 +68,12 @@ fn test_commission_calculation() {
     let xml = include_str!("fixtures/activity_minimal.xml");
     let statement = parse_activity_flex(xml).unwrap();
 
-    let total_commission: rust_decimal::Decimal =
-        statement.trades.items.iter().map(|t| t.commission).sum();
+    let total_commission: rust_decimal::Decimal = statement
+        .trades
+        .items
+        .iter()
+        .filter_map(|t| t.commission)
+        .sum();
 
     assert_eq!(total_commission.to_string(), "-1.00");
 }
@@ -80,7 +84,7 @@ fn test_trade_proceeds() {
     let statement = parse_activity_flex(xml).unwrap();
 
     let trade = &statement.trades.items[0];
-    assert_eq!(trade.proceeds.to_string(), "-18550.00");
+    assert_eq!(trade.proceeds.unwrap().to_string(), "-18550.00");
     assert_eq!(
         trade.net_cash.map(|d| d.to_string()),
         Some("-18551.00".to_string())
@@ -314,7 +318,7 @@ fn test_parse_dividend_action() {
     // Find dividend (first item)
     let dividend = &statement.corporate_actions.items[0];
     assert_eq!(dividend.symbol, "AAPL");
-    assert_eq!(dividend.action_type, "DI");
+    assert_eq!(dividend.action_type, Some("DI".to_string()));
     assert_eq!(dividend.quantity.unwrap().to_string(), "400");
     assert_eq!(dividend.amount.unwrap().to_string(), "100.00");
 }
@@ -327,7 +331,7 @@ fn test_parse_stock_split() {
     // Find stock split (index 1)
     let split = &statement.corporate_actions.items[1];
     assert_eq!(split.symbol, "TSLA");
-    assert_eq!(split.action_type, "FS");
+    assert_eq!(split.action_type, Some("FS".to_string()));
     // Note: principal_adjust_factor field needs to be checked in struct
 }
 
@@ -339,7 +343,7 @@ fn test_parse_merger() {
     // Find merger (index 3)
     let merger = &statement.corporate_actions.items[3];
     assert_eq!(merger.symbol, "ACQUIRED");
-    assert_eq!(merger.action_type, "TC");
+    assert_eq!(merger.action_type, Some("TC".to_string()));
     assert_eq!(merger.fifo_pnl_realized.unwrap().to_string(), "1500.00");
 }
 
@@ -361,7 +365,10 @@ fn test_parse_deposit_withdrawal() {
     // Find deposit (first item)
     let deposit = &statement.cash_transactions.items[0];
     assert_eq!(deposit.amount.to_string(), "10000.00");
-    assert_eq!(deposit.transaction_type, "Deposits & Withdrawals");
+    assert_eq!(
+        deposit.transaction_type,
+        Some("Deposits & Withdrawals".to_string())
+    );
 
     // Find withdrawal (index 1)
     let withdrawal = &statement.cash_transactions.items[1];
@@ -375,7 +382,10 @@ fn test_parse_interest_transactions() {
 
     // Find credit interest (index 2)
     let credit = &statement.cash_transactions.items[2];
-    assert_eq!(credit.transaction_type, "Broker Interest Paid");
+    assert_eq!(
+        credit.transaction_type,
+        Some("Broker Interest Paid".to_string())
+    );
     assert!(credit.amount > rust_decimal::Decimal::ZERO);
 }
 
@@ -387,7 +397,7 @@ fn test_parse_dividend_cash() {
     // Find dividend (index 4)
     let dividend = &statement.cash_transactions.items[4];
     assert_eq!(dividend.symbol.clone().unwrap(), "AAPL");
-    assert_eq!(dividend.transaction_type, "Dividends");
+    assert_eq!(dividend.transaction_type, Some("Dividends".to_string()));
     assert_eq!(dividend.amount.to_string(), "150.00");
 }
 
@@ -464,7 +474,7 @@ fn test_parse_tbill_maturity() {
 
     let action = &statement.corporate_actions.items[0];
     assert_eq!(action.asset_category, Some(AssetCategory::Bill));
-    assert_eq!(action.action_type, "TC");
+    assert_eq!(action.action_type, Some("TC".to_string()));
 }
 
 // ==================== CFD TESTS ====================
@@ -498,7 +508,7 @@ fn test_parse_cfd_financing() {
 
     let financing = &statement.cash_transactions.items[0];
     assert_eq!(financing.asset_category, Some(AssetCategory::Cfd));
-    assert_eq!(financing.transaction_type, "Other Fees");
+    assert_eq!(financing.transaction_type, Some("Other Fees".to_string()));
 }
 
 // ==================== CANCELLED TRADES TESTS ====================
@@ -589,7 +599,7 @@ fn test_parse_choice_dividend() {
 
     // Choice dividend announcement
     let choice = &statement.corporate_actions.items[0];
-    assert_eq!(choice.action_type, "CD");
+    assert_eq!(choice.action_type, Some("CD".to_string()));
 
     // Choice dividend delivery
     let _delivery = &statement.corporate_actions.items[1];
@@ -602,7 +612,7 @@ fn test_parse_tender_offer() {
 
     // Tender announcement
     let tender = &statement.corporate_actions.items[2];
-    assert_eq!(tender.action_type, "TO");
+    assert_eq!(tender.action_type, Some("TO".to_string()));
     assert_eq!(tender.quantity.unwrap().to_string(), "-50");
 
     // Tender issue (proceeds)
@@ -617,7 +627,7 @@ fn test_parse_bond_conversion() {
 
     // Bond conversion (surrender bonds)
     let conversion = &statement.corporate_actions.items[4];
-    assert_eq!(conversion.action_type, "BC");
+    assert_eq!(conversion.action_type, Some("BC".to_string()));
     assert_eq!(conversion.asset_category, Some(AssetCategory::Bond));
 
     // Convertible issue (receive stock)
@@ -632,7 +642,7 @@ fn test_parse_bond_maturity() {
     let statement = parse_activity_flex(xml).unwrap();
 
     let maturity = &statement.corporate_actions.items[6];
-    assert_eq!(maturity.action_type, "BM");
+    assert_eq!(maturity.action_type, Some("BM".to_string()));
     assert_eq!(maturity.asset_category, Some(AssetCategory::Bond));
     assert_eq!(maturity.proceeds.unwrap().to_string(), "5000.00");
 }
@@ -643,7 +653,7 @@ fn test_parse_coupon_payment() {
     let statement = parse_activity_flex(xml).unwrap();
 
     let coupon = &statement.corporate_actions.items[7];
-    assert_eq!(coupon.action_type, "CP");
+    assert_eq!(coupon.action_type, Some("CP".to_string()));
     assert_eq!(coupon.proceeds.unwrap().to_string(), "200.00");
 }
 
@@ -654,9 +664,9 @@ fn test_parse_rights_issue() {
 
     // Rights issue
     let rights = &statement.corporate_actions.items[8];
-    assert_eq!(rights.action_type, "RI");
+    assert_eq!(rights.action_type, Some("RI".to_string()));
 
     // Subscribe rights
     let subscribe = &statement.corporate_actions.items[9];
-    assert_eq!(subscribe.action_type, "SR");
+    assert_eq!(subscribe.action_type, Some("SR".to_string()));
 }
