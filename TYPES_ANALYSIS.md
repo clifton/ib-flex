@@ -734,7 +734,7 @@ pub enum DerivativeInfo {
 - [x] `SecurityInfo.sub_category`: `String` → `SubCategory`
 
 **Fix primitive types:**
-- [ ] `Trade.is_api_order`: `String` → `bool` (Y/N)
+- [x] `Trade.is_api_order`: `String` → `bool` (Y/N)
 
 **Add derivative info:**
 - [ ] `Trade.derivative`: `Option<DerivativeInfo>` (based on asset_category)

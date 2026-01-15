@@ -65,6 +65,26 @@ where
     }
 }
 
+/// Deserialize an optional boolean from IB's Y/N format
+///
+/// Interactive Brokers uses "Y" for true and "N" for false in XML attributes.
+/// Empty strings or missing attributes are treated as None.
+pub fn deserialize_optional_bool<'de, D>(deserializer: D) -> Result<Option<bool>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = Option::<String>::deserialize(deserializer)?;
+    match s.as_deref() {
+        None | Some("") => Ok(None),
+        Some("Y") | Some("y") => Ok(Some(true)),
+        Some("N") | Some("n") => Ok(Some(false)),
+        Some(other) => Err(serde::de::Error::custom(format!(
+            "Invalid boolean value '{}', expected 'Y' or 'N'",
+            other
+        ))),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -92,6 +112,13 @@ mod tests {
             deserialize_with = "deserialize_optional_string"
         )]
         text: Option<String>,
+
+        #[serde(
+            rename = "@flag",
+            default,
+            deserialize_with = "deserialize_optional_bool"
+        )]
+        flag: Option<bool>,
     }
 
     #[test]
@@ -124,5 +151,44 @@ mod tests {
         let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().text, None);
+    }
+
+    #[test]
+    fn test_bool_y() {
+        let xml = r#"<TestStruct flag="Y" />"#;
+        let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().flag, Some(true));
+    }
+
+    #[test]
+    fn test_bool_n() {
+        let xml = r#"<TestStruct flag="N" />"#;
+        let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().flag, Some(false));
+    }
+
+    #[test]
+    fn test_bool_empty() {
+        let xml = r#"<TestStruct flag="" />"#;
+        let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().flag, None);
+    }
+
+    #[test]
+    fn test_bool_missing() {
+        let xml = r#"<TestStruct />"#;
+        let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().flag, None);
+    }
+
+    #[test]
+    fn test_bool_invalid() {
+        let xml = r#"<TestStruct flag="X" />"#;
+        let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
+        assert!(result.is_err());
     }
 }

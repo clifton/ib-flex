@@ -393,8 +393,47 @@
 
 ---
 
+### Task 12: Change Trade.is_api_order from String to bool
+**Status**: COMPLETE ✅
+**Started**: 2026-01-14
+**Completed**: 2026-01-14
+
+**Objective**: Change the `Trade.is_api_order` field from `Option<String>` to `Option<bool>` with custom deserializer to handle IB's "Y"/"N" format.
+
+**Files modified**:
+1. src/parsers/xml_utils.rs - Added deserialize_optional_bool function with tests
+2. src/types/activity.rs - Changed is_api_order field type and added import
+
+**Steps completed**:
+1. ✅ Analyzed IB XML format - confirmed "Y"/"N" format in test fixtures
+2. ✅ Created deserialize_optional_bool function in xml_utils.rs
+3. ✅ Added comprehensive tests for the boolean deserializer:
+   - test_bool_y: "Y" → Some(true)
+   - test_bool_n: "N" → Some(false)
+   - test_bool_empty: "" → None
+   - test_bool_missing: missing attribute → None
+   - test_bool_invalid: "X" → Error
+4. ✅ Updated Trade struct to use Option<bool> with custom deserializer
+5. ✅ Added deserialize_optional_bool to imports in activity.rs
+6. ✅ Ran cargo fmt && cargo clippy --all-targets -- -D warnings - passed with 0 warnings
+7. ✅ Ran cargo test - all 144 tests passed (24 + 19 + 11 + 13 + 47 + 15 + 15)
+8. ✅ Updated progress.txt
+9. ✅ Updated TYPES_ANALYSIS.md to mark task complete
+
+**Test results**: 144 tests passed
+
+**Notes**:
+- Created reusable deserialize_optional_bool function that can be used for other boolean fields
+- Handles both uppercase and lowercase ("Y"/"y", "N"/"n") for robustness
+- Provides clear error messages for invalid values
+- All existing tests passed without modification
+- The deserializer properly handles missing attributes, empty strings, and valid Y/N values
+- Enhanced documentation on the is_api_order field to clarify its meaning
+
+---
+
 ## Summary
 
-**Total tasks completed**: 11/11
-**Total time**: ~60 minutes
-**Status**: Task 11 complete, ready for next task
+**Total tasks completed**: 12/12
+**Total time**: ~75 minutes
+**Status**: Task 12 complete, ready for next task

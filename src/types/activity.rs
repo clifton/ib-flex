@@ -8,7 +8,9 @@ use super::common::{
     AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, SecurityIdType,
     SubCategory, TradeType,
 };
-use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
+use crate::parsers::xml_utils::{
+    deserialize_optional_bool, deserialize_optional_date, deserialize_optional_decimal,
+};
 
 /// Top-level FLEX query response
 ///
@@ -829,9 +831,13 @@ pub struct Trade {
     #[serde(rename = "@traderID", default)]
     pub trader_id: Option<String>,
 
-    /// Is API order
-    #[serde(rename = "@isAPIOrder", default)]
-    pub is_api_order: Option<String>,
+    /// Is API order (true if order was placed via API)
+    #[serde(
+        rename = "@isAPIOrder",
+        default,
+        deserialize_with = "deserialize_optional_bool"
+    )]
+    pub is_api_order: Option<bool>,
 
     /// Volatility order link
     #[serde(rename = "@volatilityOrderLink", default)]
