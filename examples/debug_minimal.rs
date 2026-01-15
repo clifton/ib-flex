@@ -25,6 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 statements: Vec<TestStatement>,
             }
 
+            #[allow(dead_code)]
             #[derive(Debug, Deserialize)]
             struct TestStatement {
                 #[serde(rename = "@accountId")]

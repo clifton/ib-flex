@@ -20,6 +20,7 @@ fn main() {
             println!("\nTrying to parse each section progressively...");
 
             // Just FlexQueryResponse wrapper
+            #[allow(dead_code)]
             #[derive(Debug, serde::Deserialize)]
             #[serde(rename = "FlexQueryResponse")]
             struct Test1 {
@@ -72,6 +73,7 @@ fn main() {
                 statements: Vec<Test2Statement>,
             }
 
+            #[allow(dead_code)]
             #[derive(Debug, serde::Deserialize)]
             struct Test2Statement {
                 #[serde(rename = "@accountId")]
@@ -118,6 +120,7 @@ fn main() {
                 statements: Vec<Test3Statement>,
             }
 
+            #[allow(dead_code)]
             #[derive(Debug, serde::Deserialize)]
             struct Test3Statement {
                 #[serde(rename = "@accountId")]

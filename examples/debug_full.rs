@@ -36,6 +36,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
 
             // Test with more sections
+            #[allow(dead_code)]
             #[derive(Debug, Deserialize)]
             struct TestStatement {
                 #[serde(rename = "@accountId")]
