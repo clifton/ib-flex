@@ -133,10 +133,10 @@ cleanup() {
         log_warning "Script exited with error (code: $exit_code)"
 
         # Check if we have uncommitted changes to our tracked files
-        if ! git diff --quiet -- "$CARGO_TOML" "$CHANGELOG" "Cargo.lock" 2>/dev/null; then
+        if ! git diff --quiet -- "$CARGO_TOML" "$CHANGELOG" 2>/dev/null; then
             log_warning "Uncommitted changes detected. Rolling back..."
-            git checkout -- "$CARGO_TOML" "$CHANGELOG" "Cargo.lock" 2>/dev/null || true
-            log_info "Rolled back changes to $CARGO_TOML, $CHANGELOG, Cargo.lock"
+            git checkout -- "$CARGO_TOML" "$CHANGELOG" 2>/dev/null || true
+            log_info "Rolled back changes to $CARGO_TOML, $CHANGELOG"
         fi
 
         # Warn about tag if it was created
@@ -463,10 +463,7 @@ update_cargo_toml() {
         exit 1
     fi
 
-    # Update Cargo.lock
-    cargo update --package ib-flex --quiet 2>/dev/null || cargo generate-lockfile --quiet 2>/dev/null || true
-
-    log_success "Updated $CARGO_TOML and Cargo.lock"
+    log_success "Updated $CARGO_TOML"
 }
 
 # ============================================================================
@@ -795,7 +792,7 @@ create_git_commit() {
         return
     fi
 
-    git add "$CARGO_TOML" "Cargo.lock" "$CHANGELOG"
+    git add "$CARGO_TOML" "$CHANGELOG"
     git commit -m "chore: Release v$NEW_VERSION"
     DID_COMMIT=true
     log_success "Created commit for v$NEW_VERSION"
