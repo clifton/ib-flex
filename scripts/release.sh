@@ -761,14 +761,24 @@ EOF
     fi
 
     # Insert new section after [Unreleased]
+    # Write the new section to a temp file (avoids awk multi-line variable issues)
+    local section_file
+    section_file=$(make_temp)
+    echo "$new_section" > "$section_file"
+
     local tmp
     tmp=$(make_temp)
 
-    awk -v section="$new_section" '
+    # Use awk to insert the new section after [Unreleased]
+    awk -v section_file="$section_file" '
     /^## \[Unreleased\]/ {
         print
         print ""
-        print section
+        # Read and print the section from file
+        while ((getline line < section_file) > 0) {
+            print line
+        }
+        close(section_file)
         # Skip any existing unreleased content until next ## header
         while ((getline line) > 0) {
             if (line ~ /^## \[/) {
