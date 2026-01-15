@@ -728,8 +728,8 @@ pub enum DerivativeInfo {
 - [x] `Trade.transaction_type`: `String` → `TradeType`
 
 **Use new enums:**
-- [ ] `Trade.level_of_detail`: `String` → `LevelOfDetail`
-- [ ] `Position.level_of_detail`: `String` → `LevelOfDetail`
+- [x] `Trade.level_of_detail`: `String` → `LevelOfDetail`
+- [x] `Position.level_of_detail`: `String` → `LevelOfDetail`
 - [ ] `SecurityInfo.security_id_type`: `String` → `SecurityIdType`
 - [ ] `SecurityInfo.sub_category`: `String` → `SubCategory`
 

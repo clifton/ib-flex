@@ -4,7 +4,9 @@ use chrono::NaiveDate;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
-use super::common::{AssetCategory, BuySell, OpenClose, OrderType, PutCall, TradeType};
+use super::common::{
+    AssetCategory, BuySell, LevelOfDetail, OpenClose, OrderType, PutCall, TradeType,
+};
 use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
 
 /// Top-level FLEX query response
@@ -840,7 +842,7 @@ pub struct Trade {
 
     /// Level of detail (EXECUTION, ORDER, CLOSED_LOT, etc.)
     #[serde(rename = "@levelOfDetail", default)]
-    pub level_of_detail: Option<String>,
+    pub level_of_detail: Option<LevelOfDetail>,
 
     // --- Price/Quantity Changes ---
     /// Trade amount
@@ -1273,7 +1275,7 @@ pub struct Position {
     // --- Other Metadata ---
     /// Level of detail
     #[serde(rename = "@levelOfDetail", default)]
-    pub level_of_detail: Option<String>,
+    pub level_of_detail: Option<LevelOfDetail>,
 
     /// Model (for model portfolios)
     #[serde(rename = "@model", default)]
