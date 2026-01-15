@@ -738,7 +738,7 @@ pub enum DerivativeInfo {
 
 **Add derivative info:**
 - [x] `Trade.derivative`: `Option<DerivativeInfo>` (based on asset_category)
-- [ ] `Position.derivative`: `Option<DerivativeInfo>`
+- [x] `Position.derivative`: `Option<DerivativeInfo>`
 - [ ] Remove flat derivative fields from Trade/Position
 
 ### Phase 3: Remove Unnecessary Option<> Wrappers

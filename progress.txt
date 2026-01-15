@@ -506,8 +506,43 @@
 - The method is properly documented with a doc test example
 - All existing tests continue to pass, showing backward compatibility
 
+### Task 15: Add Position.derivative() method
+**Status**: COMPLETE ✅
+**Started**: 2026-01-14
+**Completed**: 2026-01-14
+
+**Objective**: Add a method to Position that constructs `DerivativeInfo` from flat derivative fields based on the asset_category.
+
+**Files modified**:
+1. src/types/activity.rs - Added impl Position block with derivative() method (lines 1396-1526)
+
+**Steps completed**:
+1. ✅ Read Position struct definition to understand fields (lines 1119-1394)
+2. ✅ Created impl Position block with derivative() method
+3. ✅ Implemented logic to construct DerivativeInfo based on asset_category:
+   - AssetCategory::Option → DerivativeInfo::Option (requires strike, expiry, put_call, underlying_symbol)
+   - AssetCategory::Future → DerivativeInfo::Future (requires expiry, underlying_symbol)
+   - AssetCategory::FutureOption → DerivativeInfo::FutureOption (requires strike, expiry, put_call, underlying_symbol)
+   - AssetCategory::Warrant → DerivativeInfo::Warrant (requires underlying_symbol, optional strike/expiry)
+   - Other asset categories → None
+4. ✅ Added comprehensive documentation with example usage (including full Position struct initialization)
+5. ✅ Ran cargo fmt - passed
+6. ✅ Ran cargo clippy --all-targets -- -D warnings - passed with 0 warnings
+7. ✅ Ran cargo test - all 146 tests passed (24 + 19 + 11 + 13 + 47 + 15 + 17)
+8. ✅ Updated progress.txt
+
+**Test results**: 146 tests passed
+
+**Notes**:
+- Implemented as a method rather than a field to avoid serialization complexity
+- The method uses the ? operator to return None if required fields are missing
+- This provides a clean API for users to access structured derivative info without dealing with flat fields
+- The method is properly documented with a doc test example
+- Implementation is identical in structure to Trade.derivative() for consistency
+- All existing tests continue to pass, showing backward compatibility
+
 ## Summary
 
-**Total tasks completed**: 14/14
-**Total time**: ~95 minutes
-**Status**: Task 14 complete (Trade.derivative() method added), ready for next task
+**Total tasks completed**: 15/15
+**Total time**: ~100 minutes
+**Status**: Task 15 complete (Position.derivative() method added), ready for next task

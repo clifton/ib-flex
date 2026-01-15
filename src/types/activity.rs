@@ -1393,6 +1393,138 @@ pub struct Position {
     pub vesting_date: Option<NaiveDate>,
 }
 
+impl Position {
+    /// Constructs structured derivative info from flat fields
+    ///
+    /// Returns `Some(DerivativeInfo)` if this position is a derivative (option, future,
+    /// future option, or warrant) and has the required fields populated. Returns `None`
+    /// for non-derivative positions or if required fields are missing.
+    ///
+    /// # Example
+    /// ```
+    /// # use ib_flex::types::{Position, AssetCategory, PutCall, DerivativeInfo};
+    /// # use rust_decimal::Decimal;
+    /// # use chrono::NaiveDate;
+    /// # let mut position = Position {
+    /// #     account_id: "U1234567".to_string(),
+    /// #     conid: "12345".to_string(),
+    /// #     symbol: "AAPL".to_string(),
+    /// #     description: None,
+    /// #     asset_category: AssetCategory::Option,
+    /// #     cusip: None,
+    /// #     isin: None,
+    /// #     figi: None,
+    /// #     security_id: None,
+    /// #     security_id_type: None,
+    /// #     multiplier: Some(Decimal::new(100, 0)),
+    /// #     strike: Some(Decimal::new(150, 0)),
+    /// #     expiry: Some(NaiveDate::from_ymd_opt(2024, 12, 20).unwrap()),
+    /// #     put_call: Some(PutCall::Call),
+    /// #     underlying_conid: Some("67890".to_string()),
+    /// #     underlying_symbol: Some("AAPL".to_string()),
+    /// #     quantity: Decimal::new(10, 0),
+    /// #     mark_price: Decimal::new(5, 0),
+    /// #     position_value: Decimal::new(5000, 0),
+    /// #     side: Some("Long".to_string()),
+    /// #     open_price: None,
+    /// #     cost_basis_price: None,
+    /// #     cost_basis_money: None,
+    /// #     fifo_pnl_unrealized: None,
+    /// #     percent_of_nav: None,
+    /// #     currency: "USD".to_string(),
+    /// #     fx_rate_to_base: None,
+    /// #     report_date: NaiveDate::from_ymd_opt(2024, 1, 15).unwrap(),
+    /// #     holding_period_date_time: None,
+    /// #     open_date_time: None,
+    /// #     originating_transaction_id: None,
+    /// #     code: None,
+    /// #     originating_order_id: None,
+    /// #     issuer: None,
+    /// #     issuer_country_code: None,
+    /// #     sub_category: None,
+    /// #     listing_exchange: None,
+    /// #     underlying_listing_exchange: None,
+    /// #     underlying_security_id: None,
+    /// #     accrued_int: None,
+    /// #     principal_adjust_factor: None,
+    /// #     serial_number: None,
+    /// #     delivery_type: None,
+    /// #     commodity_type: None,
+    /// #     fineness: None,
+    /// #     weight: None,
+    /// #     level_of_detail: None,
+    /// #     model: None,
+    /// #     acct_alias: None,
+    /// #     vesting_date: None,
+    /// # };
+    /// if let Some(derivative) = position.derivative() {
+    ///     match derivative {
+    ///         DerivativeInfo::Option { strike, expiry, put_call, .. } => {
+    ///             println!("Option: Strike={}, Expiry={}, Type={:?}", strike, expiry, put_call);
+    ///         }
+    ///         _ => {}
+    ///     }
+    /// }
+    /// ```
+    pub fn derivative(&self) -> Option<DerivativeInfo> {
+        match self.asset_category {
+            AssetCategory::Option => {
+                // For options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Option {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Future => {
+                // For futures, we need: expiry, underlying_symbol
+                let expiry = self.expiry?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Future {
+                    expiry,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::FutureOption => {
+                // For future options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::FutureOption {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Warrant => {
+                // For warrants, all fields are optional but we need at least underlying_symbol
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Warrant {
+                    strike: self.strike,
+                    expiry: self.expiry,
+                    underlying_symbol: Some(underlying_symbol),
+                })
+            }
+            // Not a derivative type
+            _ => None,
+        }
+    }
+}
+
 /// A cash transaction (deposit, withdrawal, dividend, interest, fee)
 ///
 /// Represents any cash flow that affects your account balance: deposits,
