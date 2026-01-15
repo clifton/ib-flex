@@ -1,5 +1,7 @@
 //! Common enums used across FLEX statements
 
+use chrono::NaiveDate;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 /// Asset category (security type)
@@ -938,6 +940,96 @@ pub enum SubCategory {
     /// Unknown or unrecognized sub-category
     #[serde(other)]
     Unknown,
+}
+
+/// Derivative instrument information
+///
+/// Contains structured information about derivative contracts (options, futures, warrants).
+/// This enum consolidates derivative-specific fields based on the instrument type.
+///
+/// **Used by**: `Trade`, `Position`
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(tag = "type")]
+pub enum DerivativeInfo {
+    /// Option contract (equity or index option)
+    ///
+    /// Standard option giving the right (but not obligation) to buy or sell
+    /// an underlying asset at a specified strike price by the expiration date.
+    Option {
+        /// Strike price - price at which the option can be exercised
+        strike: Decimal,
+
+        /// Expiration date - last date the option can be exercised
+        expiry: NaiveDate,
+
+        /// Put or Call - right to sell (Put) or buy (Call)
+        #[serde(rename = "putCall")]
+        put_call: PutCall,
+
+        /// Symbol of the underlying security (e.g., "AAPL" for Apple stock)
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: String,
+
+        /// IB contract ID of the underlying security
+        #[serde(rename = "underlyingConid")]
+        underlying_conid: Option<String>,
+    },
+
+    /// Future contract
+    ///
+    /// Agreement to buy or sell an asset at a predetermined price
+    /// on a specified future date.
+    Future {
+        /// Expiration date - settlement date for the futures contract
+        expiry: NaiveDate,
+
+        /// Symbol of the underlying asset
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: String,
+
+        /// IB contract ID of the underlying asset
+        #[serde(rename = "underlyingConid")]
+        underlying_conid: Option<String>,
+    },
+
+    /// Future option (option on a futures contract)
+    ///
+    /// Option where the underlying asset is a futures contract rather than a stock.
+    FutureOption {
+        /// Strike price for the option
+        strike: Decimal,
+
+        /// Expiration date of the option
+        expiry: NaiveDate,
+
+        /// Put or Call
+        #[serde(rename = "putCall")]
+        put_call: PutCall,
+
+        /// Symbol of the underlying futures contract
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: String,
+
+        /// IB contract ID of the underlying futures
+        #[serde(rename = "underlyingConid")]
+        underlying_conid: Option<String>,
+    },
+
+    /// Warrant
+    ///
+    /// Long-term option-like security issued by a company, typically
+    /// with longer expiration periods than standard options.
+    Warrant {
+        /// Strike price (if applicable)
+        strike: Option<Decimal>,
+
+        /// Expiration date (if applicable)
+        expiry: Option<NaiveDate>,
+
+        /// Symbol of the underlying security (if applicable)
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: Option<String>,
+    },
 }
 
 #[cfg(test)]

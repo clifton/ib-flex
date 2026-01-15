@@ -432,8 +432,46 @@
 
 ---
 
+### Task 13: Create DerivativeInfo enum
+**Status**: COMPLETE ✅
+**Started**: 2026-01-14
+**Completed**: 2026-01-14
+
+**Objective**: Create a new enum `DerivativeInfo` with variants for Option, Future, FutureOption, and Warrant to consolidate derivative-specific fields.
+
+**Files modified**:
+1. src/types/common.rs - Added DerivativeInfo enum definition with comprehensive documentation
+2. src/types/mod.rs - Updated export to include DerivativeInfo
+
+**Steps completed**:
+1. ✅ Added necessary imports (chrono::NaiveDate, rust_decimal::Decimal) to common.rs
+2. ✅ Created DerivativeInfo enum with 4 variants:
+   - Option { strike, expiry, put_call, underlying_symbol, underlying_conid }
+   - Future { expiry, underlying_symbol, underlying_conid }
+   - FutureOption { strike, expiry, put_call, underlying_symbol, underlying_conid }
+   - Warrant { strike, expiry, underlying_symbol } (all optional)
+3. ✅ Added comprehensive documentation for each variant
+4. ✅ Updated re-export in mod.rs to include DerivativeInfo (alphabetically ordered)
+5. ✅ Ran cargo fmt - passed
+6. ✅ Ran cargo clippy --all-targets -- -D warnings - passed with 0 warnings
+7. ✅ Ran cargo test - all 144 tests passed
+8. ✅ Updated progress.txt
+9. ✅ Will commit changes
+
+**Test results**: 144 tests passed (24 + 19 + 11 + 13 + 47 + 15 + 15)
+
+**Notes**:
+- The enum follows the same pattern as other enums in common.rs
+- Uses serde(tag = "type") for tagged enum serialization
+- The enum is ready to be used for the next tasks:
+  - Adding Trade.derivative field
+  - Adding Position.derivative field
+  - Removing flat derivative fields
+- All fields are properly documented with descriptions
+- Properly exported in mod.rs with alphabetical ordering maintained
+
 ## Summary
 
-**Total tasks completed**: 12/12
-**Total time**: ~75 minutes
-**Status**: Task 12 complete, ready for next task
+**Total tasks completed**: 13/13
+**Total time**: ~85 minutes
+**Status**: Task 13 complete (DerivativeInfo enum created), ready for next task
