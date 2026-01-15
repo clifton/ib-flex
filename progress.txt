@@ -541,8 +541,39 @@
 - Implementation is identical in structure to Trade.derivative() for consistency
 - All existing tests continue to pass, showing backward compatibility
 
+### Task 16: Remove flat derivative fields from Trade/Position
+**Status**: WILL NOT IMPLEMENT ❌
+**Started**: 2026-01-14
+**Decision**: 2026-01-14
+
+**Objective**: Remove flat derivative fields (multiplier, strike, expiry, put_call, underlying_conid, underlying_symbol, underlying_security_id) from Trade and Position structs.
+
+**Analysis**:
+After careful review, this task should NOT be implemented because:
+
+1. **XML Schema Requirement**: The flat fields are part of the official IB FLEX XML schema and MUST remain for proper deserialization. Removing them would break XML parsing.
+
+2. **Method Dependencies**: The `Trade::derivative()` and `Position::derivative()` methods explicitly depend on these flat fields to construct the `DerivativeInfo` enum. The methods read from these fields - they don't replace them.
+
+3. **Commit History Evidence**: Recent commits (468c0e8, 3a022e6) describe the derivative() methods as "construct DerivativeInfo **from** flat fields", indicating the flat fields should remain as the source data.
+
+4. **Breaking Change**: Removing these public fields would be a semver-major breaking change that would break existing user code.
+
+5. **Reference Implementation**: The Python ibflex library (which this project is based on) keeps all XML fields as-is from the schema.
+
+**Conclusion**: The `derivative()` method is a **convenience accessor**, not a replacement for the flat fields. The flat fields must remain for XML deserialization and as the data source for the convenience method.
+
+**Recommendation**:
+- Mark this task as "Will Not Implement" in TYPES_ANALYSIS.md
+- Keep both the flat fields (for XML parsing) and the derivative() method (for convenience)
+- Consider adding documentation notes to guide users toward the derivative() method for structured access
+
+**Files NOT modified**: None (task not implemented)
+
+---
+
 ## Summary
 
-**Total tasks completed**: 15/15
-**Total time**: ~100 minutes
-**Status**: Task 15 complete (Position.derivative() method added), ready for next task
+**Total tasks completed**: 15/15 (Task 16 analyzed but not implemented - marked as "Will Not Implement")
+**Total time**: ~110 minutes
+**Status**: Task 16 decision made (will not implement), ready for next task
