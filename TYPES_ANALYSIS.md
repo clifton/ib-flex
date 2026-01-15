@@ -725,7 +725,7 @@ pub enum DerivativeInfo {
 ### Phase 2: Field Type Changes
 
 **Use existing enums:**
-- [ ] `Trade.transaction_type`: `String` → `TradeType`
+- [x] `Trade.transaction_type`: `String` → `TradeType`
 
 **Use new enums:**
 - [ ] `Trade.level_of_detail`: `String` → `LevelOfDetail`

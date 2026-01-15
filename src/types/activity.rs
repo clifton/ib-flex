@@ -4,7 +4,7 @@ use chrono::NaiveDate;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
-use super::common::{AssetCategory, BuySell, OpenClose, OrderType, PutCall};
+use super::common::{AssetCategory, BuySell, OpenClose, OrderType, PutCall, TradeType};
 use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
 
 /// Top-level FLEX query response
@@ -598,7 +598,7 @@ pub struct Trade {
 
     /// Transaction type (ExchTrade, BookTrade, etc.)
     #[serde(rename = "@transactionType", default)]
-    pub transaction_type: Option<String>,
+    pub transaction_type: Option<TradeType>,
 
     // --- Quantities and Prices ---
     /// Quantity (number of shares/contracts)
