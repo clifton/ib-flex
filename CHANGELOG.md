@@ -7,42 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-01-14
+
+### Added
+- Robust release script for changelog generation and version bumping
+
 ## [0.1.1] - 2026-01-14
 
 ### Added
-- Add robust release script
-- Add robust release script
-- Add daily portfolio parsing support and comprehensive tests (#7) ([#7](https://github.com/clifton/ib-flex/pull/7))
-- Add comprehensive v0.2.0 extended FLEX support (#3) ([#3](https://github.com/clifton/ib-flex/pull/3))
-- Add comprehensive reliability testing suite (#4) ([#4](https://github.com/clifton/ib-flex/pull/4))
+- Daily portfolio parsing support ([#7](https://github.com/clifton/ib-flex/pull/7))
+- Comprehensive v0.2.0 extended FLEX support ([#3](https://github.com/clifton/ib-flex/pull/3))
+- Comprehensive reliability testing suite ([#4](https://github.com/clifton/ib-flex/pull/4))
+- FLEX Web Service API client (optional `flex-service` feature) ([#5](https://github.com/clifton/ib-flex/pull/5))
+- Trade Confirmation parsing, version detection, type detection ([#6](https://github.com/clifton/ib-flex/pull/6))
 
 ### Fixed
-- Handle interleaved Trades elements with enum-based parsing (#8) ([#8](https://github.com/clifton/ib-flex/pull/8))
-- Fix formatting in README for automatic detection feature
-- Remove unused import from reliability tests
+- Handle interleaved Trades elements with enum-based parsing ([#8](https://github.com/clifton/ib-flex/pull/8))
 
-### Documentation
-- Add mandatory pre-commit requirements to CLAUDE.md
-- Add mandatory pre-commit requirements to CLAUDE.md
-- Remove version numbers and test counts from README
+## [0.1.0] - 2026-01-14
 
-### Changed
-- dont commit local ralph loop stuff
-- Complete All Library TODOs - Trade Confirmation, Version Detection, Type Detection (#6) ([#6](https://github.com/clifton/ib-flex/pull/6))
-- FLEX Web Service API Client (Optional Feature) (#5) ([#5](https://github.com/clifton/ib-flex/pull/5))
-- Remove explicit "production ready" references throughout documentation
-- Update README to reflect v0.1.0 production-ready status
-- One shot the flex query parser (#2) ([#2](https://github.com/clifton/ib-flex/pull/2))
-- "Claude Code Review workflow"
-- "Claude PR Assistant workflow"
-## [0.1.0] - Unreleased
+Initial release.
 
-Initial release (in development).
-
-### Planned Features
+### Added
 - Parse Activity FLEX XML statements
 - Parse Trade Confirmation FLEX statements
 - Support for all major asset classes (stocks, options, futures, FX)
 - Type-safe parsing with rust_decimal and chrono
 - Comprehensive error handling
-- Full documentation and examples
+- Documentation and examples
