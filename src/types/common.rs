@@ -1,5 +1,7 @@
 //! Common enums used across FLEX statements
 
+use chrono::NaiveDate;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 /// Asset category (security type)
@@ -261,8 +263,14 @@ pub enum TradeType {
 }
 
 /// Cash transaction action type
+///
+/// Represents the type of cash transaction (dividend, interest, fee, etc.).
+/// This enum is used by the `CashTransaction` struct to classify cash activity
+/// in the account statement.
+///
+/// **XML Mapping**: Maps to the `type` attribute in `<CashTransaction>` elements.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
-pub enum CashAction {
+pub enum CashTransactionType {
     /// Deposits and withdrawals
     #[serde(rename = "Deposits & Withdrawals")]
     DepositsWithdrawals,
@@ -322,8 +330,14 @@ pub enum CashAction {
 }
 
 /// Corporate action reorganization type
+///
+/// Represents the type of corporate action (split, merger, spinoff, etc.).
+/// This enum is used by the `CorporateAction` struct to classify corporate events
+/// that affect security positions and holdings.
+///
+/// **XML Mapping**: Maps to the `type` attribute in `<CorporateAction>` elements.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
-pub enum Reorg {
+pub enum CorporateActionType {
     /// Stock split (forward split)
     #[serde(rename = "Stock Split")]
     StockSplit,
@@ -524,173 +538,230 @@ pub enum TransferType {
 
 /// Transaction code
 ///
-/// Comprehensive list of IB transaction classification codes
+/// Comprehensive list of IB transaction classification codes.
+/// These codes appear in `notes` fields and can be combined (e.g., "C;W" for closing + wash sale).
+/// They provide critical context for tax reporting and trade classification.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
-pub enum Code {
-    /// Assignment
-    A,
+pub enum TransactionCode {
+    /// Assignment - Option assignment triggering stock delivery
+    #[serde(rename = "A")]
+    Assignment,
 
-    /// Adjustment
-    Adj,
+    /// Adjustment - Manual adjustment affecting cost basis
+    #[serde(rename = "Adj")]
+    Adjustment,
 
-    /// Allocation
-    Al,
+    /// Allocation - Trade allocation to sub-account (master/sub allocation)
+    #[serde(rename = "Al")]
+    Allocation,
 
-    /// Auto exercise
-    Ae,
+    /// Auto Exercise - Automatic exercise (dividend-related, exercise before ex-div)
+    #[serde(rename = "Ae")]
+    AutoExercise,
 
-    /// Auto FX
-    Af,
+    /// Auto FX - AutoFX currency conversion for settlement
+    #[serde(rename = "Af")]
+    AutoFx,
 
-    /// Away trade
-    Aw,
+    /// Away Trade - Trade executed away from IB (third-party execution)
+    #[serde(rename = "Aw")]
+    AwayTrade,
 
-    /// Buy-in
-    B,
+    /// Buy-In - Forced purchase to cover failed delivery (forced short cover)
+    #[serde(rename = "B")]
+    BuyIn,
 
-    /// Borrow fee
-    Bo,
+    /// Borrow - Securities borrowing fee (lending charge)
+    #[serde(rename = "Bo")]
+    BorrowFee,
 
-    /// Cancellation
-    Ca,
+    /// Cancellation - Trade cancelled/busted (trade reversed)
+    #[serde(rename = "Ca")]
+    Cancelled,
 
-    /// Closing
-    C,
+    /// Closing - Closing trade (reduces position)
+    #[serde(rename = "C")]
+    Closing,
 
-    /// Cash delivery
-    Cd,
+    /// Cash Delivery - Cash delivery for exercise (cash vs physical)
+    #[serde(rename = "Cd")]
+    CashDelivery,
 
-    /// Complex position
-    Cp,
+    /// Complex Position - Complex/combo position (multi-leg strategy)
+    #[serde(rename = "Cp")]
+    ComplexPosition,
 
-    /// Correct
-    Cr,
+    /// Correction - Trade correction (amended execution)
+    #[serde(rename = "Cr")]
+    Correction,
 
-    /// Crossing
-    Cs,
+    /// Crossing - Internal IB cross (matched internally)
+    #[serde(rename = "Cs")]
+    Crossing,
 
-    /// Dual
-    D,
+    /// Dual Agent - IB dual agent capacity (disclosed dual role)
+    #[serde(rename = "D")]
+    DualAgent,
 
-    /// ETF creation
-    Et,
+    /// ETF - ETF creation/redemption (in-kind basket)
+    #[serde(rename = "Et")]
+    Etf,
 
-    /// Expired
-    Ex,
+    /// Expired - From expired position (option/warrant expiry)
+    #[serde(rename = "Ex")]
+    Expired,
 
-    /// Exercise
-    O,
+    /// Exercise - Option exercise (long option exercised)
+    #[serde(rename = "O")]
+    Exercise,
 
-    /// Guaranteed
-    G,
+    /// Guaranteed - Guaranteed account segment (special margin)
+    #[serde(rename = "G")]
+    Guaranteed,
 
-    /// Highest cost
-    Hc,
+    /// Highest Cost - Highest cost tax lot (tax lot selection)
+    #[serde(rename = "Hc")]
+    HighestCost,
 
-    /// HF investment
-    Hi,
+    /// HF Investment - Hedge fund investment (fund subscription)
+    #[serde(rename = "Hi")]
+    HfInvestment,
 
-    /// HF redemption
-    Hr,
+    /// HF Redemption - Hedge fund redemption (fund redemption)
+    #[serde(rename = "Hr")]
+    HfRedemption,
 
-    /// Internal transfer
-    I,
+    /// Internal - Internal transfer (between IB accounts)
+    #[serde(rename = "I")]
+    InternalTransfer,
 
-    /// Affiliated account transfer
-    Ia,
+    /// Affiliate - Affiliate execution (related party trade)
+    #[serde(rename = "Ia")]
+    Affiliate,
 
-    /// Investor
-    Iv,
+    /// Investor - Investment from investor (capital contribution)
+    #[serde(rename = "Iv")]
+    Investor,
 
-    /// Margin low
-    L,
+    /// Margin Violation - Liquidation due to margin (forced liquidation)
+    #[serde(rename = "L")]
+    MarginLiquidation,
 
-    /// LIFO (Last In First Out)
-    Li,
+    /// LIFO - LIFO tax lot (tax lot selection)
+    #[serde(rename = "Li")]
+    Lifo,
 
-    /// Loan
-    Ln,
+    /// Loan - Securities lending income (lending income)
+    #[serde(rename = "Ln")]
+    Loan,
 
-    /// Long-term capital gain
-    Lt,
+    /// Long-Term - Long-term gain/loss (holding > 1 year)
+    #[serde(rename = "Lt")]
+    LongTermGain,
 
-    /// Maximum loss
-    M,
+    /// Manual - Manual IB entry (manual adjustment)
+    #[serde(rename = "M")]
+    ManualEntry,
 
-    /// Maximum long-term capital gain
-    Ml,
+    /// Max Loss - Maximize losses (tax optimization)
+    #[serde(rename = "Ml")]
+    MaxLoss,
 
-    /// Minimum long-term capital gain
-    Mn,
+    /// Min LT Gain - Minimize long-term gain (tax optimization)
+    #[serde(rename = "Mn")]
+    MinLongTermGain,
 
-    /// Maximum short-term capital gain
-    Ms,
+    /// Max ST Gain - Maximize short-term gain (tax optimization)
+    #[serde(rename = "Ms")]
+    MaxShortTermGain,
 
-    /// Minimum short-term capital gain
-    Mi,
+    /// Min ST Gain - Minimize short-term gain (tax optimization)
+    #[serde(rename = "Mi")]
+    MinShortTermGain,
 
-    /// Manual exercise
-    Mx,
+    /// Manual Exercise - Manual exercise (discretionary exercise)
+    #[serde(rename = "Mx")]
+    ManualExercise,
 
-    /// Opening
-    P,
+    /// Opening - Opening trade (new position)
+    #[serde(rename = "P")]
+    Opening,
 
-    /// Partial execution
-    Pt,
+    /// Partial - Partial execution (partial fill)
+    #[serde(rename = "Pt")]
+    Partial,
 
-    /// Fractional risk-less principal
-    Fr,
+    /// Frac Riskless - Fractional riskless principal (fractional share method)
+    #[serde(rename = "Fr")]
+    FracRiskless,
 
-    /// Fractional principal
-    Fp,
+    /// Frac Principal - Fractional principal (fractional share method)
+    #[serde(rename = "Fp")]
+    FracPrincipal,
 
-    /// Price improvement
-    Pi,
+    /// Price Improvement - Better than quoted (price improvement)
+    #[serde(rename = "Pi")]
+    PriceImprovement,
 
-    /// Post accrual
-    Pa,
+    /// Post Accrual - Accrual posting (accrual entry)
+    #[serde(rename = "Pa")]
+    PostAccrual,
 
-    /// Principal
-    Pr,
+    /// Principal - IB principal execution (principal trade)
+    #[serde(rename = "Pr")]
+    Principal,
 
-    /// Reinvestment
-    Re,
+    /// Reinvestment - Dividend reinvestment (DRIP)
+    #[serde(rename = "Re")]
+    Reinvestment,
 
-    /// Redemption
-    Rd,
+    /// Redemption - Capital distribution (fund redemption)
+    #[serde(rename = "Rd")]
+    Redemption,
 
-    /// Reopen
-    R,
+    /// Reopen - Position reopened (wash sale reopen)
+    #[serde(rename = "R")]
+    Reopen,
 
-    /// Reverse
-    Rv,
+    /// Reverse - Accrual reversal (accounting reversal)
+    #[serde(rename = "Rv")]
+    Reverse,
 
-    /// Reimbursement
-    Ri,
+    /// Reimbursement - Fee refund (expense refund)
+    #[serde(rename = "Ri")]
+    Reimbursement,
 
-    /// Solicited IB
-    Si,
+    /// Solicited IB - IB solicited order (IB-initiated)
+    #[serde(rename = "Si")]
+    SolicitedIb,
 
-    /// Specific lot
-    Sp,
+    /// Specific Lot - Specific tax lot (tax lot selection)
+    #[serde(rename = "Sp")]
+    SpecificLot,
 
-    /// Solicited other
-    So,
+    /// Solicited Other - Third-party solicited (broker-solicited)
+    #[serde(rename = "So")]
+    SolicitedOther,
 
-    /// Shortened settlement
-    Ss,
+    /// Short Settlement - T+0 or T+1 settlement (accelerated settle)
+    #[serde(rename = "Ss")]
+    ShortSettlement,
 
-    /// Short-term capital gain
-    St,
+    /// Short-Term - Short-term gain/loss (holding <= 1 year)
+    #[serde(rename = "St")]
+    ShortTermGain,
 
-    /// Stock yield
-    Sy,
+    /// Stock Yield - Stock yield eligible (lending eligible)
+    #[serde(rename = "Sy")]
+    StockYield,
 
-    /// Transfer
-    T,
+    /// Transfer - Position transfer
+    #[serde(rename = "T")]
+    Transfer,
 
-    /// Wash sale
-    W,
+    /// Wash Sale - Wash sale (loss disallowed)
+    #[serde(rename = "W")]
+    WashSale,
 
     /// Unknown code
     #[serde(other)]
@@ -737,6 +808,228 @@ pub enum DeliveredReceived {
     /// Unknown
     #[serde(other)]
     Unknown,
+}
+
+/// Level of detail for reporting
+///
+/// Specifies the granularity of data in FLEX reports.
+/// Used by `Trade`, `Position`, and `CashTransaction` structs to indicate
+/// the level of detail requested in the FLEX query.
+///
+/// **XML Mapping**: Maps to the `levelOfDetail` attribute in various elements.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+pub enum LevelOfDetail {
+    /// Summary level - aggregated data with minimal details
+    Summary,
+
+    /// Detail level - standard reporting with all key fields
+    Detail,
+
+    /// Execution level - detailed execution information including time and venue
+    Execution,
+
+    /// Lot level - tax lot level details for cost basis tracking
+    Lot,
+
+    /// Unknown or unrecognized level of detail
+    #[serde(other)]
+    Unknown,
+}
+
+/// Security identifier type
+///
+/// Specifies the type of security identifier used in the `securityID` field.
+/// Different identifiers are used in different markets and contexts.
+///
+/// **XML Mapping**: Maps to the `securityIDType` attribute in various elements.
+///
+/// **Used by**: `Trade`, `SecurityInfo`
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+pub enum SecurityIdType {
+    /// CUSIP - Committee on Uniform Securities Identification Procedures
+    /// 9-character alphanumeric identifier for North American securities
+    #[serde(rename = "CUSIP")]
+    Cusip,
+
+    /// ISIN - International Securities Identification Number
+    /// 12-character alphanumeric code (ISO 6166 standard)
+    #[serde(rename = "ISIN")]
+    Isin,
+
+    /// FIGI - Financial Instrument Global Identifier
+    /// 12-character alphanumeric identifier (Bloomberg Open Symbology)
+    #[serde(rename = "FIGI")]
+    Figi,
+
+    /// SEDOL - Stock Exchange Daily Official List
+    /// 7-character alphanumeric identifier for UK and Irish securities
+    #[serde(rename = "SEDOL")]
+    Sedol,
+
+    /// Unknown or unrecognized security ID type
+    #[serde(other)]
+    Unknown,
+}
+
+/// Security sub-category
+///
+/// Provides additional classification for securities beyond the basic asset category.
+/// Most commonly used for stocks to distinguish between common shares, ETFs, ADRs, REITs, etc.
+///
+/// **XML Mapping**: Maps to the `subCategory` attribute in various elements.
+///
+/// **Used by**: `Trade`, `Position`, `SecurityInfo`
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+pub enum SubCategory {
+    /// Exchange-traded fund
+    #[serde(rename = "ETF")]
+    Etf,
+
+    /// American Depositary Receipt - represents foreign company shares traded in US
+    #[serde(rename = "ADR")]
+    Adr,
+
+    /// Real Estate Investment Trust
+    #[serde(rename = "REIT")]
+    Reit,
+
+    /// Preferred stock
+    #[serde(rename = "Preferred")]
+    Preferred,
+
+    /// Common stock
+    #[serde(rename = "Common")]
+    Common,
+
+    /// Depositary Receipt (general)
+    #[serde(rename = "DR")]
+    DepositaryReceipt,
+
+    /// Global Depositary Receipt
+    #[serde(rename = "GDR")]
+    Gdr,
+
+    /// Limited Partnership
+    #[serde(rename = "LP")]
+    LimitedPartnership,
+
+    /// Master Limited Partnership
+    #[serde(rename = "MLP")]
+    MasterLimitedPartnership,
+
+    /// Right (subscription right)
+    #[serde(rename = "Right")]
+    Right,
+
+    /// Unit (combination of securities)
+    #[serde(rename = "Unit")]
+    Unit,
+
+    /// When-Issued security
+    #[serde(rename = "WI")]
+    WhenIssued,
+
+    /// Tracking stock
+    #[serde(rename = "Tracking")]
+    Tracking,
+
+    /// Closed-end fund
+    #[serde(rename = "CEF")]
+    ClosedEndFund,
+
+    /// Unknown or unrecognized sub-category
+    #[serde(other)]
+    Unknown,
+}
+
+/// Derivative instrument information
+///
+/// Contains structured information about derivative contracts (options, futures, warrants).
+/// This enum consolidates derivative-specific fields based on the instrument type.
+///
+/// **Used by**: `Trade`, `Position`
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(tag = "type")]
+pub enum DerivativeInfo {
+    /// Option contract (equity or index option)
+    ///
+    /// Standard option giving the right (but not obligation) to buy or sell
+    /// an underlying asset at a specified strike price by the expiration date.
+    Option {
+        /// Strike price - price at which the option can be exercised
+        strike: Decimal,
+
+        /// Expiration date - last date the option can be exercised
+        expiry: NaiveDate,
+
+        /// Put or Call - right to sell (Put) or buy (Call)
+        #[serde(rename = "putCall")]
+        put_call: PutCall,
+
+        /// Symbol of the underlying security (e.g., "AAPL" for Apple stock)
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: String,
+
+        /// IB contract ID of the underlying security
+        #[serde(rename = "underlyingConid")]
+        underlying_conid: Option<String>,
+    },
+
+    /// Future contract
+    ///
+    /// Agreement to buy or sell an asset at a predetermined price
+    /// on a specified future date.
+    Future {
+        /// Expiration date - settlement date for the futures contract
+        expiry: NaiveDate,
+
+        /// Symbol of the underlying asset
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: String,
+
+        /// IB contract ID of the underlying asset
+        #[serde(rename = "underlyingConid")]
+        underlying_conid: Option<String>,
+    },
+
+    /// Future option (option on a futures contract)
+    ///
+    /// Option where the underlying asset is a futures contract rather than a stock.
+    FutureOption {
+        /// Strike price for the option
+        strike: Decimal,
+
+        /// Expiration date of the option
+        expiry: NaiveDate,
+
+        /// Put or Call
+        #[serde(rename = "putCall")]
+        put_call: PutCall,
+
+        /// Symbol of the underlying futures contract
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: String,
+
+        /// IB contract ID of the underlying futures
+        #[serde(rename = "underlyingConid")]
+        underlying_conid: Option<String>,
+    },
+
+    /// Warrant
+    ///
+    /// Long-term option-like security issued by a company, typically
+    /// with longer expiration periods than standard options.
+    Warrant {
+        /// Strike price (if applicable)
+        strike: Option<Decimal>,
+
+        /// Expiration date (if applicable)
+        expiry: Option<NaiveDate>,
+
+        /// Symbol of the underlying security (if applicable)
+        #[serde(rename = "underlyingSymbol")]
+        underlying_symbol: Option<String>,
+    },
 }
 
 #[cfg(test)]

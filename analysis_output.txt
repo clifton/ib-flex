@@ -1,0 +1,241 @@
+Reading tmp/backfill-to-2026-01-13.xml...
+
+
+############################################################
+# Trade
+############################################################
+Found 2614 Trade elements
+
+============================================================
+ALWAYS PRESENT (>=99.9% non-empty) - Can be non-optional (43 fields)
+============================================================
+  accountId                                100.0%  (2614/2614)  "U20588613"
+  accruedInt                               100.0%  (2614/2614)  "0"
+  acctAlias                                100.0%  (2614/2614)  "Fund"
+  assetCategory                            100.0%  (2614/2614)  "FOP", "CASH"
+  buySell                                  100.0%  (2614/2614)  "BUY", "SELL"
+  changeInPrice                            100.0%  (2614/2614)  "0"
+  changeInQuantity                         100.0%  (2614/2614)  "0"
+  closePrice                               100.0%  (2614/2614)  "300.71", "176.91"
+  conid                                    100.0%  (2614/2614)  "459919775", "481863646"
+  cost                                     100.0%  (2614/2614)  "-41587.1614", "1617.2908"
+  currency                                 100.0%  (2614/2614)  "USD", "CAD"
+  dateTime                                 100.0%  (2614/2614)  "20250701;154717", "20250701;155843"
+  description                              100.0%  (2614/2614)  "TESLA INC", "ALPHABET INC-CL C"
+  exchOrderId                              100.0%  (2614/2614)  "0028ffbf6fe5e941", "N/A"
+  exchange                                 100.0%  (2614/2614)  "CBOE", "CME"
+  extExecID                                100.0%  (2614/2614)  "N/A", "0415420362"
+  fifoPnlRealized                          100.0%  (2614/2614)  "1098.646", "-550.5105"
+  fineness                                 100.0%  (2614/2614)  "0.0"
+  fxRateToBase                             100.0%  (2614/2614)  "0.73572", "0.73334"
+  ibCommission                             100.0%  (2614/2614)  "-0.002068", "-1.015416"
+  ibCommissionCurrency                     100.0%  (2614/2614)  "USD", "CAD"
+  ibOrderID                                100.0%  (2614/2614)  "4184750011", "4184852767"
+  isAPIOrder                               100.0%  (2614/2614)  "N"
+  levelOfDetail                            100.0%  (2614/2614)  "EXECUTION"
+  mtmPnl                                   100.0%  (2614/2614)  "24.2", "-118.9"
+  multiplier                               100.0%  (2614/2614)  "100", "2500"
+  netCash                                  100.0%  (2614/2614)  "3686.647932", "-1617.2908"
+  origOrderID                              100.0%  (2614/2614)  "0"
+  origTradePrice                           100.0%  (2614/2614)  "0"
+  origTransactionID                        100.0%  (2614/2614)  "0"
+  proceeds                                 100.0%  (2614/2614)  "27489.68", "-1615.28"
+  quantity                                 100.0%  (2614/2614)  "-7", "-200"
+  reportDate                               100.0%  (2614/2614)  "20250709", "20250708"
+  settleDateTarget                         100.0%  (2614/2614)  "20250709", "20250708"
+  symbol                                   100.0%  (2614/2614)  "FDMT", "APP"
+  taxes                                    100.0%  (2614/2614)  "0"
+  tradeDate                                100.0%  (2614/2614)  "20250709", "20250708"
+  tradeID                                  100.0%  (2614/2614)  "7864749535", "7864768687"
+  tradeMoney                               100.0%  (2614/2614)  "-3686.65", "-41588.2"
+  tradePrice                               100.0%  (2614/2614)  "335.24", "335.15"
+  transactionID                            100.0%  (2614/2614)  "33664856142", "33664856160"
+  transactionType                          100.0%  (2614/2614)  "ExchTrade", "BookTrade"
+  weight                                   100.0%  (2614/2614)  "0.0"
+
+============================================================
+SOMETIMES PRESENT (50-99%) - Conditional or truly optional (15 fields)
+============================================================
+  brokerageOrderID                          93.8%  (2451/2614)  "01cf07ac.000254d3.68636512.0001", "01cf07ac.000254d3.68636371.0001"
+  cusip                                     73.9%  (1932/2614)  "35104E100", "02079K107"
+  figi                                      99.8%  (2609/2614)  "BBG00QG40R88", "BBG000B9XRY4"
+  ibExecID                                  98.8%  (2583/2614)  "0001506d.6864085a.01.01", "00030e5e.6943fc4c.01.01"
+  isin                                      79.6%  (2080/2614)  "US0378331005", "US88160R1014"
+  issuerCountryCode                         79.6%  (2080/2614)  "BE", "IL"
+  listingExchange                           99.8%  (2609/2614)  "NASDAQ", "CBOE"
+  notes                                     87.6%  (2289/2614)  "IA", "Ep"
+  openCloseIndicator                        99.8%  (2609/2614)  "C", "O"
+  orderTime                                 98.8%  (2583/2614)  "20250701;155843", "20250701;154656"
+  orderType                                 93.8%  (2451/2614)  "LMT", "MIDPX"
+  securityID                                79.6%  (2080/2614)  "US0378331005", "US88160R1014"
+  securityIDType                            79.6%  (2080/2614)  "ISIN"
+  subCategory                               99.3%  (2596/2614)  "REIT", "ETF"
+  underlyingSymbol                          99.8%  (2609/2614)  "FDMT", "APP"
+
+============================================================
+RARELY PRESENT (<50%) - Truly optional (27 fields)
+============================================================
+  clearingFirmID                             0.0%  (0/2614)  
+  commodityType                              0.0%  (0/2614)  
+  deliveryType                               0.0%  (0/2614)  
+  expiry                                    20.2%  (529/2614)  "20250709", "20250711"
+  holdingPeriodDateTime                      0.0%  (0/2614)  
+  initialInvestment                          0.0%  (0/2614)  
+  issuer                                     0.0%  (0/2614)  
+  model                                      0.0%  (0/2614)  
+  openDateTime                               0.0%  (0/2614)  
+  orderReference                             0.0%  (0/2614)  
+  origTradeDate                              0.0%  (0/2614)  
+  origTradeID                                0.0%  (0/2614)  
+  positionActionID                           1.2%  (31/2614)  "12175669", "12110565"
+  principalAdjustFactor                      0.0%  (0/2614)  
+  putCall                                   19.7%  (516/2614)  "C", "P"
+  relatedTradeID                             0.0%  (0/2614)  
+  relatedTransactionID                       0.0%  (0/2614)  
+  rtn                                       19.1%  (498/2614)  "BMY00RA00001031", "5407127886358B"
+  serialNumber                               0.0%  (0/2614)  
+  strike                                    19.7%  (516/2614)  "2150", "6340"
+  traderID                                   0.0%  (0/2614)  
+  underlyingConid                           20.2%  (529/2614)  "637533641", "711280107"
+  underlyingListingExchange                 15.6%  (409/2614)  "NASDAQ", "ARCA"
+  underlyingSecurityID                      11.7%  (305/2614)  "US30231G1022", "US74467Q1031"
+  volatilityOrderLink                        0.0%  (0/2614)  
+  whenRealized                               0.0%  (0/2614)  
+  whenReopened                               0.0%  (0/2614)  
+
+
+############################################################
+# OpenPosition
+############################################################
+Found 3455 OpenPosition elements
+
+============================================================
+ALWAYS PRESENT (>=99.9% non-empty) - Can be non-optional (24 fields)
+============================================================
+  accountId                                100.0%  (3455/3455)  "U20588613"
+  acctAlias                                100.0%  (3455/3455)  "Fund"
+  assetCategory                            100.0%  (3455/3455)  "FOP", "OPT"
+  conid                                    100.0%  (3455/3455)  "459919775", "791727440"
+  costBasisMoney                           100.0%  (3455/3455)  "-41587.1614", "53071.5081"
+  costBasisPrice                           100.0%  (3455/3455)  "4.0446165", "2.5284"
+  currency                                 100.0%  (3455/3455)  "USD", "CAD"
+  description                              100.0%  (3455/3455)  "ALPHABET INC-CL C", "4D MOLECULAR THERAPEUTICS IN"
+  fifoPnlUnrealized                        100.0%  (3455/3455)  "541.2", "1.4919"
+  figi                                     100.0%  (3455/3455)  "BBG00QG40R88", "BBG01VJPBSY3"
+  fineness                                 100.0%  (3455/3455)  "0.0"
+  fxRateToBase                             100.0%  (3455/3455)  "0.73085", "0.7362"
+  levelOfDetail                            100.0%  (3455/3455)  "SUMMARY"
+  listingExchange                          100.0%  (3455/3455)  "NASDAQ", "CBOE"
+  markPrice                                100.0%  (3455/3455)  "176.91", "4.15"
+  multiplier                               100.0%  (3455/3455)  "100", "2500"
+  openPrice                                100.0%  (3455/3455)  "4.0446165", "2.5284"
+  position                                 100.0%  (3455/3455)  "-200", "15"
+  positionValue                            100.0%  (3455/3455)  "48800", "-41564"
+  reportDate                               100.0%  (3455/3455)  "20250707", "20250704"
+  side                                     100.0%  (3455/3455)  "Long", "Short"
+  symbol                                   100.0%  (3455/3455)  "R1AN5 P2150", "FDMT"
+  underlyingSymbol                         100.0%  (3455/3455)  "RTYU5", "FDMT"
+  weight                                   100.0%  (3455/3455)  "0.0"
+
+============================================================
+SOMETIMES PRESENT (50-99%) - Conditional or truly optional (7 fields)
+============================================================
+  cusip                                     69.0%  (2385/3455)  "35104E100", "02079K107"
+  isin                                      76.7%  (2649/3455)  "US0378331005", "US88160R1014"
+  issuerCountryCode                         76.7%  (2649/3455)  "BE", "IL"
+  percentOfNAV                              98.6%  (3405/3455)  "86.48", "95.24"
+  securityID                                76.7%  (2649/3455)  "US0378331005", "US88160R1014"
+  securityIDType                            76.7%  (2649/3455)  "ISIN"
+  subCategory                               98.7%  (3411/3455)  "REIT", "ETF"
+
+============================================================
+RARELY PRESENT (<50%) - Truly optional (19 fields)
+============================================================
+  accruedInt                                 0.0%  (0/3455)  
+  code                                       0.0%  (0/3455)  
+  commodityType                              0.0%  (0/3455)  
+  deliveryType                               0.0%  (0/3455)  
+  expiry                                    23.3%  (806/3455)  "20250709", "20250711"
+  holdingPeriodDateTime                      0.0%  (0/3455)  
+  issuer                                     0.0%  (0/3455)  
+  model                                      0.0%  (0/3455)  
+  openDateTime                               0.0%  (0/3455)  
+  originatingOrderID                         0.0%  (0/3455)  
+  originatingTransactionID                   0.0%  (0/3455)  
+  principalAdjustFactor                      0.0%  (0/3455)  
+  putCall                                   22.1%  (762/3455)  "C", "P"
+  serialNumber                               0.0%  (0/3455)  
+  strike                                    22.1%  (762/3455)  "2170", "2150"
+  underlyingConid                           23.3%  (806/3455)  "15547841", "711280107"
+  underlyingListingExchange                 18.8%  (649/3455)  "NASDAQ", "ARCA"
+  underlyingSecurityID                      14.3%  (494/3455)  "US30231G1022", "US74467Q1031"
+  vestingDate                                0.0%  (0/3455)  
+
+
+############################################################
+# CashTransaction
+############################################################
+Found 55 CashTransaction elements
+
+============================================================
+ALWAYS PRESENT (>=99.9% non-empty) - Can be non-optional (15 fields)
+============================================================
+  accountId                                100.0%  (55/55)  "U20588613"
+  acctAlias                                100.0%  (55/55)  "Fund"
+  amount                                   100.0%  (55/55)  "-54.1", "530.54"
+  currency                                 100.0%  (55/55)  "USD", "CAD"
+  dateTime                                 100.0%  (55/55)  "20250805", "20250814;202000"
+  description                              100.0%  (55/55)  "DELL(US24703L2025) CASH DIVIDEND USD 0.525 PER SHA", "USD CREDIT INT FOR JUN-2025"
+  fineness                                 100.0%  (55/55)  "0.0"
+  fxRateToBase                             100.0%  (55/55)  "0.7168", "0.65063"
+  levelOfDetail                            100.0%  (55/55)  "DETAIL"
+  multiplier                               100.0%  (55/55)  "1", "0"
+  reportDate                               100.0%  (55/55)  "20250801", "20250805"
+  settleDate                               100.0%  (55/55)  "20250801", "20250805"
+  transactionID                            100.0%  (55/55)  "34196750082", "34257059690"
+  type                                     100.0%  (55/55)  "Withholding Tax", "Payment In Lieu Of Dividends"
+  weight                                   100.0%  (55/55)  "0.0"
+
+============================================================
+SOMETIMES PRESENT (50-99%) - Conditional or truly optional (0 fields)
+============================================================
+
+============================================================
+RARELY PRESENT (<50%) - Truly optional (30 fields)
+============================================================
+  actionID                                  36.4%  (20/55)  "156732483", "155097294"
+  assetCategory                             36.4%  (20/55)  "STK"
+  availableForTradingDate                    0.0%  (0/55)  
+  clientReference                            0.0%  (0/55)  
+  code                                       0.0%  (0/55)  
+  commodityType                              0.0%  (0/55)  
+  conid                                     36.4%  (20/55)  "346218218", "208813720"
+  cusip                                     32.7%  (18/55)  "24703L202", "02079K107"
+  deliveryType                               0.0%  (0/55)  
+  exDate                                     0.0%  (0/55)  
+  expiry                                     0.0%  (0/55)  
+  figi                                      36.4%  (20/55)  "BBG00DW3SZS1", "BBG000B9XRY4"
+  isin                                      36.4%  (20/55)  "US0378331005", "US22160K1051"
+  issuer                                     0.0%  (0/55)  
+  issuerCountryCode                         36.4%  (20/55)  "US", "BE"
+  listingExchange                           36.4%  (20/55)  "ARCA", "NYSE"
+  model                                      0.0%  (0/55)  
+  principalAdjustFactor                      0.0%  (0/55)  
+  putCall                                    0.0%  (0/55)  
+  securityID                                36.4%  (20/55)  "US0378331005", "US22160K1051"
+  securityIDType                            36.4%  (20/55)  "ISIN"
+  serialNumber                               0.0%  (0/55)  
+  strike                                     0.0%  (0/55)  
+  subCategory                               36.4%  (20/55)  "COMMON", "ETF"
+  symbol                                    36.4%  (20/55)  "DELL", "WMT"
+  tradeID                                    0.0%  (0/55)  
+  underlyingConid                            0.0%  (0/55)  
+  underlyingListingExchange                  0.0%  (0/55)  
+  underlyingSecurityID                       0.0%  (0/55)  
+  underlyingSymbol                          36.4%  (20/55)  "DELL", "WMT"
+
+
+############################################################
+# CorporateAction
+############################################################
+Found 0 CorporateAction elements

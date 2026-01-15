@@ -4,8 +4,13 @@ use chrono::NaiveDate;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
-use super::common::{AssetCategory, BuySell, OpenClose, OrderType, PutCall};
-use crate::parsers::xml_utils::{deserialize_optional_date, deserialize_optional_decimal};
+use super::common::{
+    AssetCategory, BuySell, DerivativeInfo, LevelOfDetail, OpenClose, OrderType, PutCall,
+    SecurityIdType, SubCategory, TradeType,
+};
+use crate::parsers::xml_utils::{
+    deserialize_optional_bool, deserialize_optional_date, deserialize_optional_decimal,
+};
 
 /// Top-level FLEX query response
 ///
@@ -532,7 +537,7 @@ pub struct Trade {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives (Options/Futures) ---
     /// Contract multiplier (for futures/options)
@@ -598,7 +603,7 @@ pub struct Trade {
 
     /// Transaction type (ExchTrade, BookTrade, etc.)
     #[serde(rename = "@transactionType", default)]
-    pub transaction_type: Option<String>,
+    pub transaction_type: Option<TradeType>,
 
     // --- Quantities and Prices ---
     /// Quantity (number of shares/contracts)
@@ -806,7 +811,7 @@ pub struct Trade {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -826,9 +831,13 @@ pub struct Trade {
     #[serde(rename = "@traderID", default)]
     pub trader_id: Option<String>,
 
-    /// Is API order
-    #[serde(rename = "@isAPIOrder", default)]
-    pub is_api_order: Option<String>,
+    /// Is API order (true if order was placed via API)
+    #[serde(
+        rename = "@isAPIOrder",
+        default,
+        deserialize_with = "deserialize_optional_bool"
+    )]
+    pub is_api_order: Option<bool>,
 
     /// Volatility order link
     #[serde(rename = "@volatilityOrderLink", default)]
@@ -840,7 +849,7 @@ pub struct Trade {
 
     /// Level of detail (EXECUTION, ORDER, CLOSED_LOT, etc.)
     #[serde(rename = "@levelOfDetail", default)]
-    pub level_of_detail: Option<String>,
+    pub level_of_detail: Option<LevelOfDetail>,
 
     // --- Price/Quantity Changes ---
     /// Trade amount
@@ -976,6 +985,98 @@ pub struct Trade {
     pub initial_investment: Option<Decimal>,
 }
 
+impl Trade {
+    /// Constructs derivative information from flat fields based on asset category
+    ///
+    /// This method consolidates derivative-specific fields (strike, expiry, put_call,
+    /// underlying_symbol, underlying_conid) into a structured `DerivativeInfo` enum
+    /// based on the trade's asset category.
+    ///
+    /// # Returns
+    /// - `Some(DerivativeInfo)` if the asset is a derivative with complete information
+    /// - `None` if the asset is not a derivative or lacks required fields
+    ///
+    /// # Example
+    /// ```no_run
+    /// use ib_flex::parse_activity_flex;
+    ///
+    /// let xml = std::fs::read_to_string("activity.xml")?;
+    /// let statement = parse_activity_flex(&xml)?;
+    ///
+    /// for trade in &statement.trades.items {
+    ///     if let Some(derivative) = trade.derivative() {
+    ///         match derivative {
+    ///             ib_flex::types::DerivativeInfo::Option { strike, expiry, put_call, .. } => {
+    ///                 println!("Option trade: {:?} ${} exp {}", put_call, strike, expiry);
+    ///             }
+    ///             ib_flex::types::DerivativeInfo::Future { expiry, .. } => {
+    ///                 println!("Future trade: exp {}", expiry);
+    ///             }
+    ///             _ => {}
+    ///         }
+    ///     }
+    /// }
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn derivative(&self) -> Option<DerivativeInfo> {
+        match self.asset_category {
+            AssetCategory::Option => {
+                // For options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Option {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Future => {
+                // For futures, we need: expiry, underlying_symbol
+                let expiry = self.expiry?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Future {
+                    expiry,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::FutureOption => {
+                // For future options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::FutureOption {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Warrant => {
+                // For warrants, all fields are optional but we need at least underlying_symbol
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Warrant {
+                    strike: self.strike,
+                    expiry: self.expiry,
+                    underlying_symbol: Some(underlying_symbol),
+                })
+            }
+            // Not a derivative type
+            _ => None,
+        }
+    }
+}
+
 /// An open position snapshot
 ///
 /// Represents a single open position at the end of the reporting period.
@@ -1059,7 +1160,7 @@ pub struct Position {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives (Options/Futures) ---
     /// Contract multiplier
@@ -1213,7 +1314,7 @@ pub struct Position {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -1273,7 +1374,7 @@ pub struct Position {
     // --- Other Metadata ---
     /// Level of detail
     #[serde(rename = "@levelOfDetail", default)]
-    pub level_of_detail: Option<String>,
+    pub level_of_detail: Option<LevelOfDetail>,
 
     /// Model (for model portfolios)
     #[serde(rename = "@model", default)]
@@ -1290,6 +1391,138 @@ pub struct Position {
         deserialize_with = "deserialize_optional_date"
     )]
     pub vesting_date: Option<NaiveDate>,
+}
+
+impl Position {
+    /// Constructs structured derivative info from flat fields
+    ///
+    /// Returns `Some(DerivativeInfo)` if this position is a derivative (option, future,
+    /// future option, or warrant) and has the required fields populated. Returns `None`
+    /// for non-derivative positions or if required fields are missing.
+    ///
+    /// # Example
+    /// ```
+    /// # use ib_flex::types::{Position, AssetCategory, PutCall, DerivativeInfo};
+    /// # use rust_decimal::Decimal;
+    /// # use chrono::NaiveDate;
+    /// # let mut position = Position {
+    /// #     account_id: "U1234567".to_string(),
+    /// #     conid: "12345".to_string(),
+    /// #     symbol: "AAPL".to_string(),
+    /// #     description: None,
+    /// #     asset_category: AssetCategory::Option,
+    /// #     cusip: None,
+    /// #     isin: None,
+    /// #     figi: None,
+    /// #     security_id: None,
+    /// #     security_id_type: None,
+    /// #     multiplier: Some(Decimal::new(100, 0)),
+    /// #     strike: Some(Decimal::new(150, 0)),
+    /// #     expiry: Some(NaiveDate::from_ymd_opt(2024, 12, 20).unwrap()),
+    /// #     put_call: Some(PutCall::Call),
+    /// #     underlying_conid: Some("67890".to_string()),
+    /// #     underlying_symbol: Some("AAPL".to_string()),
+    /// #     quantity: Decimal::new(10, 0),
+    /// #     mark_price: Decimal::new(5, 0),
+    /// #     position_value: Decimal::new(5000, 0),
+    /// #     side: Some("Long".to_string()),
+    /// #     open_price: None,
+    /// #     cost_basis_price: None,
+    /// #     cost_basis_money: None,
+    /// #     fifo_pnl_unrealized: None,
+    /// #     percent_of_nav: None,
+    /// #     currency: "USD".to_string(),
+    /// #     fx_rate_to_base: None,
+    /// #     report_date: NaiveDate::from_ymd_opt(2024, 1, 15).unwrap(),
+    /// #     holding_period_date_time: None,
+    /// #     open_date_time: None,
+    /// #     originating_transaction_id: None,
+    /// #     code: None,
+    /// #     originating_order_id: None,
+    /// #     issuer: None,
+    /// #     issuer_country_code: None,
+    /// #     sub_category: None,
+    /// #     listing_exchange: None,
+    /// #     underlying_listing_exchange: None,
+    /// #     underlying_security_id: None,
+    /// #     accrued_int: None,
+    /// #     principal_adjust_factor: None,
+    /// #     serial_number: None,
+    /// #     delivery_type: None,
+    /// #     commodity_type: None,
+    /// #     fineness: None,
+    /// #     weight: None,
+    /// #     level_of_detail: None,
+    /// #     model: None,
+    /// #     acct_alias: None,
+    /// #     vesting_date: None,
+    /// # };
+    /// if let Some(derivative) = position.derivative() {
+    ///     match derivative {
+    ///         DerivativeInfo::Option { strike, expiry, put_call, .. } => {
+    ///             println!("Option: Strike={}, Expiry={}, Type={:?}", strike, expiry, put_call);
+    ///         }
+    ///         _ => {}
+    ///     }
+    /// }
+    /// ```
+    pub fn derivative(&self) -> Option<DerivativeInfo> {
+        match self.asset_category {
+            AssetCategory::Option => {
+                // For options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Option {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Future => {
+                // For futures, we need: expiry, underlying_symbol
+                let expiry = self.expiry?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Future {
+                    expiry,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::FutureOption => {
+                // For future options, we need: strike, expiry, put_call, underlying_symbol
+                let strike = self.strike?;
+                let expiry = self.expiry?;
+                let put_call = self.put_call?;
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::FutureOption {
+                    strike,
+                    expiry,
+                    put_call,
+                    underlying_symbol,
+                    underlying_conid: self.underlying_conid.clone(),
+                })
+            }
+            AssetCategory::Warrant => {
+                // For warrants, all fields are optional but we need at least underlying_symbol
+                let underlying_symbol = self.underlying_symbol.clone()?;
+
+                Some(DerivativeInfo::Warrant {
+                    strike: self.strike,
+                    expiry: self.expiry,
+                    underlying_symbol: Some(underlying_symbol),
+                })
+            }
+            // Not a derivative type
+            _ => None,
+        }
+    }
 }
 
 /// A cash transaction (deposit, withdrawal, dividend, interest, fee)
@@ -1433,7 +1666,7 @@ pub struct CashTransaction {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives ---
     /// Contract multiplier
@@ -1524,7 +1757,7 @@ pub struct CashTransaction {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -1724,7 +1957,7 @@ pub struct CorporateAction {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     // --- Derivatives ---
     /// Contract multiplier
@@ -1862,7 +2095,7 @@ pub struct CorporateAction {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     /// Listing exchange
     #[serde(rename = "@listingExchange", default)]
@@ -2002,7 +2235,7 @@ pub struct SecurityInfo {
 
     /// Security ID type
     #[serde(rename = "@securityIDType", default)]
-    pub security_id_type: Option<String>,
+    pub security_id_type: Option<SecurityIdType>,
 
     /// CUSIP
     #[serde(rename = "@cusip", default)]
@@ -2106,7 +2339,7 @@ pub struct SecurityInfo {
 
     /// Sub-category
     #[serde(rename = "@subCategory", default)]
-    pub sub_category: Option<String>,
+    pub sub_category: Option<SubCategory>,
 
     // --- Futures ---
     /// Delivery month (for futures)

@@ -1,0 +1,92 @@
+# Field Presence Analysis Summary
+# Analyzed: tmp/backfill-to-2026-01-13.xml
+# Date: 2026-01-14
+
+## Records Analyzed
+- Trade: 2614 elements
+- OpenPosition: 3455 elements
+- CashTransaction: 55 elements
+- CorporateAction: 0 elements (not present in this dataset)
+
+## Fields at 100% Presence
+
+### Trade (43 fields at 100%)
+ALREADY NON-OPTIONAL (skip these):
+- accountId, conid, symbol, assetCategory, currency
+
+DERIVATIVE-SPECIFIC (must stay optional):
+- multiplier (only for derivatives)
+- underlyingSymbol (only for derivatives)
+
+LOW-VALUE (always 0, skip):
+- accruedInt, changeInPrice, changeInQuantity, fineness, weight
+- origOrderID, origTradePrice, origTransactionID
+
+HIGH-VALUE CANDIDATES FOR NON-OPTIONAL:
+- acctAlias
+- buySell
+- description
+- exchange
+- tradeDate, settleDateTarget, dateTime
+- quantity, tradePrice, tradeMoney, proceeds, cost
+- ibCommission, ibCommissionCurrency, taxes, netCash
+- tradeID, transactionID, ibOrderID
+- transactionType
+- fifoPnlRealized, mtmPnl
+- fxRateToBase
+- levelOfDetail, reportDate
+- isAPIOrder
+- closePrice
+
+METADATA/LOW-PRIORITY:
+- exchOrderId, extExecID
+
+### OpenPosition (24 fields at 100%)
+ALREADY NON-OPTIONAL:
+- accountId, conid, symbol, assetCategory, currency
+
+DERIVATIVE-SPECIFIC:
+- multiplier, underlyingSymbol
+
+LOW-VALUE:
+- fineness, weight
+
+HIGH-VALUE CANDIDATES:
+- acctAlias
+- description
+- side (Long/Short)
+- position (quantity)
+- markPrice, positionValue
+- costBasisPrice, costBasisMoney
+- fifoPnlUnrealized
+- openPrice
+- fxRateToBase
+- levelOfDetail, reportDate
+- figi, listingExchange
+
+### CashTransaction (15 fields at 100%)
+ALREADY NON-OPTIONAL:
+- accountId, currency
+
+LOW-VALUE:
+- fineness, weight, multiplier (always 0 or 1)
+
+HIGH-VALUE CANDIDATES:
+- acctAlias
+- description
+- amount
+- type
+- dateTime, settleDate, reportDate
+- transactionID
+- fxRateToBase
+- levelOfDetail
+
+## Decision Matrix
+
+Total high-value candidates across all types: ~40-45 fields
+
+Recommendation: INCREMENTAL implementation approach
+- Focus on high-value fields only
+- Do 1-2 fields per commit
+- Estimated 20-25 micro-tasks
+- Estimated 2-3 hours total
