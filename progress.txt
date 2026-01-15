@@ -225,8 +225,45 @@
 
 ---
 
+---
+
+### Task 7: Create SubCategory enum
+**Status**: COMPLETE ✅
+**Started**: 2026-01-14
+**Completed**: 2026-01-14
+
+**Objective**: Create a new enum `SubCategory` with variants { Etf, Adr, Reit, Preferred, Common, ... } to provide additional classification for securities beyond the basic asset category.
+
+**Files modified**:
+1. src/types/common.rs - Added new SubCategory enum definition
+2. src/types/mod.rs - Updated export to include SubCategory
+
+**Steps completed**:
+1. ✅ Read current common.rs file to understand enum structure and patterns
+2. ✅ Added SubCategory enum with 15 variants (Etf, Adr, Reit, Preferred, Common, DepositaryReceipt, Gdr, LimitedPartnership, MasterLimitedPartnership, Right, Unit, WhenIssued, Tracking, ClosedEndFund, Unknown)
+3. ✅ Added comprehensive documentation explaining usage for stock sub-classification
+4. ✅ Used serde(rename = "...") attributes to map XML values to enum variants
+5. ✅ Used serde(other) for Unknown variant to handle unrecognized values
+6. ✅ Updated re-export in mod.rs to include SubCategory (alphabetically ordered after SecurityIdType)
+7. ✅ Ran cargo fmt && cargo clippy --all-targets -- -D warnings - passed with 0 warnings
+8. ✅ Ran cargo test - all 124 tests passed
+9. ✅ Updated TYPES_ANALYSIS.md to mark task complete
+10. ✅ Updated progress.txt
+
+**Test results**: 124 tests passed (19 unit + 11 error + 13 extended + 47 integration + 15 reliability + 15 doc + 4 other)
+
+**Notes**:
+- Enum follows the same pattern as other enums in common.rs
+- Added 14 specific sub-category types plus Unknown fallback
+- Most commonly used for stocks to distinguish between ETFs, ADRs, REITs, preferred vs common shares, etc.
+- The enum is ready to be used in Phase 2: Field Type Changes for Trade, Position, and SecurityInfo structs
+- Documentation explains its usage across multiple struct types
+- Properly exported in mod.rs with alphabetical ordering maintained
+
+---
+
 ## Summary
 
-**Total tasks completed**: 6/6
-**Total time**: ~30 minutes
-**Status**: Task 6 complete, ready for next task
+**Total tasks completed**: 7/7
+**Total time**: ~35 minutes
+**Status**: Task 7 complete, ready for next task

@@ -869,6 +869,77 @@ pub enum SecurityIdType {
     Unknown,
 }
 
+/// Security sub-category
+///
+/// Provides additional classification for securities beyond the basic asset category.
+/// Most commonly used for stocks to distinguish between common shares, ETFs, ADRs, REITs, etc.
+///
+/// **XML Mapping**: Maps to the `subCategory` attribute in various elements.
+///
+/// **Used by**: `Trade`, `Position`, `SecurityInfo`
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+pub enum SubCategory {
+    /// Exchange-traded fund
+    #[serde(rename = "ETF")]
+    Etf,
+
+    /// American Depositary Receipt - represents foreign company shares traded in US
+    #[serde(rename = "ADR")]
+    Adr,
+
+    /// Real Estate Investment Trust
+    #[serde(rename = "REIT")]
+    Reit,
+
+    /// Preferred stock
+    #[serde(rename = "Preferred")]
+    Preferred,
+
+    /// Common stock
+    #[serde(rename = "Common")]
+    Common,
+
+    /// Depositary Receipt (general)
+    #[serde(rename = "DR")]
+    DepositaryReceipt,
+
+    /// Global Depositary Receipt
+    #[serde(rename = "GDR")]
+    Gdr,
+
+    /// Limited Partnership
+    #[serde(rename = "LP")]
+    LimitedPartnership,
+
+    /// Master Limited Partnership
+    #[serde(rename = "MLP")]
+    MasterLimitedPartnership,
+
+    /// Right (subscription right)
+    #[serde(rename = "Right")]
+    Right,
+
+    /// Unit (combination of securities)
+    #[serde(rename = "Unit")]
+    Unit,
+
+    /// When-Issued security
+    #[serde(rename = "WI")]
+    WhenIssued,
+
+    /// Tracking stock
+    #[serde(rename = "Tracking")]
+    Tracking,
+
+    /// Closed-end fund
+    #[serde(rename = "CEF")]
+    ClosedEndFund,
+
+    /// Unknown or unrecognized sub-category
+    #[serde(other)]
+    Unknown,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
