@@ -741,7 +741,13 @@ pub enum DerivativeInfo {
 - [x] `Position.derivative`: `Option<DerivativeInfo>`
 - [x] ~~Remove flat derivative fields from Trade/Position~~ (WILL NOT IMPLEMENT - flat fields required for XML parsing, derivative() is convenience accessor)
 
-### Phase 3: Remove Unnecessary Option<> Wrappers
+### Phase 3: Remove Unnecessary Option<> Wrappers ⚠️ NEEDS REDESIGN
+
+**STATUS**: Blocked - See Task 17 in progress.txt for detailed analysis.
+
+**Issue**: Making fields non-optional breaks test fixtures and is too large for a single task (requires updating 20+ fields across 3 structs + 15+ test fixtures + all examples).
+
+**Recommendation**: Skip this phase OR redesign as 20-30 micro-tasks. Empirical data presence ≠ schema guarantee.
 
 Based on analysis of 2614 trades, 3455 positions, 55 cash transactions.
 
@@ -777,9 +783,9 @@ Based on analysis of 2614 trades, 3455 positions, 55 cash transactions.
 - `notes` - semicolon-separated transaction codes
 
 ### Phase 4: Documentation
-- [ ] Doc comments on all `TransactionCode` variants
-- [ ] Doc comments on all `CorporateActionType` variants
-- [ ] Examples in struct-level documentation
+- [x] Doc comments on all `TransactionCode` variants (completed in Task 4)
+- [x] Doc comments on all `CorporateActionType` variants (completed in Task 2)
+- [x] Examples in struct-level documentation (all major structs have comprehensive examples)
 
 ---
 
