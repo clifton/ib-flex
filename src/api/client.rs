@@ -1,34 +1,59 @@
 //! FLEX Web Service API client implementation
 
 use reqwest::Client;
-use std::time::Duration;
-use thiserror::Error;
+use std::{error::Error as StdError, fmt, time::Duration};
 
 /// Base URL for IB FLEX Web Service API
-const FLEX_BASE_URL: &str = "https://gdcdyn.interactivebrokers.com/Universal/servlet";
+const FLEX_BASE_URL: &str =
+    "https://ndcdyn.interactivebrokers.com/AccountManagement/FlexWebService";
+const USER_AGENT: &str = concat!("ib-flex/", env!("CARGO_PKG_VERSION"));
 
 /// FLEX Web Service API errors
-#[derive(Debug, Error)]
+#[derive(Debug)]
 pub enum FlexApiError {
     /// HTTP request failed
-    #[error("HTTP request failed: {0}")]
-    RequestFailed(#[from] reqwest::Error),
+    RequestFailed(reqwest::Error),
 
     /// IB API returned an error
-    #[error("IB API error: {0}")]
     ApiError(String),
 
     /// XML parsing error
-    #[error("XML parsing error: {0}")]
     XmlError(String),
 
     /// Statement not ready yet
-    #[error("Statement not ready (try again later)")]
     StatementNotReady,
 
     /// Invalid response format
-    #[error("Invalid response format: {0}")]
     InvalidResponse(String),
+}
+
+impl fmt::Display for FlexApiError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::RequestFailed(error) => {
+                write!(f, "HTTP request failed: {}", describe_request_error(error))
+            }
+            Self::ApiError(message) => write!(f, "IB API error: {message}"),
+            Self::XmlError(message) => write!(f, "XML parsing error: {message}"),
+            Self::StatementNotReady => f.write_str("Statement not ready (try again later)"),
+            Self::InvalidResponse(message) => write!(f, "Invalid response format: {message}"),
+        }
+    }
+}
+
+impl StdError for FlexApiError {
+    fn source(&self) -> Option<&(dyn StdError + 'static)> {
+        match self {
+            Self::RequestFailed(error) => Some(error),
+            _ => None,
+        }
+    }
+}
+
+impl From<reqwest::Error> for FlexApiError {
+    fn from(error: reqwest::Error) -> Self {
+        Self::RequestFailed(error.without_url())
+    }
 }
 
 /// Result type for FLEX API operations
@@ -95,10 +120,7 @@ impl FlexApiClient {
         Self {
             token: token.into(),
             base_url: FLEX_BASE_URL.to_string(),
-            client: Client::builder()
-                .timeout(Duration::from_secs(30))
-                .build()
-                .expect("Failed to build HTTP client"),
+            client: build_http_client(),
         }
     }
 
@@ -111,11 +133,8 @@ impl FlexApiClient {
     pub fn with_base_url(token: impl Into<String>, base_url: impl Into<String>) -> Self {
         Self {
             token: token.into(),
-            base_url: base_url.into(),
-            client: Client::builder()
-                .timeout(Duration::from_secs(30))
-                .build()
-                .expect("Failed to build HTTP client"),
+            base_url: normalize_base_url(base_url),
+            client: build_http_client(),
         }
     }
 
@@ -147,11 +166,11 @@ impl FlexApiClient {
     /// ```
     pub async fn send_request(&self, query_id: &str) -> Result<String> {
         let url = format!(
-            "{}/FlexStatementService.SendRequest?t={}&q={}&v=3",
+            "{}/SendRequest?t={}&q={}&v=3",
             self.base_url, self.token, query_id
         );
 
-        let response = self.client.get(&url).send().await?;
+        let response = self.client.get(url).send().await?;
         let body = response.text().await?;
 
         // Parse XML response
@@ -192,11 +211,11 @@ impl FlexApiClient {
     /// ```
     pub async fn get_statement(&self, reference_code: &str) -> Result<String> {
         let url = format!(
-            "{}/FlexStatementService.GetStatement?t={}&q={}&v=3",
+            "{}/GetStatement?t={}&q={}&v=3",
             self.base_url, self.token, reference_code
         );
 
-        let response = self.client.get(&url).send().await?;
+        let response = self.client.get(url).send().await?;
         let body = response.text().await?;
 
         // Check if this is an error response
@@ -331,6 +350,67 @@ impl FlexApiClient {
     }
 }
 
+fn build_http_client() -> Client {
+    Client::builder()
+        .timeout(Duration::from_secs(30))
+        .user_agent(USER_AGENT)
+        .build()
+        .expect("Failed to build HTTP client")
+}
+
+fn normalize_base_url(base_url: impl Into<String>) -> String {
+    base_url.into().trim_end_matches('/').to_string()
+}
+
+fn describe_request_error(error: &reqwest::Error) -> String {
+    if let Some(status) = error.status() {
+        return format!("IB Flex API returned HTTP status {status}");
+    }
+
+    if error.is_timeout() {
+        return "request timed out while contacting IB Flex API".to_string();
+    }
+
+    if is_dns_error(error) {
+        return "DNS resolution failed while connecting to IB Flex API".to_string();
+    }
+
+    if error.is_connect() {
+        return "connection failed while connecting to IB Flex API".to_string();
+    }
+
+    if error.is_body() {
+        return "failed while reading IB Flex API response body".to_string();
+    }
+
+    if error.is_decode() {
+        return "failed while decoding IB Flex API response".to_string();
+    }
+
+    "request failed while contacting IB Flex API".to_string()
+}
+
+fn is_dns_error(error: &reqwest::Error) -> bool {
+    error_source_chain_contains(
+        error,
+        &["dns error", "failed to lookup address", "could not resolve"],
+    )
+}
+
+fn error_source_chain_contains(error: &dyn StdError, patterns: &[&str]) -> bool {
+    let mut source = error.source();
+
+    while let Some(error) = source {
+        let message = error.to_string().to_ascii_lowercase();
+        if patterns.iter().any(|pattern| message.contains(pattern)) {
+            return true;
+        }
+        source = error.source();
+    }
+
+    false
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -398,8 +478,26 @@ mod tests {
 
     #[test]
     fn test_client_with_custom_url() {
-        let client = FlexApiClient::with_base_url("my_token", "https://custom.url");
+        let client = FlexApiClient::with_base_url("my_token", "https://custom.url/");
         assert_eq!(client.token, "my_token");
         assert_eq!(client.base_url, "https://custom.url");
+    }
+
+    #[tokio::test]
+    async fn test_request_error_does_not_expose_token_url() {
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+        let addr = listener.local_addr().unwrap();
+        drop(listener);
+
+        let client = FlexApiClient::with_base_url("super_secret_token", format!("http://{addr}"));
+        let error = client.send_request("123456").await.unwrap_err();
+        let message = error.to_string();
+        let debug = format!("{error:?}");
+
+        assert!(message.contains("HTTP request failed"));
+        assert!(!message.contains("super_secret_token"));
+        assert!(!message.contains("t="));
+        assert!(!debug.contains("super_secret_token"));
+        assert!(!debug.contains("t="));
     }
 }

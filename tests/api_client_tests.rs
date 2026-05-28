@@ -5,7 +5,7 @@
 
 #![cfg(feature = "api-client")]
 
-use ib_flex::api::{FlexApiClient, FlexApiError};
+use ib_flex::api::FlexApiClient;
 
 #[test]
 fn test_client_creation() {
