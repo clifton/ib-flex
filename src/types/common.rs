@@ -894,11 +894,11 @@ pub enum SubCategory {
     Reit,
 
     /// Preferred stock
-    #[serde(rename = "Preferred")]
+    #[serde(rename = "Preferred", alias = "PREFERRED")]
     Preferred,
 
     /// Common stock
-    #[serde(rename = "Common")]
+    #[serde(rename = "Common", alias = "COMMON")]
     Common,
 
     /// Depositary Receipt (general)

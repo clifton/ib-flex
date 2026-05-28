@@ -47,7 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n=== BY SYMBOL ===");
     let mut sorted: Vec<_> = wash_by_symbol.into_iter().collect();
-    sorted.sort_by(|a, b| b.1 .1.cmp(&a.1 .1)); // Sort by PnL descending
+    sorted.sort_by_key(|entry| std::cmp::Reverse(entry.1 .1)); // Sort by PnL descending
 
     for (symbol, (count, pnl)) in sorted.iter().take(15) {
         println!("{:<30} {:>4} records  ${:>12.2} PnL", symbol, count, pnl);

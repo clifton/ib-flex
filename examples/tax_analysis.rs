@@ -306,7 +306,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Sort by adjusted P&L and show top symbols
         let mut sorted_symbols: Vec<_> = wash_tracking.by_symbol.values().collect();
-        sorted_symbols.sort_by(|a, b| b.adjusted_pnl_recognized.cmp(&a.adjusted_pnl_recognized));
+        sorted_symbols.sort_by_key(|summary| std::cmp::Reverse(summary.adjusted_pnl_recognized));
 
         println!("{:<30} {:>8} {:>15}", "SYMBOL", "RECORDS", "ADJUSTED P&L");
         println!("{}", "-".repeat(55));
