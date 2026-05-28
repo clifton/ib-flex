@@ -104,7 +104,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         for (i, trade) in statement.trades.items.iter().take(5).enumerate() {
             println!("Trade {}:", i + 1);
             println!("  Symbol: {}", trade.symbol);
-            println!("  Date: {}", trade.trade_date);
+            let trade_date = trade
+                .trade_date
+                .map(|date| date.to_string())
+                .unwrap_or_else(|| "N/A".to_string());
+            println!("  Date: {}", trade_date);
             if let Some(ref buy_sell) = trade.buy_sell {
                 println!("  Side: {:?}", buy_sell);
             }
@@ -114,7 +118,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             if let Some(price) = trade.price {
                 println!("  Price: {}", price);
             }
-            println!("  Commission: {}", trade.commission);
+            println!("  Commission: {}", trade.commission.unwrap_or_default());
             println!();
         }
     }

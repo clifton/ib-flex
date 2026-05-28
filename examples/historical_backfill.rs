@@ -277,7 +277,12 @@ fn print_statement_summary(statement: &ib_flex::ActivityFlexStatement) {
         .filter_map(|t| t.fifo_pnl_realized)
         .sum();
 
-    let total_commissions: Decimal = statement.trades.items.iter().map(|t| t.commission).sum();
+    let total_commissions: Decimal = statement
+        .trades
+        .items
+        .iter()
+        .filter_map(|t| t.commission)
+        .sum();
 
     println!("\nPortfolio Summary:");
     println!("  Total Position Value: ${:.2}", total_position_value);
@@ -315,7 +320,7 @@ fn extract_daily_snapshots(
         .trades
         .items
         .iter()
-        .map(|t| t.trade_date)
+        .filter_map(|t| t.trade_date)
         .collect();
 
     // Add cash transaction dates
@@ -339,7 +344,7 @@ fn extract_daily_snapshots(
             .trades
             .items
             .iter()
-            .filter(|t| t.trade_date == date)
+            .filter(|t| t.trade_date == Some(date))
             .collect();
 
         let day_cash: Vec<_> = statement
@@ -366,11 +371,16 @@ fn extract_daily_snapshots(
 
         let realized_pnl: Decimal = day_trades.iter().filter_map(|t| t.fifo_pnl_realized).sum();
 
-        let commissions: Decimal = day_trades.iter().map(|t| t.commission).sum();
+        let commissions: Decimal = day_trades.iter().filter_map(|t| t.commission).sum();
 
         let dividends: Decimal = day_cash
             .iter()
-            .filter(|c| c.transaction_type.contains("Dividend"))
+            .filter(|c| {
+                matches!(
+                    c.transaction_type.as_deref(),
+                    Some(transaction_type) if transaction_type.contains("Dividend")
+                )
+            })
             .map(|c| c.amount)
             .sum();
 

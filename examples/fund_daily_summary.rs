@@ -150,9 +150,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Total Trades: {}", trades.len());
 
     if !trades.is_empty() {
-        let total_commission: Decimal = trades.iter().map(|t| t.commission).sum();
+        let total_commission: Decimal = trades.iter().filter_map(|t| t.commission).sum();
         let total_realized_pnl: Decimal = trades.iter().filter_map(|t| t.fifo_pnl_realized).sum();
-        let total_proceeds: Decimal = trades.iter().map(|t| t.proceeds).sum();
+        let total_proceeds: Decimal = trades.iter().filter_map(|t| t.proceeds).sum();
 
         println!("Total Proceeds: ${:.2}", total_proceeds);
         println!("Total Commissions: ${:.2}", total_commission);
@@ -182,9 +182,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .unwrap_or_else(|| "?".to_string());
                 let qty = trade.quantity.unwrap_or_default();
                 let price = trade.price.unwrap_or_default();
+                let trade_date = trade
+                    .trade_date
+                    .map(|date| date.to_string())
+                    .unwrap_or_else(|| "N/A".to_string());
+                let commission = trade.commission.unwrap_or_default();
                 println!(
                     "  {} {:5} {:12} {:>8} @ {:>10.4}  Commission: ${:.2}",
-                    trade.trade_date, side, trade.symbol, qty, price, trade.commission
+                    trade_date, side, trade.symbol, qty, price, commission
                 );
             }
         }
@@ -202,9 +207,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Group by type
         let mut by_type: HashMap<&str, Decimal> = HashMap::new();
         for txn in cash_txns {
-            *by_type
-                .entry(&txn.transaction_type)
-                .or_insert(Decimal::ZERO) += txn.amount;
+            let transaction_type = txn.transaction_type.as_deref().unwrap_or("Unknown");
+            *by_type.entry(transaction_type).or_insert(Decimal::ZERO) += txn.amount;
         }
 
         println!("\nBy Type:");
@@ -217,7 +221,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Total dividends
         let dividends: Decimal = cash_txns
             .iter()
-            .filter(|t| t.transaction_type.contains("Dividend"))
+            .filter(|t| {
+                matches!(
+                    t.transaction_type.as_deref(),
+                    Some(transaction_type) if transaction_type.contains("Dividend")
+                )
+            })
             .map(|t| t.amount)
             .sum();
         if dividends != Decimal::ZERO {
@@ -227,7 +236,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Withholding tax
         let withholding: Decimal = cash_txns
             .iter()
-            .filter(|t| t.transaction_type.contains("Withholding"))
+            .filter(|t| {
+                matches!(
+                    t.transaction_type.as_deref(),
+                    Some(transaction_type) if transaction_type.contains("Withholding")
+                )
+            })
             .map(|t| t.amount)
             .sum();
         if withholding != Decimal::ZERO {
@@ -244,9 +258,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Total Actions: {}", corp_actions.len());
 
         for action in corp_actions.iter().take(5) {
+            let action_type = action.action_type.as_deref().unwrap_or("Unknown");
+            let description = action.description.as_deref().unwrap_or("");
             println!(
                 "  {} {} - {} ({})",
-                action.report_date, action.symbol, action.action_type, action.description
+                action.report_date, action.symbol, action_type, description
             );
         }
     }

@@ -49,9 +49,12 @@
 //!
 //! ## API Endpoints
 //!
-//! - **Base URL**: `https://gdcdyn.interactivebrokers.com/Universal/servlet`
-//! - **SendRequest**: `FlexStatementService.SendRequest?t=TOKEN&q=QUERY_ID&v=3`
-//! - **GetStatement**: `FlexStatementService.GetStatement?t=TOKEN&q=REFERENCE_CODE&v=3`
+//! - **Base URL**: `https://ndcdyn.interactivebrokers.com/AccountManagement/FlexWebService`
+//! - **SendRequest**: `SendRequest?t=TOKEN&q=QUERY_ID&v=3`
+//! - **GetStatement**: `GetStatement?t=TOKEN&q=REFERENCE_CODE&v=3`
+//!
+//! IBKR requires a `User-Agent` header on Flex Web Service requests. The client
+//! sets one automatically.
 //!
 //! ## References
 //!
