@@ -7,14 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.9] - 2026-05-28
+
 ### Fixed
-- Updated the API client to use IBKR's current Flex Web Service endpoints and
-  send the required User-Agent header.
-- Redacted sensitive request URLs from API client transport errors.
-
-### Removed
-- Removed stale implementation planning and status documents from the repository surface.
-
+- update Flex Web Service endpoint (#12) ([#12](https://github.com/clifton/ib-flex/pull/12))
 ## [0.1.8] - 2026-05-28
 
 ### Changed
