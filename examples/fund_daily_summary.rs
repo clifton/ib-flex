@@ -112,7 +112,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("\nBy Asset Category:");
         let mut categories: Vec<_> = by_category.iter().collect();
-        categories.sort_by(|a, b| b.1 .1.cmp(&a.1 .1));
+        categories.sort_by_key(|entry| std::cmp::Reverse(entry.1 .1));
         for (cat, (count, value)) in categories {
             let pct = if total_value != Decimal::ZERO {
                 (value / total_value) * Decimal::from(100)
@@ -128,7 +128,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Top positions by value
         println!("\nTop 10 Positions:");
         let mut sorted_positions: Vec<_> = positions.iter().collect();
-        sorted_positions.sort_by(|a, b| b.position_value.abs().cmp(&a.position_value.abs()));
+        sorted_positions.sort_by_key(|pos| std::cmp::Reverse(pos.position_value.abs()));
         for pos in sorted_positions.iter().take(10) {
             let pnl_str = pos
                 .fifo_pnl_unrealized
@@ -209,7 +209,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("\nBy Type:");
         let mut types: Vec<_> = by_type.iter().collect();
-        types.sort_by(|a, b| b.1.abs().cmp(&a.1.abs()));
+        types.sort_by_key(|entry| std::cmp::Reverse(entry.1.abs()));
         for (txn_type, amount) in types {
             println!("  {:30} ${:>12.2}", txn_type, amount);
         }
@@ -264,7 +264,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let total: Decimal = by_currency.values().sum();
         let mut currencies: Vec<_> = by_currency.iter().collect();
-        currencies.sort_by(|a, b| b.1.abs().cmp(&a.1.abs()));
+        currencies.sort_by_key(|entry| std::cmp::Reverse(entry.1.abs()));
         for (currency, value) in currencies {
             let pct = if total != Decimal::ZERO {
                 (value / total) * Decimal::from(100)

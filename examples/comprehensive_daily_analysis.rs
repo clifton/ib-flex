@@ -144,7 +144,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Top positions by absolute value
         let mut sorted_positions: Vec<_> = positions.iter().collect();
-        sorted_positions.sort_by(|a, b| b.position_value.abs().cmp(&a.position_value.abs()));
+        sorted_positions.sort_by_key(|pos| std::cmp::Reverse(pos.position_value.abs()));
 
         println!("Top 20 Positions by Value:");
         for pos in sorted_positions.iter().take(20) {
@@ -180,7 +180,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("Positions by Asset Class:");
         let mut asset_breakdown: Vec<_> = by_asset.iter().collect();
-        asset_breakdown.sort_by(|a, b| b.1 .1.abs().cmp(&a.1 .1.abs()));
+        asset_breakdown.sort_by_key(|entry| std::cmp::Reverse(entry.1 .1.abs()));
 
         for (asset, (count, value)) in asset_breakdown {
             let pct = if total_value != Decimal::ZERO {
@@ -235,7 +235,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("By Asset Class:");
         let mut asset_stats: Vec<_> = by_asset.iter().collect();
-        asset_stats.sort_by(|a, b| b.1.count.cmp(&a.1.count));
+        asset_stats.sort_by_key(|entry| std::cmp::Reverse(entry.1.count));
 
         for (asset, stats) in asset_stats {
             let avg_comm = if stats.count > 0 {
@@ -270,7 +270,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("Top 20 Symbols by Trade Count:");
         let mut symbol_stats: Vec<_> = by_symbol.iter().collect();
-        symbol_stats.sort_by(|a, b| b.1.count.cmp(&a.1.count));
+        symbol_stats.sort_by_key(|entry| std::cmp::Reverse(entry.1.count));
 
         for (symbol, stats) in symbol_stats.iter().take(20) {
             println!(
@@ -290,7 +290,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("Top 10 Trading Days:");
         let mut date_stats: Vec<_> = by_date.iter().collect();
-        date_stats.sort_by(|a, b| b.1.cmp(a.1));
+        date_stats.sort_by_key(|entry| std::cmp::Reverse(entry.1));
 
         for (date, count) in date_stats.iter().take(10) {
             println!("  {}  {:>6} trades", date, count);
@@ -325,11 +325,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .iter()
             .filter(|t| t.fifo_pnl_realized.is_some())
             .collect();
-        trades_with_pnl.sort_by(|a, b| {
-            b.fifo_pnl_realized
-                .unwrap_or_default()
-                .cmp(&a.fifo_pnl_realized.unwrap_or_default())
-        });
+        trades_with_pnl
+            .sort_by_key(|trade| std::cmp::Reverse(trade.fifo_pnl_realized.unwrap_or_default()));
 
         if !trades_with_pnl.is_empty() {
             println!("Top 10 Best Trades by P&L:");
@@ -394,7 +391,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("Top 20 Underlyings:");
         let mut underlying_stats: Vec<_> = by_underlying.iter().collect();
-        underlying_stats.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
+        underlying_stats.sort_by_key(|entry| std::cmp::Reverse(entry.1.len()));
 
         for (underlying, trades) in underlying_stats.iter().take(20) {
             let total_contracts: Decimal = trades.iter().filter_map(|t| t.quantity).sum();
@@ -430,7 +427,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("By Transaction Type:");
         let mut types: Vec<_> = by_type.iter().collect();
-        types.sort_by(|a, b| b.1 .1.abs().cmp(&a.1 .1.abs()));
+        types.sort_by_key(|entry| std::cmp::Reverse(entry.1 .1.abs()));
 
         for (txn_type, (count, amount)) in types {
             println!("  {:40} {:>6} txn  ${:>14.2}", txn_type, count, amount);
@@ -519,7 +516,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("By Action Type:");
         let mut types: Vec<_> = by_type.iter().collect();
-        types.sort_by(|a, b| b.1.cmp(a.1));
+        types.sort_by_key(|entry| std::cmp::Reverse(entry.1));
 
         for (action_type, count) in types {
             println!("  {:40} {:>6} actions", action_type, count);

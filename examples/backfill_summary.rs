@@ -288,7 +288,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if !trades_by_symbol.is_empty() {
         println!("\nTop 10 traded symbols by trade count:");
         let mut symbol_list: Vec<_> = trades_by_symbol.iter().collect();
-        symbol_list.sort_by(|a, b| b.1 .0.cmp(&a.1 .0));
+        symbol_list.sort_by_key(|entry| std::cmp::Reverse(entry.1 .0));
 
         println!(
             "  {:20} {:>8} {:>12} {:>12}",
@@ -303,11 +303,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         // Top winners and losers
-        symbol_list.sort_by(|a, b| {
-            b.1 .2
-                .partial_cmp(&a.1 .2)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
+        symbol_list.sort_by_key(|entry| std::cmp::Reverse(entry.1 .2));
 
         let winners: Vec<_> = symbol_list
             .iter()
@@ -342,12 +338,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("{}", "=".repeat(60));
 
         let mut cash_list: Vec<_> = cash_by_type.iter().collect();
-        cash_list.sort_by(|a, b| {
-            b.1 .1
-                .abs()
-                .partial_cmp(&a.1 .1.abs())
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
+        cash_list.sort_by_key(|entry| std::cmp::Reverse(entry.1 .1.abs()));
 
         println!("{:40} {:>8} {:>14}", "Type", "Count", "Amount");
         println!("{}", "-".repeat(64));
@@ -378,12 +369,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Position count: {}", positions.len());
 
         let mut positions = positions;
-        positions.sort_by(|a, b| {
-            b.value
-                .abs()
-                .partial_cmp(&a.value.abs())
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
+        positions.sort_by_key(|position| std::cmp::Reverse(position.value.abs()));
 
         println!(
             "\n{:20} {:>10} {:>12} {:>12} {:>12}",

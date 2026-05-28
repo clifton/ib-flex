@@ -1,7 +1,8 @@
 //! Performance benchmarks for FLEX parsing
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use ib_flex::parse_activity_flex;
+use std::hint::black_box;
 
 fn benchmark_minimal_parsing(c: &mut Criterion) {
     let xml = include_str!("../tests/fixtures/activity_minimal.xml");
