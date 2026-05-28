@@ -47,6 +47,14 @@ where
     let s = Option::<String>::deserialize(deserializer)?;
     match s.as_deref() {
         None | Some("") => Ok(None),
+        // IBKR emits `MULTI` for date attributes on aggregate summary rows when
+        // a single value would be misleading. A live example was a self-closing
+        // `SymbolSummary` sibling inside `<Trades>` with
+        // `settleDateTarget="MULTI"` for USD.TWD, meaning the aggregate spans
+        // multiple settlement dates and has no single settlement date itself.
+        // The detailed rows are sibling Trade/Lot records, not child elements,
+        // so optional date fields should treat this sentinel as absent.
+        Some(s) if s.eq_ignore_ascii_case("MULTI") => Ok(None),
         Some(s) => parse_flex_date(s)
             .map(Some)
             .map_err(serde::de::Error::custom),
@@ -140,6 +148,14 @@ mod tests {
     #[test]
     fn test_empty_string_date() {
         let xml = r#"<TestStruct date="" />"#;
+        let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().date, None);
+    }
+
+    #[test]
+    fn test_multi_sentinel_date() {
+        let xml = r#"<TestStruct date="MULTI" />"#;
         let result: Result<TestStruct, _> = quick_xml::de::from_str(xml);
         assert!(result.is_ok());
         assert_eq!(result.unwrap().date, None);

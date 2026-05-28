@@ -16,6 +16,42 @@ fn test_parse_minimal_statement() {
 }
 
 #[test]
+fn test_parse_symbol_summary_with_multi_settlement_date() {
+    // IBKR can emit self-closing aggregate summary siblings with
+    // `settleDateTarget="MULTI"`. This is not Latin-1 corruption or an illegal
+    // XML character; it means the summary has no single settlement date because
+    // it spans multiple underlying trade/lot rows.
+    let xml = r#"<?xml version="1.0" encoding="UTF-8"?>
+<FlexQueryResponse queryName="Activity Query" type="AF">
+    <FlexStatements count="1">
+        <FlexStatement accountId="U1234567" fromDate="2025-01-15" toDate="2025-01-15"
+                       period="SingleDay" whenGenerated="2025-01-15;235959">
+            <Trades>
+                <Trade accountId="U1234567" currency="USD" fxRateToBase="1"
+                       assetCategory="STK" symbol="AAPL" description="APPLE INC" conid="265598"
+                       transactionID="567890123" tradeDate="2025-01-15" dateTime="2025-01-15;093015"
+                       settleDateTarget="2025-01-17" buySell="BUY" quantity="100" price="185.50"
+                       amount="-18550.00" proceeds="-18550.00" ibCommission="-1.00"
+                       ibCommissionCurrency="USD" netCash="-18551.00" multiplier="1"
+                       tradeID="123456789" execID="test123" />
+                <SymbolSummary accountId="U1234567" currency="USD" fxRateToBase="1"
+                       assetCategory="CASH" symbol="USD.TWD" description="USD.TWD" conid="12087792"
+                       levelOfDetail="SYMBOL_SUMMARY" tradeDate="20260527"
+                       settleDateTarget="MULTI" quantity="0" price="0" proceeds="0"
+                       ibCommission="0" netCash="0" />
+            </Trades>
+        </FlexStatement>
+    </FlexStatements>
+</FlexQueryResponse>"#;
+
+    let statement = parse_activity_flex(xml).unwrap();
+    let trade = &statement.trades.items[0];
+
+    assert_eq!(statement.trades.items.len(), 1);
+    assert_eq!(trade.symbol, "AAPL");
+}
+
+#[test]
 fn test_parse_trades() {
     let xml = include_str!("fixtures/activity_minimal.xml");
     let statement = parse_activity_flex(xml).unwrap();
