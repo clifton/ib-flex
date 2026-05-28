@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- Removed stale implementation planning and status documents from the repository surface.
+
 ## [0.1.8] - 2026-05-28
 
 ### Changed
